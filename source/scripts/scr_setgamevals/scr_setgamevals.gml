@@ -1,5 +1,7 @@
 function scr_setgamevals(){
 	global._speedruntimer = 0;
+	global._kills = 0;
+	global._kills_prev = 0;
 	
 	global._died = false;
 	global._knockouts = 0;

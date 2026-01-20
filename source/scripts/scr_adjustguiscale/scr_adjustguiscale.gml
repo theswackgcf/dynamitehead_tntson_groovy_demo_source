@@ -3,13 +3,13 @@
 function scr_adjustguiscale(){
 	var scale = [];
 	if(global._buildver == HTML){
-		scale = [WIDTH,HEIGHT];
+		scale = [HTML_W,HTML_H];
 	
 		global._guisizeX = scale[0]/WIDTH;
 		global._guisizeY = scale[1]/HEIGHT;
 	
 		surface_resize(application_surface, WIDTH,HEIGHT);
-		display_set_gui_size(WIDTH,HEIGHT);
+		display_set_gui_size(HTML_W,HTML_H);
 		display_set_gui_maximize(global._guisizeX,global._guisizeY);
 	} else {
 		if(!global._full){

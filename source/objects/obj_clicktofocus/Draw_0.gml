@@ -1,1 +1,0 @@
-draw_sprite(spr_clicktofocus, 0, WIDTH/2, HEIGHT/2);

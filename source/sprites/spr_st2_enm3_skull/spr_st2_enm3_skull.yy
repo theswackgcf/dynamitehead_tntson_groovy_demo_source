@@ -83,8 +83,8 @@
   "swatchColours":null,
   "swfPrecision":0.5,
   "textureGroupId":{
-    "name":"stage2_enemies",
-    "path":"texturegroups/stage2_enemies",
+    "name":"stage2_enemy3",
+    "path":"texturegroups/stage2_enemy3",
   },
   "type":0,
   "VTile":false,

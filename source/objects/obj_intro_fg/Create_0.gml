@@ -4,7 +4,7 @@
 	
 	switch(global._location){
 		case 0:
-			sprite_index = spr_lv1intro_fg;
+			sprite_index = spr_lv2intro_fg;
 		break;
 		case 1:
 			sprite_index = spr_lv2intro_fg;

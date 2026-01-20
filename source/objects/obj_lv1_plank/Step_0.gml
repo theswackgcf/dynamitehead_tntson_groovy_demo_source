@@ -52,9 +52,9 @@
 		}
 		
 		if(!_fell){
-			sprite_index = spr_lv1_planks1;
+			//sprite_index = spr_lv1_planks1;
 		} else {
-			sprite_index = spr_lv1_planks2;
+			//sprite_index = spr_lv1_planks2;
 		}
 		image_index = _type;
 	}

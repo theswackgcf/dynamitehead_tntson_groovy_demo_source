@@ -12,27 +12,14 @@ function voice_play_overlap_proximity(sfx, gain = 1.0, point_x = global._cameraX
 		newpan = pan;
 	}
 	
-	if(!ds_map_exists(_allsounds, "emitter") || (ds_map_exists(_allsounds, "emitter") && !audio_emitter_exists(_allsounds[? "emitter"]))){
-		_allsounds[? "emitter"] = audio_emitter_create();
-	}
-	
-	if(!global._pause){
-		audio_emitter_bus(_allsounds[? "emitter"], global.sfx_bus);
-	}
-	
 	var medvalue = -median(-1, newpan, 1);
 	if(global._buildver == HTML){
-		medvalue = 1;
+		medvalue = 0;
 	}
 	
-	audio_emitter_position(_allsounds[? "emitter"], medvalue*global._panmultiply, 0, 0);
-	_allsounds[? sfx] = audio_play_sound_on(_allsounds[? "emitter"], sfx, false, 0, gain*newgain);
-	
-	if(global._buildver != HTML){
-		if(!global._pause && global.sfx_effect == "echo"){
-			_allsounds[? "delay"] = [sfx,4,0.45,2];
-		}
-	}
+	audio_falloff_set_model(audio_falloff_linear_distance);
+	audio_listener_position(medvalue*global._panmultiply,0,0);
+	_allsounds[? sfx] = audio_play_sound(sfx, 0, false, gain*newgain);
 	
 	global._pauseSoundGains[? sfx] = gain*newgain;
 }

@@ -226,13 +226,33 @@
 			scr_textrender_valign("bottom");
 			scr_textrender_type(drawpos[0],drawpos[1],textinput,true,c_white,1,0.55,0.55);
 			scr_textrender_switchfont(global._defaultFont);
-
+			
 			if(_changehold > 0){
 				var rectpos = [4,HEIGHT-64];
 				draw_set_color(#000000);
 				draw_rectangle(rectpos[0], rectpos[1], 260, rectpos[1]+18, false);
 				draw_set_color(#FFFF00);
 				draw_rectangle(rectpos[0], rectpos[1], rectpos[0]+((_changehold/60)*256), rectpos[1]+18, false);
+			}
+			
+			scr_textrender_valign("top");
+		}
+		
+		if(_menustate == "main"){
+			if(global._newgrounds){
+				var logname = "Guest";
+		
+				if(global._nglogin){
+					logname = ng_get_username();
+				}
+		
+				scr_textrender_switchfont("dh_font1");
+				scr_textrender_halign("right");
+				scr_textrender_valign("bottom");
+				scr_textrender_type(WIDTH,HEIGHT-64,"Logged in as: "+logname,true,c_white,1,1,1);
+				scr_textrender_switchfont(global._defaultFont);
+				scr_textrender_halign("left");
+				scr_textrender_valign("top");
 			}
 		}
 		

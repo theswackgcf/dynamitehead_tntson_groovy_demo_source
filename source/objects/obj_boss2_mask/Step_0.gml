@@ -506,25 +506,15 @@
 									_phaseend_voice_gain = 0;
 								}
 								
-								if(ds_map_exists(_allsounds, "emitter") && (ds_map_exists(_allsounds, "emitter") && audio_emitter_exists(_allsounds[? "emitter"]))){
-									//pan and gain sound
-									var point_x = global._cameraX+(WIDTH/2);
-									var point_y = global._cameraY+(HEIGHT/2);
-									var offset = [global._proximityoffset[0], global._proximityoffset[1]];
-									var disttopoint = [1-(clamp(diff_abs(x, point_x)/(WIDTH+offset[0]), 0, 1)),1-(clamp(diff_abs(y, point_y)/(HEIGHT+offset[1]), 0, 1))];
-									var newgain = clamp(sqrt_value(disttopoint[0],disttopoint[1]), 0, 1);
-									var pan = clamp(diff_abs(x, point_x)/(WIDTH+offset[0]), 0, 1);
-	
-									var newpan = 0;
-									if(x < point_x){
-										newpan = -pan;
-									} else {
-										newpan = pan;
-									}
-									
-									audio_emitter_position(_allsounds[? "emitter"], -median(-1, newpan, 1)*global._panmultiply, 0, 0);
-									audio_sound_gain(snd_lanky_screamspin, newgain*_phaseend_voice_gain);
-								}
+								//gain sound
+								var point_x = global._cameraX+(WIDTH/2);
+								var point_y = global._cameraY+(HEIGHT/2);
+								var offset = [global._proximityoffset[0], global._proximityoffset[1]];
+								var disttopoint = [1-(clamp(diff_abs(x, point_x)/(WIDTH+offset[0]), 0, 1)),1-(clamp(diff_abs(y, point_y)/(HEIGHT+offset[1]), 0, 1))];
+								var newgain = clamp(sqrt_value(disttopoint[0],disttopoint[1]), 0, 1);
+								var pan = clamp(diff_abs(x, point_x)/(WIDTH+offset[0]), 0, 1);
+
+								audio_sound_gain(snd_lanky_screamspin, newgain*_phaseend_voice_gain);
 								
 								_attack = false;
 								_ll_atknum = 0;
@@ -781,7 +771,7 @@
 									}
 								break;
 							}
-							
+						
 							if(_phaseend_act < 3){
 								//phase 1 atk 1
 								if(_ll_atk1_atkact > 0 && (_curstate != STATE_JUMP && _stunlock_after <= 0 && (_falling || _ll_atk || _grabbed || _fall_ko || _successparry > 0))){
@@ -991,7 +981,7 @@
 										remove_trait(TRAIT_GRAB);
 									}
 								}
-								
+					
 								//phase 2 atk 1
 								if(_ll_atk3_act > 0){
 									if(has_trait(TRAIT_MASHED)){
@@ -1109,7 +1099,7 @@
 										}
 									break;
 								}
-								
+							
 								if(_ll_atk4_lightdelay > 0){
 									_ll_atk4_lightdelay --
 								} else {
@@ -1402,8 +1392,6 @@
 										_walltouch_y = 0;
 										_fixwall = false;
 									
-										_afterim_active = 3;
-									
 										var maxbonk = 16;
 									
 										//set speed which depends on direction
@@ -1475,22 +1463,19 @@
 														_specialatk = 0;
 													
 														//jump up and spawn henchies
-														for(var i = 0; i < 2; i++){
-															var enm = instance_create_depth(x, y-16, depth+16, obj_st2_enm1_mask);
-															var spd = [-1, 1];
-															enm._forceai = _ailevel;
-															enm._didspot = true;
-															enm._init_fallxspd = 10*spd[i];
-															enm._jump = true;
-															enm._fall_ko = true;
-															enm._standup = true;
-															enm._height = _groundlevel+4;
-															enm._vspd = 16;
-															enm._fixwall = true;
-															enm._nocrouchatk = true;
-															enm._maxhp = 6;
-															enm._hp = enm._maxhp;
-														}
+														var enm = instance_create_depth(x, y-16, depth+16, obj_st2_enm1_mask);
+														enm._forceai = _ailevel;
+														enm._didspot = true;
+														enm._init_fallxspd = -10;
+														enm._jump = true;
+														enm._fall_ko = true;
+														enm._standup = true;
+														enm._height = _groundlevel+4;
+														enm._vspd = 16;
+														enm._fixwall = true;
+														enm._nocrouchatk = true;
+														enm._maxhp = 6;
+														enm._hp = enm._maxhp;
 										
 														sfx_play_proximity(snd_lank_hench);
 										
@@ -1540,7 +1525,7 @@
 									_stun = false;
 									_stunact = 0;
 									_stuntimer = 0;
-								}
+								}	
 							}
 						}
 					
@@ -1579,8 +1564,8 @@
 										_ll_atk2_attack = true;
 									}
 								}
-							}	
-							
+							}
+					
 							if(_hurttimer == 0){
 								switch(_behaviortype){
 									case "move":
@@ -2156,68 +2141,68 @@
 						
 								scr_enemyscript_behavior("battlezone");
 								scr_enemyscript_behavior("grab");
-							}	
-						}
+							}
 					
-						scr_enemyscript_falling();
+							scr_enemyscript_falling();
 			
-						scr_enemyscript_animation("step");
+							scr_enemyscript_animation("step");
 					
-						//sfx
-						if(_anim == "follow"){
-							if(_displayobj.image_index >= 2){
-								if(_dostepsound){
-									sfx_play_choose_proximity([asset_get_index("snd_footstep1_"+_floortype),asset_get_index("snd_footstep2_"+_floortype)], 1, false);
-									_dostepsound = false;
+							//sfx
+							if(_anim == "follow"){
+								if(_displayobj.image_index >= 2){
+									if(_dostepsound){
+										sfx_play_choose_proximity([asset_get_index("snd_footstep1_"+_floortype),asset_get_index("snd_footstep2_"+_floortype)], 1, false);
+										_dostepsound = false;
+									}
+								} else {
+									_dostepsound = true;
+								}
+							} else if(_anim == "walk1" || _anim == "walk2" || _anim == "walk3"){
+								if((_displayobj.image_index >= 2 && _displayobj.image_index < 3)||(_displayobj.image_index >= 12 && _displayobj.image_index < 13)){
+									if(_dostepsound){
+										sfx_play_choose_proximity([asset_get_index("snd_footstep1_"+_floortype),asset_get_index("snd_footstep2_"+_floortype)], 1, false);
+										_dostepsound = false;
+									}
+								} else {
+									_dostepsound = true;
 								}
 							} else {
 								_dostepsound = true;
 							}
-						} else if(_anim == "walk1" || _anim == "walk2" || _anim == "walk3"){
-							if((_displayobj.image_index >= 2 && _displayobj.image_index < 3)||(_displayobj.image_index >= 12 && _displayobj.image_index < 13)){
-								if(_dostepsound){
-									sfx_play_choose_proximity([asset_get_index("snd_footstep1_"+_floortype),asset_get_index("snd_footstep2_"+_floortype)], 1, false);
-									_dostepsound = false;
+					
+							//make transition
+							if(_anim_prev != _anim){
+								if(compare_anim("standup", "idle"+string(_phase+1)) || compare_anim("standup", "walk"+string(_phase+1))){
+									_displayobj.image_index = 0;
+									_anim_tr_anim = "standup_idle";
+									_anim_tr_init = false;
+									_anim_transition = true;
 								}
-							} else {
-								_dostepsound = true;
-							}
-						} else {
-							_dostepsound = true;
-						}
+								if(compare_anim("blockko", "idle"+string(_phase+1)) || compare_anim("blockko", "walk"+string(_phase+1)) || compare_anim("blockko", "skid")){
+									_displayobj.image_index = 0;
+									_anim_tr_anim = "standup_idle";
+									_anim_tr_init = false;
+									_anim_transition = true;
+								}
+								if(compare_anim("runskid", "idle"+string(_phase+1)) || compare_anim("runskid", "walk"+string(_phase+1))){
+									_displayobj.image_index = 0;
+									_anim_tr_anim = "runskid_idle";
+									_anim_tr_init = false;
+									_anim_transition = true;
+								}
 					
-						//make transition
-						if(_anim_prev != _anim){
-							if(compare_anim("standup", "idle"+string(_phase+1)) || compare_anim("standup", "walk"+string(_phase+1))){
-								_displayobj.image_index = 0;
-								_anim_tr_anim = "standup_idle";
-								_anim_tr_init = false;
-								_anim_transition = true;
+								_anim_prev = _anim;
 							}
-							if(compare_anim("blockko", "idle"+string(_phase+1)) || compare_anim("blockko", "walk"+string(_phase+1)) || compare_anim("blockko", "skid")){
-								_displayobj.image_index = 0;
-								_anim_tr_anim = "standup_idle";
-								_anim_tr_init = false;
-								_anim_transition = true;
-							}
-							if(compare_anim("runskid", "idle"+string(_phase+1)) || compare_anim("runskid", "walk"+string(_phase+1))){
-								_displayobj.image_index = 0;
-								_anim_tr_anim = "runskid_idle";
-								_anim_tr_init = false;
-								_anim_transition = true;
-							}
-					
-							_anim_prev = _anim;
-						}
 			
-						if(!_death && _specialatk <= 0){
-							var dh = instance_nearest(x,y,obj_dh_mask);
-							if(instance_number_array(global._enemyArray) == 1 || (instance_exists(dh) && distance_to_object(dh) < _attackdist)){
-								scr_enemyscript_detect();
+							if(!_death && _specialatk <= 0){
+								var dh = instance_nearest(x,y,obj_dh_mask);
+								if(instance_number_array(global._enemyArray) == 1 || (instance_exists(dh) && distance_to_object(dh) < _attackdist)){
+									scr_enemyscript_detect();
+								}
 							}
-						}
 			
-						scr_enemyscript_other();
+							scr_enemyscript_other();
+						}
 					} else {
 						_curstate = STATE_OTHER;
 						clearpath();

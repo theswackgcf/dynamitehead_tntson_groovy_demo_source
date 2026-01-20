@@ -32,10 +32,7 @@
   "resourceType":"GMObject",
   "resourceVersion":"2.0",
   "solid":false,
-  "spriteId":{
-    "name":"spr_fridgeOLD_hurtbox",
-    "path":"sprites/spr_fridgeOLD_hurtbox/spr_fridgeOLD_hurtbox.yy",
-  },
+  "spriteId":null,
   "spriteMaskId":null,
   "visible":true,
 }

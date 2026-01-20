@@ -32,10 +32,7 @@
   "resourceType":"GMObject",
   "resourceVersion":"2.0",
   "solid":false,
-  "spriteId":{
-    "name":"spr_enm1_spawner",
-    "path":"sprites/spr_enm1_spawner/spr_enm1_spawner.yy",
-  },
+  "spriteId":null,
   "spriteMaskId":null,
   "visible":true,
 }

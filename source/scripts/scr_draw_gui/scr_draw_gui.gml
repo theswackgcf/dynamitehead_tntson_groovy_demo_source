@@ -1610,24 +1610,26 @@ function scr_draw_gui(){
 		} else if(global._showDebug == 1) {
 			scr_textrender_type(0, 0, "DEBUG MODE ON", true, #FFFF00);
 		}
+		
+		if(global._showTexGroupDebug){
+			var loadedgroups = "";
+			var groupnames = texturegroup_get_names();
+			for(var i = 0; i < array_length(groupnames); ++i){
+				if(texturegroup_get_status(groupnames[i]) == texturegroup_status_loaded || texturegroup_get_status(groupnames[i]) == texturegroup_status_fetched){
+					if(string_pos("fallbacktexture", groupnames[i]) == 0){
+						loadedgroups += "\n" + groupnames[i];
+					}
+				}
+			}
+			scr_textrender_halign("right");
+			scr_textrender_type(WIDTH, 48, "loaded texture groups:" + loadedgroups, true);
+			scr_textrender_halign("left");
+		}
+		
 		if(global._buildver == WINDOWS){
 			if(global._showDebug == 0 || global._showDebug == 1){
 				var mem = debug_event("DumpMemory");
 				scr_textrender_type(0, HEIGHT - 40, "FPS:" + string(fps) + " | MEM:" + bytes_get_size(mem.totalUsed), true, #FFFF00);
-				if(global._showTexGroupDebug){
-					var loadedgroups = "";
-					var groupnames = texturegroup_get_names();
-					for(var i = 0; i < array_length(groupnames); ++i){
-						if(texturegroup_get_status(groupnames[i]) == texturegroup_status_loaded || texturegroup_get_status(groupnames[i]) == texturegroup_status_fetched){
-							if(string_pos("fallbacktexture", groupnames[i]) == 0){
-								loadedgroups += "\n" + groupnames[i];
-							}
-						}
-					}
-					scr_textrender_halign("right");
-					scr_textrender_type(WIDTH, 48, "loaded texture groups:" + loadedgroups, true);
-					scr_textrender_halign("left");
-				}
 				if(global._showMemoryDebug){
 					scr_textrender_halign("center");
 					scr_textrender_valign("middle");

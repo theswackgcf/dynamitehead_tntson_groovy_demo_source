@@ -31,10 +31,7 @@
   "resourceType":"GMObject",
   "resourceVersion":"2.0",
   "solid":false,
-  "spriteId":{
-    "name":"spr_boss1_shockwave_back",
-    "path":"sprites/spr_boss1_shockwave_back/spr_boss1_shockwave_back.yy",
-  },
+  "spriteId":null,
   "spriteMaskId":null,
   "visible":true,
 }

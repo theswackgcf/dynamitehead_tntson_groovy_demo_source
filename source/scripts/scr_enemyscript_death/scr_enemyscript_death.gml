@@ -218,6 +218,8 @@ function scr_enemyscript_death(){
 							f._playvoice = _playvoice.death;
 						}
 					}
+					
+					global._kills ++;
 				
 					killself();
 				}

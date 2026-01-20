@@ -17,11 +17,14 @@
 	#macro ITEM_TOMATO 2
 	#macro ITEM_CHOCO 3
 	
+	#macro NG_ACHV_COMPLETE "Groove It"
+	#macro NG_ACHV_HELLYEAH "I GOTTA GET WICKED!"
+	#macro NG_ACHV_ALLKILLS "Dead Badheads Everywhere"
+
 	global._debug = false;
-	global._buildver = WINDOWS;
+	global._buildver = HTML;
 	global._gxLoading = false;
 	global._version = "v1.0";
-	
 	global._debugroom = false;
 	global._debughidepause = false;
 	
@@ -44,8 +47,6 @@
 	_htmladjust = false;
 	
 	global.sfx_effect = "";
-	global.sfx_bus = audio_bus_create();
-	global.sfx_bus.effects[0] = undefined;
 	
 	global._borderless_cdown = 0;
 	
@@ -196,6 +197,8 @@
 	global._rewards = [5000,10000];
 	global._badnums = [-200,-300];
 	global._reward = 0;
+	
+	global._stagebadheads = [0,128];
 	
 	global._maxai = 6;
 	
@@ -790,4 +793,6 @@
 	
 	_resizegui_size = [1,1];
 	_resizegui_surface = surface_create(_resizegui_size[0],_resizegui_size[1]);
+	
+	global._totalobjs = 0;
 }

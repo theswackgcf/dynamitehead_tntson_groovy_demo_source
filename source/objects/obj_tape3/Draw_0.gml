@@ -1,6 +1,5 @@
 {
 	if(_scene > 0 && _scene < 3){
-		horrifi_set();
 		draw_sprite(spr_tape3_sky, floor(_sky_frame), floor(WIDTH/2), 0);
 	}
 	switch(_scene){
@@ -84,10 +83,6 @@
 			spr = spr_tape3_caller2;
 		}
 		draw_sprite(spr, floor(_callerframe), _callerx, 0);
-	}
-	
-	if(_scene > 0 && _scene < 3){
-		horrifi_reset();
 	}
 	
 	if(_scene > 0){

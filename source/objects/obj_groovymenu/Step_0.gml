@@ -90,11 +90,13 @@
 			btn5._action = "rightmanual";
 			btn5._canrapidfire = true;
 		
-			//manual
-			for(var i = 0; i < 99; i++){
-				var file = "./manual/"+string(i+1)+".png";
-				if(file_exists(file)){
-					_manual_imgs[i] = sprite_add(file, 1, false, false, floor(_manual_dim[0]/2),floor(_manual_dim[1]/2));
+			if(global._buildver != HTML){
+				//manual
+				for(var i = 0; i < 99; i++){
+					var file = "./manual/"+string(i+1)+".png";
+					if(file_exists(file)){
+						_manual_imgs[i] = sprite_add(file, 1, false, false, floor(_manual_dim[0]/2),floor(_manual_dim[1]/2));
+					}
 				}
 			}
 		
@@ -440,6 +442,20 @@
 									case "quit":
 										//quit game
 										room_goto(r_quit);
+									break;
+									
+									case "login":
+										_menustate = "main";
+										_enter = false;
+										
+										//connect to the newgrounds API if this is a newgrounds build
+										if(global._newgrounds){
+											ng_connect(global._ng_api_key[0],global._ng_api_key[1]);
+											ng_initialize_medals_and_scoreboard();
+											ng_request_login();
+											
+											global._nglogin = true;
+										}
 									break;
 								}
 								_enterinit = true;

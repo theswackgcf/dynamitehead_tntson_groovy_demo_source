@@ -15,14 +15,14 @@
 	shader_set_uniform_f(t, _timer);
 	switch(global._location){
 		case 0:
-			shader_set_uniform_f(aX, 0.015);
-			shader_set_uniform_f(aY, 0.015);
-			shader_set_uniform_f(s, 0.07);
-			shader_set_uniform_f(fX, 120);
-			shader_set_uniform_f(fY, 120);
+			//shader_set_uniform_f(aX, 0.015);
+			//shader_set_uniform_f(aY, 0.015);
+			//shader_set_uniform_f(s, 0.07);
+			//shader_set_uniform_f(fX, 120);
+			//shader_set_uniform_f(fY, 120);
 		
-			draw_sprite(spr_lv1_bg1, 0, _xpos, HEIGHT/2);
-			draw_sprite(spr_lv1_bg1, 0, _xpos+2000, HEIGHT/2);
+			//draw_sprite(spr_lv1_bg1, 0, _xpos, HEIGHT/2);
+			//draw_sprite(spr_lv1_bg1, 0, _xpos+2000, HEIGHT/2);
 		break;
 		case 1:
 			shader_set_uniform_f(aX, 0.007);
@@ -47,7 +47,7 @@
 	
 	switch(global._location){
 		case 0:
-			sp = spr_lv1intro_bg;
+			sp = spr_lv2intro_bg;
 		break;
 		case 1:
 			sp = spr_lv2intro_bg;

@@ -73,15 +73,4 @@
 	_skipall_xstart = -WIDTH;
 	_skipall_x = _skipall_xstart;
 	_skip = false;
-	
-	//crt effect
-	horrifi_enable(true);
-
-	horrifi_bloom_set(false,0,0,0);
-	horrifi_chromaticab_set(true,0.12);
-	horrifi_scanlines_set(true,0.03);
-	horrifi_vhs_set(true,0.05);
-	horrifi_vignette_set(false,0,0);
-	horrifi_crt_set(false,0);
-	horrifi_noise_set(true,0.1);
 }

@@ -400,6 +400,8 @@
 	_buffer_deletepress = "";
 	_buffer_deleterelease = "";
 	
+	_checkallkills = false;
+	
 	function setinput() {
 		_inptype = global._inptype; //inptype is the input method (keyboard, gamepad)
 		_input = [ds_map_create(),ds_map_create()];

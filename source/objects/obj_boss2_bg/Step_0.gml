@@ -247,6 +247,8 @@
 								mus_play(mus_boss2, global._bossgains[global._location]);
 								global._bossmusic = true;
 								
+								visible = true;
+								
 								sfx_play(snd_light_on);
 								global._lightsout = false;
 								scr_lightsout_affect();
@@ -257,6 +259,8 @@
 								
 								mus_play(mus_boss2, global._bossgains[global._location]);
 								global._bossmusic = true;
+							
+								visible = true;
 							
 								sfx_play(snd_light_on);
 								global._lightsout = false;

@@ -45,7 +45,7 @@
 	global._camerasize = [camera_get_view_width(global._camera)*global._defCamZoom,camera_get_view_height(global._camera)*global._defCamZoom];
 	_cameraborders = [0, 0, room_width-global._camerasize[0], room_height-global._camerasize[1]];
 	
-	camera_set_view_border(global._camera, WIDTH, HEIGHT);
+	camera_set_view_border(global._camera, HTML_W, HTML_H);
 	camera_set_view_target(global._camera, id);
 	
 	view_enabled = true;
@@ -57,11 +57,12 @@
 		if(global._buildver == WINDOWS){
 			window_set_size(global._res[global._curres][0],global._res[global._curres][1]);
 		} else if(global._buildver == HTML){
-			window_set_size(WIDTH,HEIGHT);
+			window_set_size(HTML_W,HTML_H);
 		}
 		alarm_set(0, 1);
 
 		scr_adjustguiscale();
+		
 		global._adjustSurface = true;
 	}
 }

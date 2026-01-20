@@ -24,15 +24,6 @@
 			image_alpha = _alpha;
 			_alpha -= 0.01;
 			
-			if(_intimer % 12 == 0){
-				//afterimage
-				var img = instance_create_depth(x, y, depth+10, obj_deadenemy_afterIM);
-				img.sprite_index = sprite_index;
-				img.image_xscale = image_xscale;
-				img.image_yscale = image_yscale;
-				img.image_alpha = image_alpha;
-				img._alpha = image_alpha;
-			}
 			if(y <= -128 || _alpha <= 0){
 				instance_destroy();
 			}

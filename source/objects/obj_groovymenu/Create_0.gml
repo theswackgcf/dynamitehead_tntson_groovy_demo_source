@@ -83,7 +83,11 @@
 	_curoption = "";
 	
 	if(global._buildver == HTML){
+		array_delete(_btninfo, 2, 1);
 		array_delete(_btninfo, 3, 1);
+		if(global._newgrounds){
+			array_push(_btninfo, ["login","LOGIN",0]);
+		}
 	}
 	
 	_sndarray = [snd_menu1,snd_menu2,snd_menu3,snd_menu4,snd_menu5];

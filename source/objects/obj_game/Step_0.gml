@@ -3,7 +3,7 @@
 		window_set_size(global._res[global._curres][0],global._res[global._curres][1]);
 	} else if(global._buildver == HTML){
 		global._curres = 0;
-		window_set_size(WIDTH,HEIGHT);
+		window_set_size(HTML_W,HTML_H);
 		if(global._htmlinit == false && global._buildver == HTML){
 			global._htmlinit = true;
 			room_goto(r_htmlinit);
@@ -144,6 +144,8 @@
 					global._plusmoney.cur = [];
 					global._moneypickups.prev = 0;
 					global._moneypickups.cur = 0;
+					global._kills = 0;
+					global._kills_prev = 0;
 					ds_map_destroy(global._deletedStuffPrev);
 					global._deletedStuffPrev = ds_map_create();
 					ds_map_destroy(global._deletedStuff);
@@ -163,6 +165,7 @@
 				} else {
 					global._moneypickups.cur = global._moneypickups.prev;
 					global._plusmoney.cur = global._plusmoney.prev;
+					global._kills = global._kills_prev;
 					global._stageentrance = false;
 					ds_map_copy(global._deletedStuff, global._deletedStuffPrev);
 				}

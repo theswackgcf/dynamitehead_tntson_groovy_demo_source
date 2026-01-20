@@ -169,6 +169,14 @@
 						}
 						global._winscreen = true;
 						mus_play(mus_win);
+						
+						//newgrounds achievements
+						if(global._newgrounds && global._nglogin){
+							ng_unlockmedal(NG_ACHV_COMPLETE);
+							if(global._knockouts <= 0){
+								ng_unlockmedal(NG_ACHV_HELLYEAH);
+							}
+						}
 					} else {
 						with(obj_tipbox){
 							instance_destroy();
@@ -557,6 +565,9 @@
 				
 					global._moneypickups.prev = global._moneypickups.cur;
 					global._plusmoney.prev = global._plusmoney.cur;
+					
+					global._kills_prev = global._kills;
+					
 					ds_map_copy(global._deletedStuffPrev, global._deletedStuff);
 			
 					with(inst){
@@ -781,6 +792,21 @@
 			global._toxicshack = true;
 		} else {
 			global._toxicshack = false;
+		}
+
+		//kill all badheads achievement
+		if(global._newgrounds && global._nglogin && !_checkallkills){
+			if(global._kills >= global._stagebadheads[global._location]){
+				ng_unlockmedal(NG_ACHV_ALLKILLS);
+				_checkallkills = true;
+			}
+			
+			if(global._debug){
+				if(keyboard_check(vk_alt) && keyboard_check_pressed(ord("W"))){
+					ng_unlockmedal(NG_ACHV_ALLKILLS);
+					_checkallkills = true;
+				}
+			}
 		}
 	} else {
 		with(_displayobj){

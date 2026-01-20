@@ -349,6 +349,8 @@ function scr_enemyscript_falling(){
 						_confirmkill = true;
 					}
 				
+					global._kills ++;
+				
 					killself();
 				}
 			}

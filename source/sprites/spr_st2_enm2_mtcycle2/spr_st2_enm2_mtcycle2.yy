@@ -91,8 +91,8 @@
   "swatchColours":null,
   "swfPrecision":0.5,
   "textureGroupId":{
-    "name":"stage_generic",
-    "path":"texturegroups/stage_generic",
+    "name":"stage2_enemy2",
+    "path":"texturegroups/stage2_enemy2",
   },
   "type":0,
   "VTile":false,

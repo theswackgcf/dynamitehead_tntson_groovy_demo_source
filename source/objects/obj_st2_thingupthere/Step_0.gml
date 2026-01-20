@@ -50,7 +50,7 @@
 					var parent = p._parentobj;
 					if(instance_exists(p) && instance_exists(parent)){
 						if(p._ptype == "pl" && p._damage == ATK_KO){
-							if(p._active && parent._attacktype == "air" && p._height >= 30){
+							if(parent._attacktype == "air" && p._height >= 30){
 								global._deletedStuff[? self.id] = self.id;
 								
 								_trigger = true;

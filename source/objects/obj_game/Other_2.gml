@@ -1,6 +1,12 @@
 {
 	randomise();
 	
+	global._newgrounds = true;
+	
+	global._nglogin = false;
+	
+	global._ng_api_key = ["",""];
+	
 	global._prevcursorpos = [window_mouse_get_x(), window_mouse_get_y()];
 	global._cursortimer = 0;
 	global._inactivecursor = 0;
@@ -36,6 +42,9 @@
 	}
 	global._defvalues[? "Sound Effects"] = global._sfxVolume;
 	global._voiceVolume = 1;
+	if(global._buildver == HTML){
+		global._voiceVolume = 0.7;
+	}
 	global._defvalues[? "Voice"] = global._voiceVolume;
 	
 	global._unfocusedmute = false;
@@ -110,7 +119,7 @@
 	global._defvalues[? "Resolution"] = global._curres;
 	global._colorblending = 1;
 	global._defvalues[? "Color Blending"] = global._colorblending;
-	global._texfilter = true;
+	global._texfilter = false;
 	global._defvalues[? "Interpolation"] = global._texfilter;
 	global._shakevals = [0,0.25,0.5,0.75,1,2,3,4];
 	global._shakeval = 4;
@@ -376,6 +385,8 @@
 	global._checkPos = [0,0];
 	
 	global._knockouts = 0;
+	global._kills = 0;
+	global._kills_prev = 0;
 	
 	global._moneypickups = {
 		total: 3,
@@ -401,4 +412,7 @@
 	
 	global._horse = false;
 	global._speedruntimer = 0;
+	global._lights_switchroom = false;
+	global._switch_storehp = 0;
+	global._switch_storetnt = 0;
 }

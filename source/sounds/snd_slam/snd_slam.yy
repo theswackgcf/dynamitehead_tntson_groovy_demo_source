@@ -10,7 +10,7 @@
   "compression":0,
   "compressionQuality":4,
   "conversionMode":0,
-  "duration":1.0532199,
+  "duration":0.7894104,
   "exportDir":"",
   "name":"snd_slam",
   "parent":{

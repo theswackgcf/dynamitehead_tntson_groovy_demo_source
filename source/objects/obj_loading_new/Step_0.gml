@@ -13,7 +13,6 @@
 		array_push(_shader_array, shd_sepia);
 		array_push(_shader_array, shd_glass);
 		array_push(_shader_array, shd_wireframe);
-		array_push(_shader_array, shd_horrifi);
 		
 		//set assets to load
 		switch(global._loadState){
@@ -83,8 +82,9 @@
 						case 1:
 							array_push(_load_textures, 
 								"lv2_gfx",
-								"stage2_enemies",
-								"stage2_boss",
+								"stage2_enemy1",
+								"stage2_enemy2",
+								"stage2_enemy3",
 							);
 						break;
 					}
@@ -92,6 +92,16 @@
 				
 				_flush_textures = [
 					"menu_sprites",
+				];
+			break;
+			case "boss2":
+				_silent = true;
+			
+				_flush_textures = [
+					"stage2_enemy3",
+				];
+				_load_textures = [
+					"stage2_boss",
 				];
 			break;
 			
@@ -116,7 +126,9 @@
 					"stage_generic",
 					"results_sprites",
 					"lv2_gfx",
-					"stage2_enemies",
+					"stage2_enemy1",
+					"stage2_enemy2",
+					"stage2_enemy3",
 					"stage2_boss",
 				];
 			
@@ -153,7 +165,9 @@
 					"stage_generic",
 					"results_sprites",
 					"lv2_gfx",
-					"stage2_enemies",
+					"stage2_enemy1",
+					"stage2_enemy2",
+					"stage2_enemy3",
 					"stage2_boss",
 					
 					"sprites_tape3",
@@ -207,7 +221,7 @@
 				if(array_length(_load_textures) == 0){
 					_current_pass = 1;
 				} else {
-					if(global._buildver == WINDOWS){
+					if(global._buildver == WINDOWS || global._gxLoading){
 						//load each texture
 						if(texturegroup_get_status(_load_textures[_assetnum]) == texturegroup_status_unloaded){
 							_curasset = texturegroup_load(_load_textures[_assetnum], false);
@@ -263,7 +277,7 @@
 								}
 							}
 						}
-					} else if(global._buildver == HTML){
+					} else if(global._buildver == HTML && !global._gxLoading){
 						_spritearray = texturegroup_get_sprites(_load_textures[_assetnum]);
 						if(_cursprite < array_length(_spritearray)){
 							_spritedraw = _spritearray[_cursprite];
@@ -365,10 +379,14 @@
 									roomto(r_tutorial);
 								}
 							break;
+							case "boss2":
+								roomto(r_stage2);
+							break;
 							case "tapes":
 								roomto(r_enddemo);
 							break;
 							case "enddemo":
+								audio_stop_all();
 								roomto(r_gameintro);
 							break;
 							case "tomenu":

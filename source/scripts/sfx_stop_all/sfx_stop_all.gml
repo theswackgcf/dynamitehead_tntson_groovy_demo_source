@@ -10,9 +10,6 @@ function sfx_stop_all(){
 						audio_stop_sound(cursnd);
 					}
 				}
-				if(ds_map_exists(_allsounds, "emitter")){
-					audio_emitter_free(_allsounds[? "emitter"]);
-				}
 				ds_map_destroy(_allsounds);
 				_allsounds = ds_map_create();
 			}
