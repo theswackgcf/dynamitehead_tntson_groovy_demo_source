@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"scr_gamepadasync",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"scr_gamepadasync",
+  "parent":{
+    "name":"input",
+    "path":"folders/Scripts/input.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

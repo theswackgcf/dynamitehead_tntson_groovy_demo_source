@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"scr_dg_tutrOLD",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"scr_dg_tutrOLD",
+  "parent":{
+    "name":"dialogue",
+    "path":"folders/Scripts/dialogue.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

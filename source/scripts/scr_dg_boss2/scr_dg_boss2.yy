@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"scr_dg_boss2",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"scr_dg_boss2",
+  "parent":{
+    "name":"stage2",
+    "path":"folders/Scripts/dialogue/stage2.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

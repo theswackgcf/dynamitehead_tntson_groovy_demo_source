@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"menu_keycheck",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"menu_keycheck",
+  "parent":{
+    "name":"menu",
+    "path":"folders/Scripts/menu.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

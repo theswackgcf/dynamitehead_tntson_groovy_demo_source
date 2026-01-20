@@ -1,0 +1,26 @@
+{
+  "$GMSound":"v2",
+  "%Name":"snd_dh_ko",
+  "audioGroupId":{
+    "name":"audiogroup_voices",
+    "path":"audiogroups/audiogroup_voices",
+  },
+  "bitDepth":1,
+  "channelFormat":0,
+  "compression":0,
+  "compressionQuality":4,
+  "conversionMode":0,
+  "duration":0.88235825,
+  "exportDir":"",
+  "name":"snd_dh_ko",
+  "parent":{
+    "name":"snd_fx",
+    "path":"folders/Sounds/snd_fx.yy",
+  },
+  "preload":false,
+  "resourceType":"GMSound",
+  "resourceVersion":"2.0",
+  "sampleRate":44100,
+  "soundFile":"snd_dh_ko.wav",
+  "volume":1.0,
+}

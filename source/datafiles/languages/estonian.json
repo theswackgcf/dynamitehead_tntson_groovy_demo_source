@@ -1,0 +1,19 @@
+{
+    "language": "Eesti Keel",
+    "titles" : {
+        "numbers": "Numbrid:",
+        "animals": "Loomad:"
+    },
+    "numbers" : {
+        "numberOne": "Uks",
+        "numberTwo": "Kaks",
+        "numberThree": "Kolm",
+        "numberFour": "Neli",
+        "numberFive": "Viis"
+    },
+    "animals" : {
+        "dog": "Koer",
+        "cat": "Kass",
+        "horse": "Hobune"
+    }
+}

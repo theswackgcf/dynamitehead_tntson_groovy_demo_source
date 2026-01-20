@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"scr_dg_tutr",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"scr_dg_tutr",
+  "parent":{
+    "name":"tutorial",
+    "path":"folders/Scripts/dialogue/tutorial.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"sfx_volume",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"sfx_volume",
+  "parent":{
+    "name":"sound",
+    "path":"folders/Scripts/sound.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

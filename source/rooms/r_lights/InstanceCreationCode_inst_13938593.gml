@@ -1,0 +1,1 @@
+text = "ENTER THE\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|\n|\nSPOOK ZONE";

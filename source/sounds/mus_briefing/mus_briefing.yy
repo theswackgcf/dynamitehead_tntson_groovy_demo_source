@@ -1,0 +1,26 @@
+{
+  "$GMSound":"v2",
+  "%Name":"mus_briefing",
+  "audioGroupId":{
+    "name":"audiogroup_music",
+    "path":"audiogroups/audiogroup_music",
+  },
+  "bitDepth":1,
+  "channelFormat":1,
+  "compression":2,
+  "compressionQuality":0,
+  "conversionMode":0,
+  "duration":45.505306,
+  "exportDir":"",
+  "name":"mus_briefing",
+  "parent":{
+    "name":"mus_fx",
+    "path":"folders/Sounds/mus_fx.yy",
+  },
+  "preload":false,
+  "resourceType":"GMSound",
+  "resourceVersion":"2.0",
+  "sampleRate":44100,
+  "soundFile":"mus_briefing.mp3",
+  "volume":1.0,
+}

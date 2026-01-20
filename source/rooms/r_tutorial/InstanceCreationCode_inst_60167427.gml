@@ -1,0 +1,1 @@
+_event = "fridge_spin_destroy";

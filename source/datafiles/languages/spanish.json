@@ -1,0 +1,19 @@
+{
+    "language": "Espanol",
+    "titles" : {
+        "numbers": "Numeros:",
+        "animals": "Animales:"
+    },
+    "numbers" : {
+        "numberOne": "Uno",
+        "numberTwo": "Dos",
+        "numberThree": "Tres",
+        "numberFour": "Cuatro",
+        "numberFive": "Cinco"
+    },
+    "animals" : {
+        "dog": "Perro",
+        "cat": "Gato",
+        "horse": "Caballo"
+    }
+}

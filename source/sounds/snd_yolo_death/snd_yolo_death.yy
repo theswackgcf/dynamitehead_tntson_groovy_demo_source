@@ -1,0 +1,26 @@
+{
+  "$GMSound":"v2",
+  "%Name":"snd_yolo_death",
+  "audioGroupId":{
+    "name":"audiogroup_voices",
+    "path":"audiogroups/audiogroup_voices",
+  },
+  "bitDepth":1,
+  "channelFormat":0,
+  "compression":0,
+  "compressionQuality":4,
+  "conversionMode":0,
+  "duration":1.0788208,
+  "exportDir":"",
+  "name":"snd_yolo_death",
+  "parent":{
+    "name":"badheads",
+    "path":"folders/Sounds/voice_fx/badheads.yy",
+  },
+  "preload":false,
+  "resourceType":"GMSound",
+  "resourceVersion":"2.0",
+  "sampleRate":44100,
+  "soundFile":"snd_yolo_death.mp3",
+  "volume":1.0,
+}

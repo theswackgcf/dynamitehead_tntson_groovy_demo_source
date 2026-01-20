@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"voice_play_overlap",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"voice_play_overlap",
+  "parent":{
+    "name":"sound",
+    "path":"folders/Scripts/sound.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

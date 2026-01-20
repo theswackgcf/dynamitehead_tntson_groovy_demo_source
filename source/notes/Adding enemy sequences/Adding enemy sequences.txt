@@ -1,0 +1,33 @@
+Read this before adding a new enemy sequence.
+
+Make sure to resize imported sprites to 60.7%, both sides.
+
+If you want the enemy to jump to its starting position correctly, set the origin
+point to the center of the jumping/walking sprite right at the end of the sequence. Make sure the sprite is no longer
+visible once the hopping happens. A new hopping object will be made in place of it which will do
+the hopping/walking code.
+
+global._sequenceInfo parameters:
+	hop_frame: the frame when enemy hops to the position. This is ignored if anim_finish is true
+	hop_sprite: the hopping sprite that appears on the hopping object.
+	do_arc: if true, object hops to the starting position. if false, object walks to the starting position.
+	anim_finish: if false, do hopping. if true, end sequence as soon as its animation ends.
+	show_shadow: show enemy's shadow during the starting sequence.
+	
+Setting up sequences for different directions
+Once an enemy spawns into battlezone, it sets its direction in the _spawndir variable.
+Change sequence index depending on that direction in enemy's step event.
+
+if(_battlezone){
+	...
+	...
+	if(_spawndir == "l" || _spawndir == "r"){
+		_sequence_id = seq_start_horizontal;
+	} else if(_spawndir == "u"){
+		_sequence_id = seq_start_up;
+	}
+	...
+}
+
+You can also change _seqhop_archeight and _seqhop_spd the same way. This will set
+the arc height and speed of the enemy when it hops.

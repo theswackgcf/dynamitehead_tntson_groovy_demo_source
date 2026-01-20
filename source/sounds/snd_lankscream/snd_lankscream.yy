@@ -1,0 +1,26 @@
+{
+  "$GMSound":"v2",
+  "%Name":"snd_lankscream",
+  "audioGroupId":{
+    "name":"audiogroup_voices",
+    "path":"audiogroups/audiogroup_voices",
+  },
+  "bitDepth":1,
+  "channelFormat":0,
+  "compression":0,
+  "compressionQuality":4,
+  "conversionMode":0,
+  "duration":1.0448979,
+  "exportDir":"",
+  "name":"snd_lankscream",
+  "parent":{
+    "name":"snd_fx",
+    "path":"folders/Sounds/snd_fx.yy",
+  },
+  "preload":false,
+  "resourceType":"GMSound",
+  "resourceVersion":"2.0",
+  "sampleRate":44100,
+  "soundFile":"snd_lankscream.mp3",
+  "volume":1.0,
+}

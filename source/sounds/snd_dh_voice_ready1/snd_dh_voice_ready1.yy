@@ -1,0 +1,26 @@
+{
+  "$GMSound":"v2",
+  "%Name":"snd_dh_voice_ready1",
+  "audioGroupId":{
+    "name":"audiogroup_voices",
+    "path":"audiogroups/audiogroup_voices",
+  },
+  "bitDepth":1,
+  "channelFormat":0,
+  "compression":0,
+  "compressionQuality":4,
+  "conversionMode":0,
+  "duration":1.1780726,
+  "exportDir":"",
+  "name":"snd_dh_voice_ready1",
+  "parent":{
+    "name":"dh",
+    "path":"folders/Sounds/voice_fx/dh.yy",
+  },
+  "preload":false,
+  "resourceType":"GMSound",
+  "resourceVersion":"2.0",
+  "sampleRate":44100,
+  "soundFile":"snd_dh_voice_ready1.mp3",
+  "volume":1.0,
+}

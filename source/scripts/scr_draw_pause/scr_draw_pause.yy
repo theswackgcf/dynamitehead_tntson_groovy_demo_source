@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"scr_draw_pause",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"scr_draw_pause",
+  "parent":{
+    "name":"game",
+    "path":"folders/Scripts/game.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

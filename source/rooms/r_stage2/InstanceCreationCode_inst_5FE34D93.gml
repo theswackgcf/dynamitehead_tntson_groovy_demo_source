@@ -1,0 +1,1 @@
+_spawntype = SPAWN_CRUCIFIED;

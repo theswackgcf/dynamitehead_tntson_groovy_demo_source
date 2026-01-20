@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"rapidfire",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"rapidfire",
+  "parent":{
+    "name":"menu",
+    "path":"folders/Scripts/menu.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

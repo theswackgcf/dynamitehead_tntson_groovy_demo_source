@@ -1,0 +1,26 @@
+{
+  "$GMSound":"v2",
+  "%Name":"mus_stageintro_2",
+  "audioGroupId":{
+    "name":"audiogroup_music",
+    "path":"audiogroups/audiogroup_music",
+  },
+  "bitDepth":1,
+  "channelFormat":1,
+  "compression":2,
+  "compressionQuality":4,
+  "conversionMode":0,
+  "duration":30.981224,
+  "exportDir":"",
+  "name":"mus_stageintro_2",
+  "parent":{
+    "name":"mus_fx",
+    "path":"folders/Sounds/mus_fx.yy",
+  },
+  "preload":false,
+  "resourceType":"GMSound",
+  "resourceVersion":"2.0",
+  "sampleRate":44100,
+  "soundFile":"mus_stageintro_2.mp3",
+  "volume":0.8,
+}

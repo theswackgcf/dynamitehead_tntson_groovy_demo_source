@@ -1,0 +1,26 @@
+{
+  "$GMSound":"v2",
+  "%Name":"snd_comic2_hench_minehold",
+  "audioGroupId":{
+    "name":"audiogroup_sfx",
+    "path":"audiogroups/audiogroup_sfx",
+  },
+  "bitDepth":1,
+  "channelFormat":0,
+  "compression":0,
+  "compressionQuality":4,
+  "conversionMode":0,
+  "duration":0.8801587,
+  "exportDir":"",
+  "name":"snd_comic2_hench_minehold",
+  "parent":{
+    "name":"comic2",
+    "path":"folders/Sounds/snd_fx/comic2.yy",
+  },
+  "preload":false,
+  "resourceType":"GMSound",
+  "resourceVersion":"2.0",
+  "sampleRate":44100,
+  "soundFile":"snd_comic2_hench_minehold.wav",
+  "volume":1.0,
+}

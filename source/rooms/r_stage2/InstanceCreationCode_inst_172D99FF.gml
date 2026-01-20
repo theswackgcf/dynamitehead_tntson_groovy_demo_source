@@ -1,0 +1,1 @@
+text = "HI! seems like you found\nmy secret corner.\nlets keep this between\nyou and me only, okay?";

@@ -1,0 +1,26 @@
+{
+  "$GMSound":"v2",
+  "%Name":"snd_comic2_dhgrunt",
+  "audioGroupId":{
+    "name":"audiogroup_sfx",
+    "path":"audiogroups/audiogroup_sfx",
+  },
+  "bitDepth":1,
+  "channelFormat":0,
+  "compression":0,
+  "compressionQuality":4,
+  "conversionMode":0,
+  "duration":1.2737869,
+  "exportDir":"",
+  "name":"snd_comic2_dhgrunt",
+  "parent":{
+    "name":"comic2",
+    "path":"folders/Sounds/snd_fx/comic2.yy",
+  },
+  "preload":false,
+  "resourceType":"GMSound",
+  "resourceVersion":"2.0",
+  "sampleRate":44100,
+  "soundFile":"snd_comic2_dhgrunt.wav",
+  "volume":1.0,
+}

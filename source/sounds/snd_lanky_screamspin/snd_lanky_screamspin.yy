@@ -1,0 +1,26 @@
+{
+  "$GMSound":"v2",
+  "%Name":"snd_lanky_screamspin",
+  "audioGroupId":{
+    "name":"audiogroup_voices",
+    "path":"audiogroups/audiogroup_voices",
+  },
+  "bitDepth":1,
+  "channelFormat":0,
+  "compression":0,
+  "compressionQuality":4,
+  "conversionMode":0,
+  "duration":8.354173,
+  "exportDir":"",
+  "name":"snd_lanky_screamspin",
+  "parent":{
+    "name":"lankylarry",
+    "path":"folders/Sounds/voice_fx/lankylarry.yy",
+  },
+  "preload":false,
+  "resourceType":"GMSound",
+  "resourceVersion":"2.0",
+  "sampleRate":44100,
+  "soundFile":"snd_lanky_screamspin.wav",
+  "volume":1.0,
+}

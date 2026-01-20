@@ -1,0 +1,26 @@
+{
+  "$GMSound":"v2",
+  "%Name":"snd_lanky_lights3",
+  "audioGroupId":{
+    "name":"audiogroup_voices",
+    "path":"audiogroups/audiogroup_voices",
+  },
+  "bitDepth":1,
+  "channelFormat":0,
+  "compression":0,
+  "compressionQuality":4,
+  "conversionMode":0,
+  "duration":0.69272107,
+  "exportDir":"",
+  "name":"snd_lanky_lights3",
+  "parent":{
+    "name":"lankylarry",
+    "path":"folders/Sounds/voice_fx/lankylarry.yy",
+  },
+  "preload":false,
+  "resourceType":"GMSound",
+  "resourceVersion":"2.0",
+  "sampleRate":44100,
+  "soundFile":"snd_lanky_lights3.wav",
+  "volume":1.0,
+}

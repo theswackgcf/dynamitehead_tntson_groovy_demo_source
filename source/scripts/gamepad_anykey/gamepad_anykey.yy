@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"gamepad_anykey",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"gamepad_anykey",
+  "parent":{
+    "name":"input",
+    "path":"folders/Scripts/input.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

@@ -1,0 +1,12 @@
+{
+  "$GMShader":"",
+  "%Name":"shd_replace_col5",
+  "name":"shd_replace_col5",
+  "parent":{
+    "name":"html",
+    "path":"folders/Shaders/html.yy",
+  },
+  "resourceType":"GMShader",
+  "resourceVersion":"2.0",
+  "type":1,
+}

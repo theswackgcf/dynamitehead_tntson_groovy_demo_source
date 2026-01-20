@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"scr_comics_stage2",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"scr_comics_stage2",
+  "parent":{
+    "name":"comics",
+    "path":"folders/Scripts/comics.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"bytes_get_size",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"bytes_get_size",
+  "parent":{
+    "name":"math",
+    "path":"folders/Scripts/math.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"voice_stop_array",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"voice_stop_array",
+  "parent":{
+    "name":"sound",
+    "path":"folders/Scripts/sound.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

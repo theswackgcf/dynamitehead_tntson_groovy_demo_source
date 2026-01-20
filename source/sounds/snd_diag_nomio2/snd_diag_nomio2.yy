@@ -1,0 +1,26 @@
+{
+  "$GMSound":"v2",
+  "%Name":"snd_diag_nomio2",
+  "audioGroupId":{
+    "name":"audiogroup_sfx",
+    "path":"audiogroups/audiogroup_sfx",
+  },
+  "bitDepth":1,
+  "channelFormat":0,
+  "compression":0,
+  "compressionQuality":4,
+  "conversionMode":0,
+  "duration":0.15176871,
+  "exportDir":"",
+  "name":"snd_diag_nomio2",
+  "parent":{
+    "name":"dialogue",
+    "path":"folders/Sounds/dialogue.yy",
+  },
+  "preload":false,
+  "resourceType":"GMSound",
+  "resourceVersion":"2.0",
+  "sampleRate":44100,
+  "soundFile":"snd_diag_nomio2.wav",
+  "volume":1.0,
+}

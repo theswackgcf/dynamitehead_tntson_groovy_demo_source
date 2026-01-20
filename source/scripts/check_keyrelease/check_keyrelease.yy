@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"check_keyrelease",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"check_keyrelease",
+  "parent":{
+    "name":"input",
+    "path":"folders/Scripts/input.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

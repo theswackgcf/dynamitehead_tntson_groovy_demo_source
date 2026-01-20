@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"scr_player_melee_mashing",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"scr_player_melee_mashing",
+  "parent":{
+    "name":"playerscripts",
+    "path":"folders/Scripts/playerscripts.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

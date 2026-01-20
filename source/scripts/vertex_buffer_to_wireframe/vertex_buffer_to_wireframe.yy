@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"vertex_buffer_to_wireframe",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"vertex_buffer_to_wireframe",
+  "parent":{
+    "name":"vertex",
+    "path":"folders/Scripts/vertex.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"instance_number_array",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"instance_number_array",
+  "parent":{
+    "name":"collision",
+    "path":"folders/Scripts/collision.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

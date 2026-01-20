@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"scr_lightsout_affect",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"scr_lightsout_affect",
+  "parent":{
+    "name":"game",
+    "path":"folders/Scripts/game.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

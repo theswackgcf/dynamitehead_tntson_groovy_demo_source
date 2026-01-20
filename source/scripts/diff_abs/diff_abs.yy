@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"diff_abs",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"diff_abs",
+  "parent":{
+    "name":"math",
+    "path":"folders/Scripts/math.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

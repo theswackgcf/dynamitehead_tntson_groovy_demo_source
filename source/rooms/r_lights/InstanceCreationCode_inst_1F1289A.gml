@@ -1,0 +1,1 @@
+text = "i'm projarek and\ni cheated on my wi";

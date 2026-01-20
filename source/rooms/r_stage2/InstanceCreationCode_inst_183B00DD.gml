@@ -1,0 +1,1 @@
+_text = "WhIcH wAy\nwIsE GuY?";

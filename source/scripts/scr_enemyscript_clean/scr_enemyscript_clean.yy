@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"scr_enemyscript_clean",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"scr_enemyscript_clean",
+  "parent":{
+    "name":"new_generic_enemy",
+    "path":"folders/Scripts/new_generic_enemy.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

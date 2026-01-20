@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"ease_in_out",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"ease_in_out",
+  "parent":{
+    "name":"easing",
+    "path":"folders/Scripts/easing.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

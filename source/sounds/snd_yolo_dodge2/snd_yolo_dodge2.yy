@@ -1,0 +1,26 @@
+{
+  "$GMSound":"v2",
+  "%Name":"snd_yolo_dodge2",
+  "audioGroupId":{
+    "name":"audiogroup_voices",
+    "path":"audiogroups/audiogroup_voices",
+  },
+  "bitDepth":1,
+  "channelFormat":0,
+  "compression":0,
+  "compressionQuality":4,
+  "conversionMode":0,
+  "duration":0.81278914,
+  "exportDir":"",
+  "name":"snd_yolo_dodge2",
+  "parent":{
+    "name":"badheads",
+    "path":"folders/Sounds/voice_fx/badheads.yy",
+  },
+  "preload":false,
+  "resourceType":"GMSound",
+  "resourceVersion":"2.0",
+  "sampleRate":44100,
+  "soundFile":"snd_yolo_dodge2.mp3",
+  "volume":1.0,
+}

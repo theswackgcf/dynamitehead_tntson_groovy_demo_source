@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"hex_to_rgb",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"hex_to_rgb",
+  "parent":{
+    "name":"math",
+    "path":"folders/Scripts/math.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

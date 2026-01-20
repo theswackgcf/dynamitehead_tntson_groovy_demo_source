@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"scr_dialogue_setkeys",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"scr_dialogue_setkeys",
+  "parent":{
+    "name":"text_renderer",
+    "path":"folders/Scripts/text_renderer.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

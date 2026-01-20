@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"scr_colliderect",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"scr_colliderect",
+  "parent":{
+    "name":"collision",
+    "path":"folders/Scripts/collision.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"scr_savevalue",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"scr_savevalue",
+  "parent":{
+    "name":"saving_loading",
+    "path":"folders/Scripts/saving_loading.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

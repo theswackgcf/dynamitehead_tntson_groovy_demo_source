@@ -1,0 +1,1 @@
+_floortype = "floor";

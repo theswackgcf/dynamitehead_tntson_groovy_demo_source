@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"scr_draw_gui",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"scr_draw_gui",
+  "parent":{
+    "name":"game",
+    "path":"folders/Scripts/game.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

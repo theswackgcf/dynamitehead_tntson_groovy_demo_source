@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"place_meeting_array",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"place_meeting_array",
+  "parent":{
+    "name":"collision",
+    "path":"folders/Scripts/collision.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}
