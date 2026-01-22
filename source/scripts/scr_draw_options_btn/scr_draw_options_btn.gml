@@ -322,7 +322,7 @@ function scr_draw_options_btn(){
 							if(global._aa_filter < 0){
 								global._aa_filter = array_length(global._all_aa)-1;
 							}
-							display_reset(global._all_aa[global._aa_filter], global._vsync);
+							display_reset(0, global._vsync);
 						
 							if(ds_map_exists(global._storeSliders, dispstr)){
 								if(global._aa_filter > 0){
@@ -343,7 +343,7 @@ function scr_draw_options_btn(){
 							if(global._aa_filter > array_length(global._all_aa)-1){
 								global._aa_filter = 0;
 							}
-							display_reset(global._all_aa[global._aa_filter], global._vsync);
+							display_reset(0, global._vsync);
 						
 							if(ds_map_exists(global._storeSliders, dispstr)){
 								if(global._aa_filter > 0){

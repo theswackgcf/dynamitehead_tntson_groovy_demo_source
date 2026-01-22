@@ -15,6 +15,8 @@
 	_rainfloor._alp = _alp;
 	_rainfloor._floorpoint = _floorpoint;
 	
+	_rainactive = false;
+	
 	_start = false;
 	_stop = false;
 	_stoptimer = 0;

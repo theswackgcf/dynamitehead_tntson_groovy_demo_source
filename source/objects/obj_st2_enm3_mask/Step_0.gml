@@ -354,11 +354,8 @@
 										_anim_prev = _anim;
 										_anim = "grabbed";
 									}
-									if(_slam){
-										_anim_prev = _anim;
-										_anim = "slam";
-									}
 								}
+								
 								if(_shockwave){
 									_anim_prev = _anim;
 									_anim = "shockwave";
@@ -825,6 +822,11 @@
 						if(_grabfall){
 							_anim_prev = _anim;
 							_anim = "fall";
+						}
+						
+						if(_grabbed && _slam){
+							_anim_prev = "slam";
+							_anim = "slam";
 						}
 					}
 					

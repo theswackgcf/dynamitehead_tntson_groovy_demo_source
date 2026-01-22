@@ -13,6 +13,10 @@
 				var gate2 = instance_create_depth(_displayobj.x+_g_offsets[1][0],_displayobj.y+_g_offsets[1][1],_displayobj.depth,obj_st2_gate_open);
 				gate2.sprite_index = spr_st2_gate_open_2;
 				
+				with(obj_st2_gate_delsolids){
+					_trigger = true;
+				}
+				
 				killself();
 			}
 			_checkdelete = true;

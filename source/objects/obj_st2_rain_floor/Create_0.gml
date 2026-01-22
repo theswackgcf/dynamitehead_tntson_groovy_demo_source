@@ -6,6 +6,8 @@
 	
 	_rainframes = [];
 	
+	_rainactive = false;
+	
 	_start = false;
 	_curframe = 0;
 	_stoptimer = 0;

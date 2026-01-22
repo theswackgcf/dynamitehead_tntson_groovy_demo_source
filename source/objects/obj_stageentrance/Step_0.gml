@@ -195,6 +195,13 @@
 								_timer = 0;
 								_act ++;
 							
+								with(obj_st2_rain){
+									_rainactive = true;
+								}
+								with(obj_st2_rain_floor){
+									_rainactive = true;
+								}
+							
 								sfx_play_choose([snd_dhthud,snd_dhthud2,snd_dhthud3]);
 							
 								global._speedruntimer = 0;
