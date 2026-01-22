@@ -10,7 +10,7 @@
 		}
 	}
 	if(!global._setdisp){
-		display_reset(global._all_aa[global._aa_filter], global._vsync);
+		display_reset(0, global._vsync);
 		global._setdisp = true;
 	}
 	
@@ -367,17 +367,21 @@
 		
 		//foreground/background scrolling
 		if(_init){
-			if(layer_exists("lv_parallaxfg")){
-				var elements = layer_get_all_elements(layer_get_id("lv_parallaxfg"));
-				for(var i = 0; i < array_length(elements); i++){
-					layer_sprite_x(elements[i], _fglayerx[i]+global._cameraX*global._fgScrollSpd);
-				}
-			}
-			for(var l = 0; l < 2; l++){
-				if(layer_exists("lv_parallaxbg"+string(l+1))){
-					var elements = layer_get_all_elements(layer_get_id("lv_parallaxbg"+string(l+1)));
+			_bgfg_timer ++;
+			if(floor(_bgfg_timer % 2) == 0){
+				if(layer_exists("lv_parallaxfg")){
+					var elements = layer_get_all_elements(layer_get_id("lv_parallaxfg"));
 					for(var i = 0; i < array_length(elements); i++){
-						layer_sprite_x(elements[i], _bglayerx[l][i]+global._cameraX*global._bgScrollSpd[l]);
+						layer_sprite_x(elements[i], _fglayerx[i]+global._cameraX*global._fgScrollSpd);
+					}
+				}
+				
+				for(var l = 0; l < 2; l++){
+					if(layer_exists("lv_parallaxbg"+string(l+1))){
+						var elements = layer_get_all_elements(layer_get_id("lv_parallaxbg"+string(l+1)));
+						for(var i = 0; i < array_length(elements); i++){
+							layer_sprite_x(elements[i], _bglayerx[l][i]+global._cameraX*global._bgScrollSpd[l]);
+						}
 					}
 				}
 			}
@@ -480,13 +484,13 @@
 			if(global._full && !window_get_fullscreen()){
 				global._dowindow = false;
 				window_set_fullscreen(true);
-				display_reset(global._all_aa[global._aa_filter], global._vsync);
+				display_reset(0, global._vsync);
 				scr_adjustguiscale();
 				alarm_set(1,2);
 			} else if(!global._full && window_get_fullscreen()){
 				global._dowindow = false;
 				window_set_fullscreen(false);
-				display_reset(global._all_aa[global._aa_filter], global._vsync);
+				display_reset(0, global._vsync);
 				scr_adjustguiscale();
 				alarm_set(1,2);
 			}

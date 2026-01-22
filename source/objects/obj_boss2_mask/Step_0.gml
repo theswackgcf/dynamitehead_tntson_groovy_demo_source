@@ -506,25 +506,15 @@
 									_phaseend_voice_gain = 0;
 								}
 								
-								if(ds_map_exists(_allsounds, "emitter") && (ds_map_exists(_allsounds, "emitter") && audio_emitter_exists(_allsounds[? "emitter"]))){
-									//pan and gain sound
-									var point_x = global._cameraX+(WIDTH/2);
-									var point_y = global._cameraY+(HEIGHT/2);
-									var offset = [global._proximityoffset[0], global._proximityoffset[1]];
-									var disttopoint = [1-(clamp(diff_abs(x, point_x)/(WIDTH+offset[0]), 0, 1)),1-(clamp(diff_abs(y, point_y)/(HEIGHT+offset[1]), 0, 1))];
-									var newgain = clamp(sqrt_value(disttopoint[0],disttopoint[1]), 0, 1);
-									var pan = clamp(diff_abs(x, point_x)/(WIDTH+offset[0]), 0, 1);
-	
-									var newpan = 0;
-									if(x < point_x){
-										newpan = -pan;
-									} else {
-										newpan = pan;
-									}
-									
-									audio_emitter_position(_allsounds[? "emitter"], -median(-1, newpan, 1)*global._panmultiply, 0, 0);
-									audio_sound_gain(snd_lanky_screamspin, newgain*_phaseend_voice_gain);
-								}
+								//gain sound
+								var point_x = global._cameraX+(WIDTH/2);
+								var point_y = global._cameraY+(HEIGHT/2);
+								var offset = [global._proximityoffset[0], global._proximityoffset[1]];
+								var disttopoint = [1-(clamp(diff_abs(x, point_x)/(WIDTH+offset[0]), 0, 1)),1-(clamp(diff_abs(y, point_y)/(HEIGHT+offset[1]), 0, 1))];
+								var newgain = clamp(sqrt_value(disttopoint[0],disttopoint[1]), 0, 1);
+								var pan = clamp(diff_abs(x, point_x)/(WIDTH+offset[0]), 0, 1);
+
+								audio_sound_gain(snd_lanky_screamspin, newgain*_phaseend_voice_gain);
 								
 								_attack = false;
 								_ll_atknum = 0;

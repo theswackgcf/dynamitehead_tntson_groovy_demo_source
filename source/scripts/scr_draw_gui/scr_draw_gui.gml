@@ -687,7 +687,7 @@ function scr_draw_gui(){
 			break;
 			case "tutr_slam2":
 				_prompt_desc_text_prev = _prompt_desc_text;
-				_prompt_desc_text = "Hold keycode@PUNCHkeycode (when grabbing)\n& press keycode@LEFTkeycode or keycode@RIGHTkeycode - Start slamming";
+				_prompt_desc_text = "Hold keycode@PUNCHkeycode (when grabbing)\n& hold keycode@LEFTkeycode or keycode@RIGHTkeycode - Start slamming";
 				prompt_scale = 0.9;
 				toffset = 36;
 			break;

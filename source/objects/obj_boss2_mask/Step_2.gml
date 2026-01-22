@@ -219,10 +219,6 @@
 						_anim_prev = _anim;
 						_anim = "grabbed";
 					}
-					if(_slam){
-						_anim_prev = _anim;
-						_anim = "slam";
-					}
 				}
 								
 				if(_shockwave){
@@ -309,6 +305,11 @@
 						
 				if(_ll_atk5_act == 1){
 					_freeze = 0;
+				}
+				
+				if(_grabbed && _slam){
+					_anim_prev = "slam";
+					_anim = "slam";
 				}
 			}
 			

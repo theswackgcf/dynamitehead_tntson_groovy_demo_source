@@ -44,7 +44,6 @@
 			["Display Mode","scr",150],
 			["Resolution","res",150],
 			["V-Sync","vsync",50],
-			["Anti-Aliasing Level","aa",150],
 			["Color Blending Quality","blend",150],
 			["Interpolation","filter",50],
 			["Screenshake Intensity","shake",150],
@@ -119,7 +118,6 @@
 			"Changes window type.  Hotkey: F4",
 			"Adjusts game's display resolution.",
 			"Toggles Vertical Synchronization.",
-			"Adjusts Anti-Aliasing. Might affect game's performance.",
 			"Changes how smooth color blending shaders apply in-game.",
 			"If on, textures will appear smoother.",
 			"",
@@ -448,7 +446,7 @@
 								global._vsync = false;
 							}
 						
-							display_reset(global._all_aa[global._aa_filter], global._vsync);
+							display_reset(0, global._vsync);
 						
 							with(obj_menu_enabled){
 								instance_destroy();
@@ -499,7 +497,7 @@
 							global._storeSliders[? "Anti-Aliasing"] = global._defvalues[? "Anti-Aliasing"];
 							global._storeSliders[? "Color Blending"] = global._defvalues[? "Color Blending"];
 						
-							display_reset(global._all_aa[global._aa_filter], global._vsync);
+							display_reset(0, global._vsync);
 							gpu_set_texfilter(global._texfilter);
 							
 							with(all){
@@ -587,7 +585,7 @@
 								sfx_stop_array(_menuobj._sndarray);
 								sfx_play_choose(_menuobj._sndarray);
 								
-								display_reset(global._all_aa[global._aa_filter], global._vsync);
+								display_reset(0, global._vsync);
 								
 								scr_savevalue(global._aa_filter, dispstr, _inifile, "Video", true, true);
 							}

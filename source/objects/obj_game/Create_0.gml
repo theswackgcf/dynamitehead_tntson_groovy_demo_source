@@ -20,7 +20,7 @@
 	global._debug = false;
 	global._buildver = WINDOWS;
 	global._gxLoading = false;
-	global._version = "v1.0";
+	global._version = "v1.01";
 	
 	global._debugroom = false;
 	global._debughidepause = false;
@@ -131,6 +131,7 @@
 	global._bgScrollSpd = [0.4,0.6];
 	_fglayerx = [];
 	_bglayerx = [];
+	_bgfg_timer = 0;
 	
 	global._easteregg_lank = false;
 	global._easteregg_goblin = false;

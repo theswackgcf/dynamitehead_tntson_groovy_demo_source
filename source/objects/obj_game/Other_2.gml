@@ -161,7 +161,7 @@
 		global._storeSliders[? "Screenshake"] = global._defvalues[? "Screenshake"];
 	}
 	
-	display_reset(global._all_aa[global._aa_filter], global._vsync);
+	display_reset(0, global._vsync);
 	gpu_set_texfilter(global._texfilter);
 	
 	global._input = [ds_map_create(),ds_map_create()];
