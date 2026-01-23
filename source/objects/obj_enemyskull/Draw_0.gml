@@ -14,8 +14,8 @@
 	
 		_shadowmult = clamp(0, 1-(_height/HEIGHT), 1);
 	
-		image_xscale = _xscale * global._scale;
-		image_yscale = global._scale;
+		image_xscale = _xscale;
+		image_yscale = 1;
 	
 		if(_codename != ""){
 			sprite_index = asset_get_index("spr_"+string(_codename)+"_skull");

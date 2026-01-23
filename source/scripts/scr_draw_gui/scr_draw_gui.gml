@@ -146,7 +146,7 @@ function scr_draw_gui(){
 							break;
 						}
 						shader_reset();
-						draw_sprite_ext(spr_p_angryicon, (curEnm._pissedoff_icontimer*spd)%6, (guioff[0]-(42*xsize))+(135*xsize), (guioff[1]-(42*ysize))+(32*ysize), xsize*0.35, ysize*0.35, 0, #FFFFFF, alp);
+						draw_sprite_ext(spr_p_angryicon, (curEnm._pissedoff_icontimer*spd)%6, (guioff[0]-(42*xsize))+(135*xsize), (guioff[1]-(42*ysize))+(32*ysize), xsize*0.6, ysize*0.6, 0, #FFFFFF, alp);
 					}
 				}
 				
@@ -286,7 +286,7 @@ function scr_draw_gui(){
 							spd = 0.5;
 						break;
 					}
-					draw_sprite_ext(spr_p_angryicon, (curBoss._pissedoff_icontimer*spd)%6, WIDTH-48, _bossoffset[1]+16, 0.35, 0.35, 0, #FFFFFF, alp);
+					draw_sprite_ext(spr_p_angryicon, (curBoss._pissedoff_icontimer*spd)%6, WIDTH-48, _bossoffset[1]+16, 0.6, 0.6, 0, #FFFFFF, alp);
 				}
 						
 				scr_textrender_switchfont("dh_font2");

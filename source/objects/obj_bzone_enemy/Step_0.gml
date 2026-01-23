@@ -80,11 +80,11 @@
 		}
 	
 		if(_dir == "r"){
-			image_xscale = -global._scale;
+			image_xscale = -1;
 		} else {
-			image_xscale = global._scale;
+			image_xscale = 1;
 		}
-		image_yscale = global._scale;
+		image_yscale = 1;
 	
 		if(scr_mousehover(bbox_left,bbox_top,bbox_right,bbox_bottom,false,1)){
 			with(obj_game){

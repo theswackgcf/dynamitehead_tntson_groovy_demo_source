@@ -12,7 +12,7 @@
 	}
 	
 	if(!global._pause){
-		_scale = global._scale;
+		_scale = 1;
 	
 		_shadowoffset[0] = lerp(_shadowoffset[0], _shadowlerp[0], 0.06);
 		_shadowoffset[1] = lerp(_shadowoffset[1], _shadowlerp[1], 0.06);

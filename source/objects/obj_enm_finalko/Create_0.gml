@@ -14,7 +14,7 @@
 	_sintimer = 0;
 	_timer = 0;
 	
-	_scale = 0.65;
+	_scale = 1;
 	
 	_freeze = 0;
 	

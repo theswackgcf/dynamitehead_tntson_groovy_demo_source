@@ -55,8 +55,8 @@
 	//other cases
 	_bike = false;
 	
-	image_xscale = (global._scale*_scale2[0])*_curdir;
-	image_yscale = (global._scale*_scale2[1]);
+	image_xscale = (1*_scale2[0])*_curdir;
+	image_yscale = (1*_scale2[1]);
 	
 	//set occupy id
 	_occupy_id = "";

@@ -1,9 +1,9 @@
 {
 	_allsounds = ds_map_create();
 	
-	_scale = 1.12;
-	image_xscale = global._scale*_scale;
-	image_yscale = global._scale*_scale;
+	_scale = 1.72;
+	image_xscale = _scale;
+	image_yscale = _scale;
 	_xscale = 1;
 	
 	_height = -HEIGHT;

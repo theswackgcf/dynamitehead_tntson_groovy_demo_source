@@ -73,7 +73,7 @@
 		shader_set_uniform_f_array(shader_get_uniform(_shdr, "colorTolerance"), _mult_tolrArray);
 		shader_set_uniform_f_array(shader_get_uniform(_shdr, "blend"), _mult_blendArray);
 		
-		draw_sprite_ext(spr_dh_intro1, floor(_dhframe) % sprite_get_info(spr_dh_intro1).num_subimages, _dhpos, (HEIGHT-260)+sin(_dhtime / 12)*(sin(_dhtime/12)*28), 0.8, 0.8, 0, #FFFFFF, 1);
+		draw_sprite_ext(spr_dh_intro1, floor(_dhframe) % sprite_get_info(spr_dh_intro1).num_subimages, _dhpos, (HEIGHT-260)+sin(_dhtime / 12)*(sin(_dhtime/12)*28), 1.22, 1.22, 0, #FFFFFF, 1);
 	
 		shader_reset();
 	}

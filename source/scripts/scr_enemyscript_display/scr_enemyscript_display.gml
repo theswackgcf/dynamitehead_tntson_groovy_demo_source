@@ -6,8 +6,8 @@ function scr_enemyscript_display(type){
 		_xscale = _scale;
 		_yscale = _scale;
 		
-		image_xscale = global._scale;
-		image_yscale = global._scale;
+		image_xscale = 1;
+		image_yscale = 1;
 	
 		_height = 0;
 	
@@ -57,7 +57,7 @@ function scr_enemyscript_display(type){
 			}
 		}
 		
-		_scale = global._scale;
+		_scale = 1;
 	
 		var _dispscale_spd = 0.16;
 		_parentobj._dispscale[0] = lerp(_parentobj._dispscale[0], 1, _dispscale_spd);

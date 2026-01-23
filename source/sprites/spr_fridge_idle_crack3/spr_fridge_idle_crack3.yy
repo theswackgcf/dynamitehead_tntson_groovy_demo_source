@@ -2,9 +2,9 @@
   "$GMSprite":"v2",
   "%Name":"spr_fridge_idle_crack3",
   "bboxMode":0,
-  "bbox_bottom":375,
+  "bbox_bottom":227,
   "bbox_left":0,
-  "bbox_right":229,
+  "bbox_right":138,
   "bbox_top":0,
   "collisionKind":1,
   "collisionTolerance":0,
@@ -17,7 +17,7 @@
   ],
   "gridX":0,
   "gridY":0,
-  "height":376,
+  "height":228,
   "HTile":false,
   "layers":[
     {"$GMImageLayer":"","%Name":"19411f65-d888-4b3d-ac3f-7525b1d88276","blendMode":0,"displayName":"default","isLocked":false,"name":"19411f65-d888-4b3d-ac3f-7525b1d88276","opacity":100.0,"resourceType":"GMImageLayer","resourceVersion":"2.0","visible":true,},
@@ -90,5 +90,5 @@
   },
   "type":0,
   "VTile":false,
-  "width":230,
+  "width":139,
 }
