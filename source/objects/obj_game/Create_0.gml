@@ -24,7 +24,7 @@
 	global._debug = false;
 	global._buildver = HTML;
 	global._gxLoading = false;
-	global._version = "v1.02";
+	global._version = "v1.03";
 	
 	global._debugroom = false;
 	global._debughidepause = false;
