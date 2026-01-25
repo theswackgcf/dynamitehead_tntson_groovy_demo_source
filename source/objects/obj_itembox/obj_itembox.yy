@@ -34,8 +34,8 @@
   "resourceVersion":"2.0",
   "solid":false,
   "spriteId":{
-    "name":"spr_itembox1",
-    "path":"sprites/spr_itembox1/spr_itembox1.yy",
+    "name":"spr_itembox2",
+    "path":"sprites/spr_itembox2/spr_itembox2.yy",
   },
   "spriteMaskId":null,
   "visible":true,
