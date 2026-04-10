@@ -140,13 +140,4 @@
 			_drag = false;
 		}
 	}
-	
-	if(global._state == "game" && !global._pause){
-		if(surface_exists(_gui_surface)){
-			surface_free(_gui_surface);
-		}
-		if(surface_exists(_resizegui_surface)){
-			surface_free(_resizegui_surface);
-		}
-	}
 }

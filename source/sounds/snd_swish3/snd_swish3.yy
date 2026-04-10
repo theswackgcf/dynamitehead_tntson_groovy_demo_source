@@ -14,8 +14,8 @@
   "exportDir":"",
   "name":"snd_swish3",
   "parent":{
-    "name":"snd_fx",
-    "path":"folders/Sounds/snd_fx.yy",
+    "name":"game",
+    "path":"folders/Sounds/snd_fx/game.yy",
   },
   "preload":false,
   "resourceType":"GMSound",

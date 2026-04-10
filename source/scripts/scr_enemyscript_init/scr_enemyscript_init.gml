@@ -7,14 +7,19 @@ function scr_enemyscript_init(type){
 		_dragoffset = [0,0];
 	
 		_nameoverwrite = "";
+		
+		_immunetimer = 4;
 	
 		_init = false;
 		_startTimer = 0;
+		_spawnnum = 0;
 		_sintimer = random(1000);
 		
 		_matchid = 0;
 		
 		_inactive = false;
+		
+		_finalko_obj = false;
 		
 		_nocrouchatk = false;
 		
@@ -121,10 +126,13 @@ function scr_enemyscript_init(type){
 		//movement
 		_speed = 1;
 	
+		_startpos = [x,y];
+	
 		_standtimer = 0;
 		_idletimer = 0;
 		_movetimer = 0;
 		_walktimer = 0;
+		_walk_stop_timer = 0;
 		_badidletimer = 0;
 		_posprev = [x,y];
 	
@@ -144,6 +152,8 @@ function scr_enemyscript_init(type){
 		
 		_walksuccess = false;
 		_walktopos = [x,y];
+		
+		_fastwalk = 0;
 	
 		_fixwall = false;
 	
@@ -176,6 +186,11 @@ function scr_enemyscript_init(type){
 		_init_fallxspd = 0;
 		_fallxspd = 0;
 		_fallyspd = 0;
+		_falldecay = 1;
+		
+		_onlydir = [false,false];
+		_onlydir_timer = 0;
+		_onlydir_set = false;
 		
 		random_set_seed(x+y);
 		_fallxspd_offset = random_range(-1.6,1.2);
@@ -210,8 +225,18 @@ function scr_enemyscript_init(type){
 		_falling = false;
 		_falls = 0;
 		_fall_ko = false;
+		_nocked = 0;
 		_fallcd = 0;
 		_addfallspd = 0;
+		
+		_smackdown = false;
+		
+		_dodge = false;
+		_dodgespd = 4;
+		_dodges = 0;
+		_dodge_trait = [false,0];
+		_dodge_max = 3;
+		_dodge_snd = false;
 		
 		_parachute = false;
 		_fallfloat = false;
@@ -251,6 +276,8 @@ function scr_enemyscript_init(type){
 		_dohop = false;
 		_do_walk_hop = true;
 		
+		_forcehop = false;
+		
 		_afterhop = 0;
 		
 		_jumphit = [];
@@ -267,6 +294,7 @@ function scr_enemyscript_init(type){
 	
 		_kotimer = 0;
 		_standup = false;
+		_standup_mult = 1;
 	
 		_death = false;
 		_despawndeath = false;
@@ -281,6 +309,8 @@ function scr_enemyscript_init(type){
 		_failsafedeath = 0;
 		
 		_spin = false;
+		_spinhits = 0;
+		_spinatk = noone;
 		
 		_skullnum = 1;
 	
@@ -312,9 +342,14 @@ function scr_enemyscript_init(type){
 		
 		_slam = false;
 		_phasehit_slam = false;
+		_slamframe = 0;
+		
+		_force_freeze = 0;
 	
 		_grabfall = false;
 		_grabout = false;
+	
+		_grabattempt = 0;
 	
 		//collision
 		_collide_solid = [];
@@ -378,7 +413,10 @@ function scr_enemyscript_init(type){
 
 		//interaction
 		_dh = noone;
-		_interest = 0;
+		_interest = 120;
+		
+		_lerppos = 0;
+		_lerppos_to = [x,y];
 		
 		_panictimer = 0;
 		_panicdist = 640;
@@ -424,6 +462,10 @@ function scr_enemyscript_init(type){
 		_slide_lookatdh = 0;
 		_hopslide = false;
 		_slidedecel = 0.1;
+		
+		_lowkickdist = 175;
+		
+		_runroll_dive = false;
 	
 		//attack
 		_attack = false;
@@ -431,7 +473,7 @@ function scr_enemyscript_init(type){
 		_atktimer = 0;
 		_curatk = 0;
 		_curatktimer = 0;
-		_attackdist = 24;
+		_attackdist = 96;
 		
 		_nockatk = 0;
 		_nockanim = "";
@@ -471,6 +513,7 @@ function scr_enemyscript_init(type){
 		_blockfailcooldown = 0;
 		
 		_blockko_fx = false;
+		_blockko_timer = 0;
 	
 		//tnt quake
 		_shockwave = false;
@@ -487,6 +530,9 @@ function scr_enemyscript_init(type){
 		_dodgezones = ["idle"];
 		_blockroll = false;
 		_downhurt = 0;
+		
+		_combohit = 1;
+		_combohit_timer = 0;
 		
 		_stunlock_hits = 0;
 		_stunlock_hits_max = 3;
@@ -542,9 +588,9 @@ function scr_enemyscript_init(type){
 		
 		_fatalko = false;
 	
-		_walkdist = [410, 370];
+		_walkdist = [780, 600];
 		_noticedist = 820;
-		_dhdist = [_walkdist[0]/3,_walkdist[1]/3];
+		_dhdist = [_walkdist[0]/4,_walkdist[1]/4];
 	
 		_hpcolor = make_color_rgb(255, 0, 0);
 	
@@ -555,6 +601,7 @@ function scr_enemyscript_init(type){
 			atk: -1,
 			headshake: snd_headshake,
 			slam: -1,
+			smackdown: -1,
 		};
 		
 		_voiceonce = false;
@@ -586,6 +633,8 @@ function scr_enemyscript_init(type){
 		_difftype = false;
 		_recolorstop = false;
 		_docolors = false;
+		
+		_alt_tutorial = false;
 	
 		//colors
 		_maxcolors = global._maxcolors[? "dh"];
@@ -755,6 +804,14 @@ function scr_enemyscript_init(type){
 						mp_grid_add_instances(_pathgrid, inst, false);
 					}
 				}
+			}
+		}
+	
+		function combohit() {
+			_combohit += 0.6;
+			_combohit_timer = max(60, 240-(_ailevel*26));
+			if(_combohit >= 2.8){
+				_combohit = 2.8;
 			}
 		}
 	

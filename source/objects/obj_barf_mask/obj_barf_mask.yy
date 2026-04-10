@@ -35,10 +35,7 @@
   "resourceType":"GMObject",
   "resourceVersion":"2.0",
   "solid":false,
-  "spriteId":{
-    "name":"spr_barf_mask",
-    "path":"sprites/spr_barf_mask/spr_barf_mask.yy",
-  },
+  "spriteId":null,
   "spriteMaskId":null,
   "visible":true,
 }

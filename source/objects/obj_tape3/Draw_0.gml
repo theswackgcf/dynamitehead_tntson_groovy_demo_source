@@ -22,7 +22,7 @@
 				case 0:
 				case 1:
 					var offsety = 0;
-					if(_phonering_state){
+					if(!global._pause && _phonering_state){
 						offsety = sin(random(480))*7;
 					}
 					draw_sprite(spr_tape3_hand1, floor(_handframe), _handpos, floor(HEIGHT/2));

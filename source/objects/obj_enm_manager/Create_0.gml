@@ -32,23 +32,26 @@
 	#macro TRAIT_CROUCHKO 209
 	#macro TRAIT_DODGE 210
 	#macro TRAIT_SLIDE 211
-	#macro TRAIT_HOP 212
-	#macro TRAIT_JABS 213
-	#macro TRAIT_STUN 214
-	#macro TRAIT_FALLSTUN 214
-	#macro TRAIT_BLOCK_MASH 216
-	#macro TRAIT_STUNLOCK_DODGE 217
-	#macro TRAIT_MASHED 218
-	#macro TRAIT_SLAM 219
-	#macro TRAIT_PISSEDOFF 220
+	#macro TRAIT_LOWKICK 212
+	#macro TRAIT_HOP 213
+	#macro TRAIT_JABS 214
+	#macro TRAIT_STUN 215
+	#macro TRAIT_FALLSTUN 216
+	#macro TRAIT_BLOCK_MASH 217
+	#macro TRAIT_STUNLOCK_DODGE 218
+	#macro TRAIT_MASHED 219
+	#macro TRAIT_SLAM 220
+	#macro TRAIT_PISSEDOFF 221
+	#macro TRAIT_BLOCKATK 222
 	
 	#macro HOP_RANDOM_DH 0
 	#macro HOP_BACK 1
 	#macro HOP_SLIDE 2
-	#macro HOP_NEAR 3
-	#macro HOP_DH 4
-	#macro HOP_RANDOM 5
-	#macro HOP_CLOSE_DH 6
+	#macro HOP_LOWKICK 3
+	#macro HOP_NEAR 4
+	#macro HOP_DH 5
+	#macro HOP_RANDOM 6
+	#macro HOP_CLOSE_DH 7
 	
 	#macro SPAWN_NORMAL 0
 	#macro SPAWN_FALLPLANKS 1
@@ -64,9 +67,9 @@
 	global._enmtypes[? "enm2"] = [["apple","Applethug",22],["rock","ROCKHARD",26]];
 	global._enmtypes[? "enm3"] = [["cycliot","Cycliot",20],["crawler","Night crawler",24]];
 	
-	global._enmtypes[? "st2_enm1"] = [["ringmaster","Ringmaster",14],["grasshopper","Grasshopper",16]];
-	global._enmtypes[? "st2_enm2"] = [["redcap","Red Cap",16],["milkman","Milkman",18]];
-	global._enmtypes[? "st2_enm3"] = [["grinzy","Grinzy",17],["inty","Inty",20]];
+	global._enmtypes[? "st2_enm1"] = [["ringmaster","Ringmaster",12],["grasshopper","Grasshopper",15]];
+	global._enmtypes[? "st2_enm2"] = [["redcap","Red Cap",14],["milkman","Milkman",12]];
+	global._enmtypes[? "st2_enm3"] = [["grinzy","Grinzy",17],["pinky","Pinky",15]];
 	
 	global._sequenceInfo = ds_map_create();
 	global._sequenceLayers = ds_map_create();
@@ -117,6 +120,7 @@
 	}
 	
 	global._sequenceInfo[? seq_st2_enm1_entC] = {
+		hop_frame: 0,
 		anim_finish: true,
 		show_shadow: true,
 		seqoffs: [0,0],
@@ -177,6 +181,7 @@
 	}
 	
 	global._sequenceInfo[? seq_st2_enm3_entC] = {
+		hop_frame: 0,
 		anim_finish: true,
 		show_shadow: true,
 		seqoffs: [0,0],
@@ -190,7 +195,7 @@
 		do_arc: true,
 		anim_finish: false,
 		show_shadow: true,
-		seqoffs: [0,0],
+		seqoffs: [0,120],
 		sdepth: -1000,
 	}
 	

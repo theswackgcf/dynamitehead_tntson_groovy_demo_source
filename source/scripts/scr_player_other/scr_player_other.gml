@@ -25,6 +25,11 @@ function scr_player_other(){
 		_speed = 1;
 	}
 	
+	if(_force_freeze > 0){
+		_freeze = _force_freeze;
+		_force_freeze --;
+	}
+	
 	if(_stopwalk > 0){
 		_stopwalk --;
 	} else {
@@ -174,6 +179,11 @@ function scr_player_other(){
 	}
 	if(_state == "default" && !_attack && !_falling){
 		if(_running){
+			_runroll_dive_timer = 0;
+			_runroll_dive = false;
+			_runroll_slide = false;
+			_height = _groundlevel;
+			
 			if(_skidtimer > 0){
 				if(!audio_is_playing(snd_skid)){
 					if(!_skidsound){
@@ -214,6 +224,8 @@ function scr_player_other(){
 						p._xspd = curvel;
 						p._yspd = random_range(-5,5);
 					}
+					
+					_afterrun_timer = 45;
 				}
 				sfx_stop(snd_skid);
 			}
@@ -228,6 +240,10 @@ function scr_player_other(){
 		_skidparticle = 0;
 		sfx_stop(runsound);
 		sfx_stop(snd_skid);
+	}
+	
+	if(_nodive_timer > 0 && _state != "nomove"){
+		_nodive_timer --;
 	}
 	
 	if(_shield){
@@ -265,6 +281,24 @@ function scr_player_other(){
 	if(_state == "item"){
 		_maxspd[0] *= _grabweight;
 		_maxspd[1] *= _grabweight;
+	}
+	
+	//grab stuff
+	if(_grabhold_enemy_timer > 0){
+		_grabhold_enemy_timer --;
+	} else {
+		_grabhold_downfail = false;
+		if(_grabhold_enemy != noone){
+			_grabhold_enemy = noone;
+		}
+	}
+	
+	if(_grabhold_other_timer > 0){
+		_grabhold_other_timer --;
+	} else {
+		if(_grabhold_other != noone){
+			_grabhold_other = noone;
+		}
 	}
 
 	if(_runtimer > 0){
@@ -304,7 +338,7 @@ function scr_player_other(){
 		_zaptime --;
 		if(_zaptime % 5 == 0){
 			_hp -= 1;
-			with(obj_game){
+			with(obj_gui){
 				ui_fade("dh", 1);
 			}
 		}
@@ -330,6 +364,12 @@ function scr_player_other(){
 	}
 	if(_spd[0] <> 0 || _spd[1] <> 0 || !keyhold("crouch") || _attack){
 		_fastcrouch = 0;
+	}
+	
+	if(_crouch){
+		_crouchtimer ++;
+	} else {
+		_crouchtimer = 0;
 	}
 		
 	if(_doWin){
@@ -417,6 +457,7 @@ function scr_player_other(){
 	
 	if(!_slam){
 		_slamcount = 0;
+		_slambonks = 0;
 		for(var i = 0; i < array_length(_slamsounds); i++){
 			if(_slamsounds[i][3]){
 				_slamsounds[i][3] = false;
@@ -438,7 +479,7 @@ function scr_player_other(){
 		//shield meter ui
 		if(_shieldpower < 1){
 			global._ui_shieldMultTo = 1;
-			with(obj_game){
+			with(obj_gui){
 				ui_fade("dh",1);
 			}
 		} else {
@@ -473,10 +514,21 @@ function scr_player_other(){
 			_state = "nomove";
 			_successparry -= _speed;
 		} else {
+			_parry_timer --;
+			if(_parry_timer <= 0){
+				_parry_mult = 1;
+			}
+			
+			_parry_hpheal = false;
+			
 			_parryenmx = -999;
 			if(!_taunt && _state == "nomove"){
 				_state = "default";
 			}
+		}
+		
+		if(_parry_mult < 0){
+			_parry_mult = 0;
 		}
 		
 		if(_downattack > 0){
@@ -540,24 +592,6 @@ function scr_player_other(){
 		}
 		if(((_runroll && keypress("jump")) || _runroll_dive) && global._gametips[? "roll"][0]){
 			global._gametips[? "roll"][1] = true;
-		}
-	
-		if(place_meeting(x,y,obj_slidespot) && (_slide || _runroll)){
-			with(obj_tipbox){
-				if(_prompt == "slide"){
-					global._deletedStuff[? self.id] = self.id;
-					instance_destroy();
-				}
-			}
-			global._gametips[? "slide"][1] = true;
-		}
-	} else {
-		if(place_meeting(x,y,obj_slidespot) && (_slide || _runroll)){
-			with(obj_tipbox){
-				if(_prompt == "tutr_slide"){
-					_active = false;
-				}
-			}
 		}
 	}
 }

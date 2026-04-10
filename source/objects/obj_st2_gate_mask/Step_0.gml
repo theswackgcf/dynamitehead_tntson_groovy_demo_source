@@ -66,10 +66,20 @@
 			//opened
 			if(_hp <= 2){
 				if(!_opened){
+					sfx_play_choose(global._kdsounds);
 					sfx_play(snd_finalko)
+					
+					var p = instance_create_depth(x,y,depth, obj_particle);
+					p._type = "hit_final";
+					global._contrasthit = global._contrasthit_max;
 					
 					with(obj_camera){
 						_ampX = 35;
+					}
+					
+					with(obj_st2_bw_sleep){
+						_freeze = global._freezeFrames.long_freeze;
+						_trigger = true;
 					}
 					
 					_opened = true;

@@ -50,6 +50,14 @@ function scr_hopspot(hoptype){
 					_jumptopos = [_dh.x+_slidedist,_dh.y];
 				}
 			break;
+			case HOP_LOWKICK:
+				_dh = instance_nearest(x,y,obj_dh_mask);
+				if(x < _dh.x){
+					_jumptopos = [_dh.x-_lowkickdist,_dh.y];
+				} else {
+					_jumptopos = [_dh.x+_lowkickdist,_dh.y];
+				}
+			break;
 			case HOP_NEAR:
 				//jump to a random spot around self
 				_jumptopos = [floor(x+((distx*0.8)+random_range(-60,60))),floor(y+((disty*1.2)+random_range(-60,60)))];

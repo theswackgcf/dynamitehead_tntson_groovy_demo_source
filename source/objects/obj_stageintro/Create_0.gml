@@ -1,9 +1,14 @@
 {
+	global._location = 1;
+	
 	_init = false;
 	
 	_xpos = WIDTH/2;
 	
-	_bgpos = [0,0];
+	_bgpos = [0];
+	_bgspd = 10;
+	
+	_bgspr = -1;
 	
 	_dhact = 0;
 	_dhpos = -512;
@@ -31,6 +36,10 @@
 	
 	_rep = "";
 	_colorsinit = false;
+	
+	_stageeffect = false;
+	
+	_thunder_alp = 0;
 	
 	//colors
 	_maxcolors = global._maxcolors[? "dh"];

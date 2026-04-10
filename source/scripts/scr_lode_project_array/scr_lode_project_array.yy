@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"scr_lode_project_array",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"scr_lode_project_array",
+  "parent":{
+    "name":"lode",
+    "path":"folders/Scripts/minigames/lode.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

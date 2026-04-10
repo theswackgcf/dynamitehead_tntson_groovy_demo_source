@@ -5,6 +5,7 @@
 	
 	_timer ++;
 	if(_act < 3 && global._swackygames){
+		_canskip = true;
 		_timer = 25;
 		_act = 3;
 	}
@@ -16,19 +17,39 @@
 			}
 		break;
 		case 1:
-			sfx_play(snd_swackygames);
+			if(!global._swackygames){
+				_load = instance_create_depth(0,0,0,obj_loading_new);
+			
+				sfx_play(snd_swackygames);
+			}
 			_timer = 0;
 			_act = 2;
 		break;
 		case 2:
-			if(_timer >= 90){
-				_timer = 0;
-				_act = 3;
+			if(_load != noone && instance_exists(_load)){
+				if(_timer >= 60 && _load._loaded){
+					_canskip = true;
+					instance_destroy(_load);
+					_load = noone;
+					
+					_timer = 0;
+					_act = 3;
+				}
 			}
 		break;
 		case 3:
+			if(global._debug && !_gotodebugroom){
+				var rmind = scr_loadvalue("string", "startuproom", "debug", "noone", "", true, true);
+				if(room_exists(asset_get_index(rmind))){
+					global._swackygames = true;
+					roomto(asset_get_index(rmind));
+				}
+				_gotodebugroom = true;
+			}
+		
 			if(_timer >= 40){
 				global._swackygames = true;
+				
 				sfx_play(snd_menuintro)
 				_timer = 0;
 				_act = 4;
@@ -44,7 +65,7 @@
 	}
 	
 	//skip
-	if(check_keypress(global._input[global._inptype][? "confirm"], global._inptype)){
+	if(_canskip && check_keypress(global._input[global._inptype][? "confirm"], global._inptype)){
 		global._swackygames = true;
 		audio_stop_all();
 		room_goto(r_menu);

@@ -6,7 +6,11 @@
 		}
 	
 		if(_freeze <= 0){
-			draw_sprite_ext(sprite_index, _boneframe, x, y-_height, image_xscale, image_yscale, image_angle, _colorblend, image_alpha);
+			var bl = _colorblend;
+			if(global._lightsout){
+				bl = c_black;
+			}
+			draw_sprite_ext(sprite_index, _boneframe, x, y-_height, image_xscale, image_yscale, image_angle, bl, image_alpha);
 		}
 	}
 }

@@ -1,5 +1,5 @@
 {
-	_scale = global._scale;
+	_scale = 1;
 	
 	image_xscale = _xscale * _scale;
 	image_yscale = _yscale * _scale;

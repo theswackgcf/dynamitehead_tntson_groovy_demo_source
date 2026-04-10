@@ -276,7 +276,7 @@
 			[0.25,0.75,0.28,0.45] //tolerance
 		]
 	];
-	global._enemyColors[? "st2_enm3"][? "inty"] = [
+	global._enemyColors[? "st2_enm3"][? "pinky"] = [
 		[
 			[210,66,135], //body
 			[87,108,196], //tongue

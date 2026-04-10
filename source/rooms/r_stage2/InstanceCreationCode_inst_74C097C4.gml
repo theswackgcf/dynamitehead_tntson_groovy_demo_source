@@ -1,2 +1,2 @@
-_prompt = "slide";
+_prompt = "lowkick";
 _delay = 500;

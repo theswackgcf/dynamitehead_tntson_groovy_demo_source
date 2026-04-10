@@ -27,7 +27,21 @@
 		shader_set_uniform_f_array(shader_get_uniform(_shdr, "blend"), _mult_blendArray);
 	}
 				
+	if(_alt_tutorial){
+		scr_draw_outline(sprite_index,image_index,x+_dispoffset[0],y+_dispoffset[1]-_height,image_xscale,image_yscale,image_angle,image_blend,image_alpha);
+	}
+				
 	draw_sprite_ext(sprite_index,image_index,x+_dispoffset[0],y+_dispoffset[1]-_height,image_xscale,image_yscale,image_angle,image_blend,image_alpha);
+			
+	if(_alt_tutorial){
+		scr_textrender_switchfont("dh_font1");
+		scr_textrender_halign("center");
+		scr_textrender_valign("middle");
+		scr_textrender_type(x+_dispoffset[0],y+_dispoffset[1]-_height-110, "keycode@PUNCHkeycode", true, c_white, 1, 1.38,1.38);
+		scr_textrender_halign("left");
+		scr_textrender_valign("top");
+		scr_textrender_switchfont(global._defaultFont);
+	}
 			
 	if(_enmtype != -1){
 		shader_reset();

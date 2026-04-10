@@ -14,8 +14,8 @@
   "exportDir":"",
   "name":"snd_pegbonk2",
   "parent":{
-    "name":"snd_fx",
-    "path":"folders/Sounds/snd_fx.yy",
+    "name":"peggle",
+    "path":"folders/Sounds/snd_fx/minigames/peggle.yy",
   },
   "preload":false,
   "resourceType":"GMSound",

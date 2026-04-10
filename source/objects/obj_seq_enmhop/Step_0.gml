@@ -1,6 +1,6 @@
 {
-	_xscale = global._scale*_dir;
-	_yscale = global._scale;
+	_xscale = _dir;
+	_yscale = 1;
 	image_xscale = _xscale;
 	image_yscale = _yscale;
 	
@@ -75,6 +75,21 @@
 						
 			y = _hop_base_y+_hop_arc;
 		} else {
+			//stop walking if hit
+			if(place_meeting(x,y,obj_punchhitbox)){
+				var hbox = instance_place(x,y,obj_punchhitbox);
+				if(instance_exists(hbox) && hbox._ptype == "pl"){
+					with(_parentobj){
+						_sequence_finished = true;
+						_startTimer = 0;
+						x = _sequence_hop_obj.x;
+						y = _sequence_hop_obj.y;
+						_nohopobj = true;
+					}
+					instance_destroy();
+				}
+			}
+			
 			//move to position
 			_hop_time = clamp(_hop_time + _seqhop_spd, 0, 1);
 			x = lerp(_hop_startpos[0], _jumptopos[0], _hop_time);

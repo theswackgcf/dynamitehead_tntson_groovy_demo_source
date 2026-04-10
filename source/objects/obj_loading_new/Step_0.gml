@@ -14,6 +14,8 @@
 		array_push(_shader_array, shd_glass);
 		array_push(_shader_array, shd_wireframe);
 		array_push(_shader_array, shd_horrifi);
+		array_push(_shader_array, shd_solidcolor);
+		array_push(_shader_array, shd_highcontrast);
 		
 		//set assets to load
 		switch(global._loadState){
@@ -44,6 +46,7 @@
 				];
 				_load_textures = [
 					"comics_sprites",
+					"pause_sprites",
 					"dialogue_sprites",
 					"stageintro",
 				];
@@ -83,7 +86,9 @@
 						case 1:
 							array_push(_load_textures, 
 								"lv2_gfx",
-								"stage2_enemies",
+								"stage2_enemy1",
+								"stage2_enemy2",
+								"stage2_enemy3",
 								"stage2_boss",
 							);
 						break;
@@ -106,22 +111,40 @@
 					"fridge_sprites",
 					"dialogue_sprites",
 				
-					"lv1_gfx",
-					"lv1_fg",
 					"stage_bgs",
-					"barrel_sprites",
-					"stage1_enemies",
-					"stage1_boss",
 					"dh_sprites",
 					"stage_generic",
 					"results_sprites",
 					"lv2_gfx",
-					"stage2_enemies",
+					"stage2_enemy1",
+					"stage2_enemy2",
+					"stage2_enemy3",
 					"stage2_boss",
 				];
 			
 				_load_textures = [
 					"sprites_tape3",
+				];
+			break;
+			case "minigame":
+				_silent = true;
+				
+				_load_textures = [
+					"pause_sprites",
+					"ui_sprites",
+				];
+				
+				switch(global._minigame){
+					case "whack":
+						array_push(_load_textures,"minigame1_sprites");
+					break;
+					case "lode":
+						array_push(_load_textures,"minigame2_sprites");
+					break;
+				}
+				
+				_flush_textures = [
+					"menu_sprites",
 				];
 			break;
 			
@@ -143,20 +166,21 @@
 					"fridge_sprites",
 					"dialogue_sprites",
 				
-					"lv1_gfx",
-					"lv1_fg",
 					"stage_bgs",
-					"barrel_sprites",
-					"stage1_enemies",
-					"stage1_boss",
 					"dh_sprites",
 					"stage_generic",
 					"results_sprites",
 					"lv2_gfx",
-					"stage2_enemies",
+					"stage2_enemy1",
+					"stage2_enemy2",
+					"stage2_enemy3",
 					"stage2_boss",
 					
+					"comics_sprites",
 					"sprites_tape3",
+					
+					"minigame1_sprites",
+					"minigame2_sprites",
 				];
 			break;
 		}
@@ -322,31 +346,17 @@
 					}
 				} else {
 					if(_flush[0] && _flush[1]){
-						if(audio_is_playing(mus_stageintro)){
-							audio_sound_gain(mus_stageintro, 0, 1000);
+						if(audio_is_playing(global._stageintro_theme)){
+							audio_sound_gain(global._stageintro_theme, 0, 1000);
 						}
-						var ind = asset_get_index("mus_stageintro_"+string(global._location+1));
-						if(audio_exists(ind) && audio_is_playing(ind)){
-							audio_sound_gain(ind, 0, 1000);
+						if(audio_is_playing(global._stageintro_leit)){
+							audio_sound_gain(global._stageintro_leit, 0, 1000);
 						}
 						
 						//assets loaded, go to a specific room
 						switch(global._loadState){
 							case "start":
-								if(scr_loadvalue("string", "startuproom", "debug", "noone", "", true, true) == "noone" || global._debug == false){
-									roomto(r_gameintro);
-								}
-								else{
-									if(!_gotodebugroom){
-										var rmind = scr_loadvalue("string", "startuproom", "debug", "noone", "", true, true);
-										if(!room_exists(asset_get_index(rmind))){
-											roomto(r_gameintro);
-										} else {
-											roomto(asset_get_index(rmind));
-										}
-										_gotodebugroom = true;
-									}
-								}
+								_loaded = true;
 							break;
 							case "briefing":
 								roomto(r_briefing);
@@ -367,6 +377,9 @@
 							break;
 							case "tapes":
 								roomto(r_enddemo);
+							break;
+							case "minigame":
+								roomto(r_minigames);
 							break;
 							case "enddemo":
 								roomto(r_gameintro);

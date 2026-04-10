@@ -15,11 +15,11 @@
 			y -= 8;
 			x = _startx + (sin(_intimer/14)*90);
 			if(x < xprevious){
-				image_xscale = -global._scale;
+				image_xscale = -1;
 			} else {
-				image_xscale = global._scale;
+				image_xscale = 1;
 			}
-			image_yscale = global._scale;
+			image_yscale = 1;
 			
 			image_alpha = _alpha;
 			_alpha -= 0.01;

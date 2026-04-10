@@ -32,10 +32,7 @@
   "resourceType":"GMObject",
   "resourceVersion":"2.0",
   "solid":false,
-  "spriteId":{
-    "name":"spr_enm3_hurtbox",
-    "path":"sprites/spr_enm3_hurtbox/spr_enm3_hurtbox.yy",
-  },
+  "spriteId":null,
   "spriteMaskId":null,
   "visible":true,
 }

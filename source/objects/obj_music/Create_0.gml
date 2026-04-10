@@ -32,4 +32,9 @@
 	global._bossgains = [1,1];
 	
 	global._forceStopMusic = false;
+	
+	global._weirdmusic = 0;
+	global._weirdmusic_lerp = 1;
+	global._weirdmusic_lerpto = 1;
+	global._weirdmusic_pause = false;
 }

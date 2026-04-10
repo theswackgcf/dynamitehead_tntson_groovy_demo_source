@@ -30,6 +30,7 @@
 						//exceptions
 						if(hurtbox._type == "air_enm" && _parentobj._attack && _parentobj._attacktype == "upper") return;
 						if(hurtbox._damage == ATK_NORM && _parentobj._slide) return;
+						if(hurtbox._type == "spin_enm" && _parentobj._attack && _parentobj._attacktype == "air") return;
 						
 						if(instance_exists(enemyobj)){
 							enemyobj._interest += scr_ailevel(10, 50, enemyobj);
@@ -77,7 +78,7 @@
 							_parentobj._damageTimer = scr_ailevel(30, 50, enemyobj);
 							_parentobj._noAtkTimer = 30;
 				
-							with(obj_game){
+							with(obj_gui){
 								ui_fade("dh", 1);
 							}
 						
@@ -211,6 +212,8 @@
 									_parentobj._parryzoom = 1.6;
 									_parentobj._parryframe = irandom(_parentobj._parryframe_max-1);
 									_parentobj._shield = false;
+									
+									parry_addhp();
 								
 									_parentobj._parryenmx = enemyobj.x;
 								
@@ -345,11 +348,13 @@
 									_parentobj._damageTimer = 40;
 									_parentobj._noAtkTimer = 30;
 								
-									_parentobj._curdir = hurtbox._curdir;
+									_parentobj._curdir = -hurtbox._curdir;
 									_parentobj._randhurt = clamp(floor(random_range(1,4)), 1, 3);
 									_parentobj._hurtTimer = 14;
 									_parentobj._hp -= 3+hurtbox._add_damage;
 									_parentobj._dmgcoold = 0;
+								
+									hurtbox._delay = 70;
 								
 									global._pad_vibrate = 2;
 								
@@ -380,6 +385,8 @@
 								_parentobj._hp -= 8+hurtbox._add_damage;
 								_parentobj._dmgcoold = 0;
 							
+								hurtbox._delay = 60;
+							
 								_parentobj._curdir = hurtbox._curdir;
 					
 								sfx_stop_array(global._punchsounds[0]);
@@ -397,7 +404,7 @@
 							_parentobj._attack = false;
 							_parentobj._attacktype = "";
 							
-							with(obj_game){
+							with(obj_gui){
 								ui_fade("dh", 1);
 							}
 						
@@ -422,6 +429,8 @@
 										_parentobj._shield = false;
 								
 										_parentobj._parryenmx = hurtbox.x;
+										
+										parry_addhp();
 								
 										with(hurtbox){
 											dead();
@@ -495,34 +504,6 @@
 					}
 				}
 			}
-		
-			/*(place_meeting(x, y, obj_st1_fallabove)){
-				var inst = instance_place(x, y, obj_st1_fallabove);
-				if(_parentobj._mashact == 0 && _parentobj._state != "item" && diff(inst.y-inst._height, _parentobj.y) <= 42){
-					with(obj_game){
-						ui_fade("dh", 1);
-					}
-				
-					_parentobj._hurtbox = inst;
-					_parentobj._spd = [0,0];
-					_parentobj._damage ++;
-					_parentobj._damageTimer = 40;
-					_parentobj._randhurt = floor(random_range(1,4));
-					_parentobj._push = true;
-					_parentobj._hurtTimer = 14;
-					_parentobj._hp -= 3+hurtbox._add_damage;
-					_parentobj._dmgcoold = 0;
-					
-					sfx_play_choose(global._punchsounds[0]);
-					with(inst){
-						sfx_stop(snd_whistle);
-						sfx_play(snd_stonebreak);
-						var p = instance_create_depth(x, y-72, 0, obj_particle);
-						p._type = "st1fallabove";
-						instance_destroy();
-					}
-				}
-			}*/
 			
 			if(place_meeting(x, y, obj_boss1_shockwave_front)){
 				var inst = instance_place(x, y, obj_boss1_shockwave_front);
@@ -530,7 +511,7 @@
 					_parentobj._state = "zapped";
 					_parentobj._zaptime = 45;
 					sfx_play(snd_zapped);
-					with(obj_game){
+					with(obj_gui){
 						ui_fade("dh", 1);
 					}
 					
@@ -559,7 +540,7 @@
 		
 		if(_parentobj != noone && instance_exists(_parentobj)){
 			//damage numbers
-			if(global._finalhit <= 0 && _parentobj._hp < _parentobj._hplastframe && (_parentobj._height <= _parentobj._groundlevel || _parentobj._falling) && _parentobj._dmgcoold <= 0){
+			if(global._finalhit <= 0 && global._weirdmusic <= 0 && _parentobj._hp < _parentobj._hplastframe && (_parentobj._height <= _parentobj._groundlevel || _parentobj._falling) && _parentobj._dmgcoold <= 0){
 				if(!global._tutorial){
 					var dmgnums = instance_create_depth(x, y-((_parentobj.sprite_height * 2)+150), 0, obj_nums);
 				    dmgnums._num = max(1,floor(_parentobj._hplastframe - _parentobj._hp));

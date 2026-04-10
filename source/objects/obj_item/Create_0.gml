@@ -7,10 +7,9 @@
 	
 	_color = make_color_rgb(255,255,255);
 	_itemcolor = [
-		make_color_rgb(147, 70, 153),
-		make_color_rgb(147, 47, 21),
 		make_color_rgb(249, 200, 51),
-		make_color_rgb(250, 22, 22),
+		make_color_rgb(255, 31, 68),
+		make_color_rgb(147, 47, 21),
 	];
 	
 	_sort = true;
@@ -31,6 +30,11 @@
 	
 	_hop_spd = 0.05;
 	_hop_archeight = 500;
+	
+	_falloff = false;
+	_yspd = 0;
+	_height = 0;
+	_groundlevel = 0;
 	
 	_timer = random(1000);
 	

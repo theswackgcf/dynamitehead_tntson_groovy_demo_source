@@ -22,7 +22,7 @@
 	_movespd[? SPD_BACK] = 0;
 	_movespd[? SPD_PANIC] = 0;
 	_movespd[? SPD_FALL] = 7;
-	_movespd[? SPD_GRABFALL] = 7;
+	_movespd[? SPD_GRABFALL] = 14;
 	_spdmode = SPD_WALK;
 	
 	_shadowsize = 0.35;
@@ -41,7 +41,7 @@
 	
 	_maxcolors = 1;
 	
-	_hpcolor = [make_color_rgb(255, 0, 0)];
+	_hpcolor = [make_color_rgb(223, 173, 140)];
 
 	//enemy specific
 	_fr_tipobj = noone;
@@ -67,4 +67,5 @@
 	_fr_crackamp = 0;
 	_fr_combocount = 0;
 	_fr_backtopos = false;
+	_fr_dodgecd = 0;
 }

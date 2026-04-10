@@ -2,10 +2,16 @@
 
 //default point is to the center of the screen
 function sfx_play_proximity(sfx, gain = 1.0, loop = false, point_x = global._cameraX+(WIDTH/2), point_y = global._cameraY+(HEIGHT/2)){
-	var offset = [global._proximityoffset[0], global._proximityoffset[1]];
-	var disttopoint = [1-(clamp(diff_abs(x, point_x)/(WIDTH+offset[0]), 0, 1)),1-(clamp(diff_abs(y, point_y)/(HEIGHT+offset[1]), 0, 1))];
+	var dims = [WIDTH,HEIGHT];
+	var mult = 1;
+	if(global._state == "minigame" && global._minigame == "lode"){
+		dims = [global._lode_proximity_dims[0],global._lode_proximity_dims[1]];
+		mult = 0.33;
+	}
+	var offset = [global._proximityoffset[0]*mult, global._proximityoffset[1]*mult];
+	var disttopoint = [1-(clamp(diff_abs(x, point_x)/(dims[0]+offset[0]), 0, 1)),1-(clamp(diff_abs(y, point_y)/(dims[1]+offset[1]), 0, 1))];
 	var newgain = clamp(sqrt_value(disttopoint[0],disttopoint[1]), 0, 1);
-	var pan = clamp(diff_abs(x, point_x)/(WIDTH+offset[0]), 0, 1);
+	var pan = clamp(diff_abs(x, point_x)/(dims[0]+offset[0]), 0, 1);
 	
 	var newpan = 0;
 	if(x < point_x){

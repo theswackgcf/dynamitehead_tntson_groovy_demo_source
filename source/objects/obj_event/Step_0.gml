@@ -9,23 +9,14 @@
 			case 0:
 				//toxic trenches
 				_defcolors = [hex_to_rgb("#8b6dbc"),hex_to_rgb("#112a51")] //[dark part, bright part]
-				if(global._buildver == HTML){
-					_defcolors = [hex_to_rgb("#32111e"),hex_to_rgb("#040a13")] //[dark part, bright part]
-				}
 			break;
 			case 1:
 				if(!global._bossstart){
 					//groovy graveyard
-					_defcolors = [hex_to_rgb("#48d63e"),hex_to_rgb("#17060b")] //[dark part, bright part]
-					if(global._buildver == HTML){
-						_defcolors = [hex_to_rgb("#48d63e"),hex_to_rgb("#17060b")] //[dark part, bright part]
-					}
+					_defcolors = [hex_to_rgb("#208a19"),hex_to_rgb("#0f0408")] //[dark part, bright part]
 				} else {
 					//lanky larry
 					_defcolors = [hex_to_rgb("#48d4ae"),hex_to_rgb("#140d03")] //[dark part, bright part]
-					if(global._buildver == HTML){
-						_defcolors = [hex_to_rgb("#48d4ae"),hex_to_rgb("#140d03")] //[dark part, bright part]
-					}
 				}
 			break;
 		}
@@ -54,7 +45,7 @@
 		if(_init){
 			_timer ++;
 		
-			if(_timer >= 3 && place_meeting(x, y, obj_dh_mask)){
+			if(!global._dialogue && _timer >= 3 && place_meeting(x, y, obj_dh_mask)){
 				_dh = instance_place(x,y,obj_dh_mask);
 				if(!_trigger){
 					switch(_event){

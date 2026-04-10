@@ -25,7 +25,7 @@ function scr_player_movement_other(){
 		}
 		_crouch = false;
 		_height += _vspd * _speed;
-		_vspd -= 0.8 * _speed;
+		_vspd -= (0.8*global._gravmult) * _speed;
 	} else {
 		if(!_slide){
 			_slide_sfx = false;
@@ -34,6 +34,17 @@ function scr_player_movement_other(){
 		if(_jumpback){
 			_jumpback = false;
 		}
+	}
+	
+	if(_afterslam){
+		_spd[0] = _afterslam_spd;
+		_spd[1] = 0;
+		totalspd[0] = _afterslam_spd;
+		totalspd[1] = 0;
+	}
+	if(_afterslam && _height <= _groundlevel){
+		_afterslam = false;
+		_afterslam_spd = 0;
 	}
 	
 	//sliding
@@ -99,11 +110,12 @@ function scr_player_movement_other(){
 	}
 	
 	//acceleration / deceleration
-	_stopspd = false;
-	if(_crouch){
-		_decel = 0.78;
-		_stopspd = true;
+	if(_afterrun_timer > 0){
+		_afterrun_timer --;
 	}
+	
+	_stopspd = false;
+	
 	if(_slide){
 		_accel = 1;
 		_decel = 0.8;
@@ -174,6 +186,34 @@ function scr_player_movement_other(){
 	}
 	
 	//run roll
+	if(_runroll_after > 0){
+		_runroll_after --;
+	}
+	
+	if(_runroll_dive || _runroll_slide){
+		if(_runroll_slide && abs(_spd[0]) < 10){
+			_slidespd = 0;
+			_spd[0] = 7*_curdir;
+			_runroll_dive = false;
+			_runroll_slide = false;
+			_runroll = false;
+			_crouch = false;
+			_skid = false;
+			_skidtimer = 0;
+			_dive_run = 12;
+		}
+		_runroll_dive_timer ++;
+		_runroll_after = 20;
+	}
+	
+	if(_dive_run > 0){
+		_dive_run --;
+			
+		_runtimer = 24;
+		_runs = 2;
+		_running = true;
+	}
+	
 	if(_runroll){
 		_prevstate = _state;
 		_state = "roll";
@@ -220,27 +260,57 @@ function scr_player_movement_other(){
 				_runhops = 1;
 			}
 			
-			global._pad_vibrate = 8;
+			global._pad_vibrate = 3;
 		}
 		
-		if(_height <= _groundlevel && _runroll_dive){	
+		if(_lowkick_dive && _height <= _groundlevel && _vspd <= 0){
+			_runroll_slide = false;
+			_runroll_dive = false;
+			_runroll = false;
+			_crouch = false;
+			_dive_run = 12;
+			_skid = false;
+			_skidtimer = 0;
+			
+			_lowkick_dive = false;
+		}
+		
+		if(_height <= _groundlevel && _dive_run <= 0 && _runroll_dive){
 			//slide
 			if(!place_meeting(x + 16*abs(_spd[0]), y, obj_solid)){
-				_crouch = true;
-				_slide = true;
-				_spd[0] = _maxspd[0]/1.5;
-				_slidespd = _spd[0];
-				_curdir_prev = _curdir;
-				if(_slidespd > 0){
-					_curdir = DIR_R;
-				} else if(_slidespd < 0){
-					_curdir = DIR_L;
-				}
-				_prevstate = _state;
-				_state = "slide";
+				if(abs(_spd[0]) <= 10 && (keyhold("left") || keyhold("right") || keyhold("down") || keyhold("up"))){
+					_runroll = false;
+					_crouch = false;
+					_dive_run = 12;
+					_skid = false;
+					_skidtimer = 0;
+				} else {
+					_crouch = true;
+					_slide = true;
+					_spd[0] = _maxspd[0]/1.5;
+					_slidespd = _spd[0];
+					_curdir_prev = _curdir;
+					if(_slidespd > 0){
+						_curdir = DIR_R;
+					} else if(_slidespd < 0){
+						_curdir = DIR_L;
+					}
+					_prevstate = _state;
+					_state = "slide";
 							
-				_jump = false;
-				_runroll_slide = true;
+					_jump = false;
+					_runroll_slide = true;
+				
+					var atk = instance_create_depth(x, y, -1, obj_punchhitbox);
+					atk._parentobj = self.id;
+					atk._scale = [4, 4];
+					atk._offset = [170,0];
+					atk._timer = 999;
+					atk._timerignore = true;
+					atk._type = "slide";
+					atk._delay = 3;
+					atk._damage = ATK_KO;
+				}
 			}
 			
 			_runroll = false;
@@ -248,7 +318,7 @@ function scr_player_movement_other(){
 		}
 		
 		//wall bump
-		if(_walltouch[0] > 0 || _slidetouch > 0){
+		if(!_forceroll && (_walltouch[0] > 0 || _slidetouch > 0)){
 			_curdir *= -1;
 			
 			var partc = instance_create_depth(_displayobj.x, _displayobj.y-96, 0, obj_particle);

@@ -31,6 +31,7 @@
 	
 	_skip_intro_on_start = false;
 	_stageselect_start = false;
+	_minigamescreen_start = false;
 	
 	_menustate = "main";
 	_option = 0;
@@ -61,6 +62,8 @@
 	_enteroffset = [0,0];
 	_enteramp = 0;
 	
+	_enterpos = 0;
+	
 	_begin = false;
 	_begintimer = 0;
 	_savemuspos = 0;
@@ -72,18 +75,70 @@
 	_mouseactive = false;
 	_mouseprev = [mouse_x,mouse_y];
 	
-	//[name, xoffset]
+	//[name, dispname, xoffset]
 	_btninfo = [
 		["play", "BEGIN", 0],
 		["setting", "OPTIONS", 40],
-		["manual", "MANUAL", 40],
+		["extra", "EXTRAS", 40],
 		["credits", "CREDITS", 40],
+		["patreon", "PATREON", 40],
 		["quit", "QUIT.", -8],
 	];
 	_curoption = "";
 	
-	if(global._buildver == HTML){
-		array_delete(_btninfo, 3, 1);
+	//[name, dispname]
+	_extras_btns = [
+		["manual", "Manual"],
+		["minigames", "Mini-games"],
+		["return", "Back"],
+	];
+	
+	var yposoffset = 0;
+	_defstartpos = 296;
+	_defposoffset = 96;
+	
+	_show = false;
+	_state = _menustate;
+	_curopt = [0];
+	_prevopt[0] = 0;
+	_offsetYLerp = 0;
+	_getinput = false;
+	
+	_mouselect = 0;
+	
+	for(var j = 0; j < array_length(_extras_btns); j++){
+		_btn = instance_create_depth(0, 0, 0, obj_optbtn);
+		_btn._xpos = floor(WIDTH/2);
+		_btn._ypos = _defstartpos + yposoffset;
+		_btn._starty = _btn._ypos;
+		yposoffset += _defposoffset;
+		_btn._text = _extras_btns[j][1];
+		_btn._id = _extras_btns[j][0];
+		_btn._opt = j;
+		_btn._optionsobj = self;
+		_btn._state = "extra";
+		_btn._layer = 0;
+		_btn._menubtn = true;
+	}
+	
+	for(var i = 0; i < 2; i++){
+		_btn = instance_create_depth(0, 0, 0, obj_optbtn);
+		if(i == 0){
+			_btn._xpos = floor(WIDTH/2)-136;
+			_btn._text = "YES";
+			_btn._id = "quit_yes";
+		} else {
+			_btn._xpos = floor(WIDTH/2)+136;
+			_btn._text = "NO";
+			_btn._id = "quit_no";
+		}
+		_btn._ypos = floor(HEIGHT/2)+24;
+		_btn._starty = _btn._ypos;
+		_btn._opt = i;
+		_btn._optionsobj = self;
+		_btn._state = "quit";
+		_btn._layer = 0;
+		_btn._menubtn = true;
 	}
 	
 	_sndarray = [snd_menu1,snd_menu2,snd_menu3,snd_menu4,snd_menu5];
@@ -116,7 +171,69 @@
 	_manual_spd = 0;
 	_manual_jumpspd = -10;
 	
-	function drawbtn(xx, yy, text, col, i) {
+	_curmonyx = global._curmonyx;
+	_addmonyx = 0;
+	_addmonyx_once = false;
+	
+	_minigame_frame = 0;
+	var wrapw = 520;
+	_minigame_desc = [
+		[scr_wordwrap("Those pesky Badheads are popping out ALL over the place! Time to show 'em a lesson in WHACKIN'! Be careful, though... The more Badheads you whack, the quicker they pop out!\nYou think you can handle this?", wrapw, "\n", false),0,"whack"],
+		[scr_wordwrap("Find yourself traversing the Groovy Graveyard as Dial-M. Dodge the sneaky Badheads on your way. Find all the scattered Monyx, and bring 'em back to the EXIT GATE! Think you can handle Dial Runner?", wrapw, "\n", false),1,"lode"],
+	];
+	_minigame_monyx = [
+		[4000, 380], //price, difficulty adjust variable
+		[5500, 410],
+	];
+	_minigame_desc_loop = [];
+	_minigame_monyx_loop = [];
+	
+	_minigame_cur = 1;
+	_minigame_prev = _minigame_cur;
+	_minigame_offset_to = -_minigame_cur*WIDTH;
+	_minigame_offset = _minigame_offset_to;
+	_setminigameoffset = false;
+	
+	_monyx_screen = false;
+	_curminigame = 0;
+	_curprice = 0;
+	_curfactor = 0;
+	_curdiff = 1;
+	_pricediff = 0;
+	_subprice = 0;
+	
+	_minigame_curname = "";
+	
+	_monyxshake = 0;
+	_monyx_col = [255,255,255];
+	_monyx_colto = [255,255,255];
+	_diffshake = 0;
+	_start_on = false;
+	
+	_priceshake = 0;
+	
+	_minigame_begin = false;
+	_minigame_begintimer = 0;
+	_minigame_beginshow = false;
+	
+	_minigame_submonyx = false;
+	_minigame_tr = false;
+	
+	_quitmessages = [
+		"Leaving... ALREADY?!",
+		"Are you really leaving us?",
+		"Go ahead. Leave.",
+		"Go on. Do it. I don't care.",
+		"Chickening out already?",
+		"Quit? (Don't)",
+		"DON'T LEAVE ME HERE!!!",
+		"Press Yes to /rDie.",
+		"Press No to be Spared!"
+	];
+	
+	_quitmessage = 0;
+	
+	function drawbtn(xx, yy, text, col, i, subtext) {
 		if(_option == i){
 			var spr = asset_get_index("spr_menu_icon_"+_curoption);
 			if(sprite_exists(spr)){
@@ -125,13 +242,76 @@
 		}
 					
 		scr_textrender_type(xx, yy + _mainmenuoffset, text, false, col, 1, 0.86, 0.86);
+
+		scr_textrender_wave_x(2, 5);
+		scr_textrender_wave_y(2, 5);
+		scr_textrender_shake(0, 0);
+		scr_textrender_switchfont("dh_font1");
+		scr_textrender_type(xx+24, yy + _mainmenuoffset+80, subtext, true, col, 1, 1, 1);
+
 		scr_textrender_wave_x(0, 0);
 		scr_textrender_wave_y(0, 0);
 		scr_textrender_shake(0, 0);
 	}
 	
+	_tntmenustate = "";
+	_tntenter = false;
+	
+	function checkmenus() {
+		switch(_state){
+			case "extra":
+				if(_curbutton != noone && _curbutton._on && _mouselect <= 0){
+					sfx_play(snd_tnt_pull);
+					
+					_tntmenustate = _curbutton._id;
+					
+					_manual_page = 0;
+					_manual_page_prev = _manual_page;
+							
+					_manual_offset = 0;
+					_manual_spd = 0;
+					
+					_minigame_cur = 1;
+					_minigame_prev = _minigame_cur;
+					
+					_minigame_offset_to = -_minigame_cur*WIDTH;
+					_minigame_offset = _minigame_offset_to;
+					
+					global._tntmenuAct = 1;
+					_tntenter = true;
+				}
+			break;
+			case "quit":
+				if(_curbutton != noone && _curbutton._on && _mouselect <= 0){
+					switch(_curbutton._id){
+						case "quit_yes":
+							//quit the game
+							audio_stop_all();
+							sfx_play(snd_finalko);
+							sfx_play_choose([snd_scream1,snd_scream2,snd_scream3,snd_scream4,snd_scream5,snd_scream6]);
+							room_goto(r_quit);
+						break;
+						case "quit_no":
+							//back
+							sfx_stop_array(_sndarray);
+							sfx_play_choose(_sndarray);
+				
+							_menustate = "main";
+						break;
+					}
+				}
+			break;
+		}
+	}
+	
 	_creditsoption = 0;
 	_prevcreditsoption = _creditsoption;
+	
+	var creditsSpr = spr_credits_devs;
+	var chance = irandom(1000);
+	if(chance == 536){
+		creditsSpr = spr_credits_devs_heroin;
+	}
 	
 	_creditsinfo = [
 		//swackygcf
@@ -140,7 +320,7 @@
 			{
 				pos: [0,0],
 				_type: "spr",
-				sprite: spr_credits_devs,
+				sprite: creditsSpr,
 				ind: 0,
 				_text: "",
 				font: "dh_font1",
@@ -204,7 +384,7 @@
 			{
 				pos: [0,0],
 				_type: "spr",
-				sprite: spr_credits_devs,
+				sprite: creditsSpr,
 				ind: 1,
 				_text: "",
 				font: "dh_font1",
@@ -268,7 +448,7 @@
 			{
 				pos: [0,0],
 				_type: "spr",
-				sprite: spr_credits_devs,
+				sprite: creditsSpr,
 				ind: 2,
 				_text: "",
 				font: "dh_font1",
@@ -306,40 +486,6 @@
 				align: ["center","middle"],
 			},
 		],
-		//mintyfresh2490
-		//9301000003000000000000000000000000000040020000000B00000001000000100000007370725F656E6D315F737061776E657200000000000000000000E03F000000000000000000008E400000000000000000000078400000000000000000000000C0010000002500000047726F6F7679204772617665796172642F6E6261636B67726F756E64206772617068696373010000000800000064685F666F6E743100000000B81E85EB51B8F63F00000000B81E85EB51B8F63F010000000600000063656E7465720100000003000000746F7000000000000000000000F03F020000000B00000001000000110000007370725F637265646974735F6C6F676F73000000000000000000000840000000000000000000F08B4000000000000000000040684000000000000000000000F0BF0100000000000000010000000000000000000000000000000000F03F00000000000000000000F03F01000000040000006C6566740100000003000000746F70000000000000000000000000020000000B00000001000000100000007370725F637265646974735F6465767300000000000000000000084000000000000000000000F0BF0000000000000000000000000000000000000000000000000100000000000000010000000000000000000000000000000000F03F00000000000000000000F03F01000000040000006C6566740100000003000000746F70
-		/*[
-			{
-				pos: [0,0],
-				_type: "spr",
-				sprite: spr_credits_devs,
-				ind: 3,
-				_text: "",
-				font: "dh_font1",
-				scale: 1,
-				align: ["center","middle"],
-			},
-			{
-				pos: [894,194],
-				_type: "spr",
-				sprite: spr_credits_logos,
-				ind: 3,
-				_text: "",
-				font: "dh_font1",
-				scale: 1,
-				align: ["center","middle"],
-			},
-			{
-				pos: [960,384],
-				_type: "text",
-				sprite: -1,
-				ind: 0,
-				_text: "Groovy Graveyard/nbackground graphics",
-				font: "dh_font1",
-				scale: 1.42,
-				align: ["center","top"],
-			},
-		],*/
 		//voice acting
 		//9301000006000000000000000000000000000040020000000B00000001000000100000007370725F656E6D315F737061776E657200000000000000000000E03F000000000000000000288440000000000000000000607A400000000000000000000000C0010000001A0000006A61737065722E6E796D616E202D204C616E6B79204C61727279010000000800000064685F666F6E743100000000CDCCCCCCCCCCF43F00000000CDCCCCCCCCCCF43F010000000600000063656E7465720100000003000000746F70000000000000000000000840020000000B00000001000000100000007370725F656E6D315F737061776E65720000000000000000000000000000000000000000001884400000000000000000000081400000000000000000000008C0010000000F0000006F6E736B75202D2048656E63686965010000000800000064685F666F6E743100000000CDCCCCCCCCCCF43F00000000CDCCCCCCCCCCF43F010000000600000063656E7465720100000003000000746F7000000000000000000000F03F020000000B00000001000000100000007370725F656E6D315F737061776E657200000000000000000000E03F000000000000000000188440000000000000000000F0724000000000000000000000F0BF0100000025000000737761636B79474346202D2044796E616D69746548656164202620596F6C6F2D426F6E6573010000000800000064685F666F6E743100000000CDCCCCCCCCCCF43F00000000CDCCCCCCCCCCF43F010000000600000063656E7465720100000003000000746F70000000000000000000001440020000000B00000001000000110000007370725F637265646974735F766F69636500000000000000000000F03F0000000000000000008C9140000000000000000000F8804000000000000000000000F0BF0100000000000000010000000000000000000000000000000000F03F00000000000000000000F03F01000000040000006C6566740100000003000000746F70000000000000000000001040020000000B00000001000000110000007370725F637265646974735F766F696365000000000000000000000000000000000000000000C06540000000000000000000C066400000000000000000000000000100000000000000010000000000000000000000000000000000F03F00000000000000000000F03F01000000040000006C6566740100000003000000746F70000000000000000000000000020000000B00000001000000110000007370725F637265646974735F6F74686572000000000000000000000000000000000000000000E88440000000000000000000E064400000000000000000000000000100000000000000010000000000000000000000000000000000F03F00000000000000000000F03F01000000040000006C6566740100000003000000746F70
 		[
@@ -442,7 +588,7 @@
 				_type: "text",
 				sprite: -1,
 				ind: 0,
-				_text: "breadft  GlassesInBlue/nicie145    8owls/npopkinsssussy    Toki    YAYSUU",
+				_text: "breadft  GlassesInBlue/nicie145    8owls/npopkinsssussy    Toki    YAYSUU/nGuyTheMind    PoponTheBozo    JarekTEK",
 				font: "dh_font1",
 				scale: 1.1,
 				align: ["center","top"],
@@ -466,7 +612,7 @@
 				_type: "text",
 				sprite: -1,
 				ind: 0,
-				_text: "GlassesInBlue/nKeniPonezh/nSwellOcean/nJas/nbreadft/nToki/nanoncarr0t/nramshtick",
+				_text: "GlassesInBlue    KeniPonezh/n   SwellOcean       Jas    /n    breadft        Toki    /nmemer.online     anoncarr0t/nramshtick",
 				font: "dh_font1",
 				scale: 1.25,
 				align: ["center","top"],

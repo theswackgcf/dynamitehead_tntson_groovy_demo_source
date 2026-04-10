@@ -41,8 +41,8 @@
 			y = global._cameraY+(HEIGHT*1.4);
 	
 			image_alpha = 0.38;
-			image_xscale = 1.34*_curdir;
-			image_yscale = 1.34;
+			image_xscale = 2.2*_curdir;
+			image_yscale = 2.2;
 			depth = -5010;
 	
 			if(!global._pause){

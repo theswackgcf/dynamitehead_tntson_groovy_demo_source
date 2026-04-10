@@ -8,7 +8,7 @@ function scr_player_begin(){
 		}
 		if(!_begin && !global._stageentrance){
 			_begintimer ++;
-			if(_begintimer >= 45){
+			if(_begintimer >= 15){
 				if(!_beginstar){
 					with(obj_startstar){
 						_forcedepth = other._displayobj.depth+2;
@@ -24,13 +24,13 @@ function scr_player_begin(){
 					_beginstar = true;
 				}
 			}
-			if(_begintimer >= 80){
+			if(_begintimer >= 50){
 				with(obj_fade){
 					_fadefgTo = 0;
 					_fadeSpd = 0.08;
 				}
 			}
-			if(_begintimer >= 100){
+			if(_begintimer >= 70){
 				_begintimer = 0;
 				_state = "default";
 				_begin = true;
@@ -47,7 +47,7 @@ function scr_player_begin(){
 				}
 			} else {
 				_hptimer = 25;
-				with(obj_game){
+				with(obj_gui){
 					ui_fade("dh", 0);
 					ui_fade("tnt", 0);
 				}
@@ -56,7 +56,7 @@ function scr_player_begin(){
 		if(_begin){
 			_begintimer ++;
 			if(_begintimer < 10){
-				with(obj_game){
+				with(obj_gui){
 					ui_fade("dh", 1);
 					ui_fade("tnt", 1);
 				}
@@ -66,7 +66,7 @@ function scr_player_begin(){
 		if(!_begin){
 			//checkpoint start
 			_hptimer = 0;
-			with(obj_game){
+			with(obj_gui){
 				ui_fade("dh", 1);
 				ui_fade("tnt", 1);
 			}

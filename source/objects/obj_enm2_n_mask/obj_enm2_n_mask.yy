@@ -36,10 +36,7 @@
   "resourceType":"GMObject",
   "resourceVersion":"2.0",
   "solid":false,
-  "spriteId":{
-    "name":"spr_enm2_mask",
-    "path":"sprites/spr_enm2_mask/spr_enm2_mask.yy",
-  },
+  "spriteId":null,
   "spriteMaskId":null,
   "visible":true,
 }

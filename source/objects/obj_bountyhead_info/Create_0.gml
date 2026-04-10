@@ -1,4 +1,6 @@
 {
+	_allsounds = ds_map_create();
+	
 	_infoshow = false;
 	_infohide = false;
 	
@@ -9,6 +11,8 @@
 		[0,255,0],
 		[255, 199, 15],
 	];
+	
+	_snd = false;
 	
 	_curboss = 1; //global._location;
 	_bossinfo = ds_map_create();

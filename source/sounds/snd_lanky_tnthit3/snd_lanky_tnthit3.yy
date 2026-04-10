@@ -10,7 +10,7 @@
   "compression":0,
   "compressionQuality":4,
   "conversionMode":0,
-  "duration":0.82229024,
+  "duration":0.94272107,
   "exportDir":"",
   "name":"snd_lanky_tnthit3",
   "parent":{

@@ -1,5 +1,5 @@
 {
-	sprite_index = spr_dh_colortest;
+	sprite_index = spr_dh_idle;
 	
 	var drawX = WIDTH / 2;
 	var drawY = HEIGHT / 1.25;

@@ -35,6 +35,14 @@
 	_rep = "";
 	_colorsinit = false;
 	
+	_outline_dist = 0;
+	_outline_idle = false;
+	_outline_alp = 0;
+	_outline_alpto = _outline_alp;
+	_outline_col = c_white;
+	_outline_timer = 0;
+	_outline_maxtimer = 100;
+	
 	//colors
 	_maxcolors = global._maxcolors[? "dh"];
 	

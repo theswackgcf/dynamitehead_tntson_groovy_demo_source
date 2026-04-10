@@ -10,7 +10,7 @@
   "compression":2,
   "compressionQuality":4,
   "conversionMode":0,
-  "duration":30.981224,
+  "duration":25.923492,
   "exportDir":"",
   "name":"mus_stageintro_2",
   "parent":{
@@ -22,5 +22,5 @@
   "resourceVersion":"2.0",
   "sampleRate":44100,
   "soundFile":"mus_stageintro_2.mp3",
-  "volume":0.8,
+  "volume":1.0,
 }

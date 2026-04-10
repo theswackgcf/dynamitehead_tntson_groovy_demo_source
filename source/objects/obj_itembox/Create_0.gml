@@ -9,8 +9,8 @@
 	_height_draw = 0;
 	_sort = true;
 	_collidewith = "player";
-	image_xscale = global._scale;
-	image_yscale = global._scale;
+	image_xscale = 1;
+	image_yscale = 1;
 	
 	visible = false;
 	_vtimer = 0;

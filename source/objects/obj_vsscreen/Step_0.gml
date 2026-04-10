@@ -63,18 +63,18 @@
 					_voice = true;
 				}
 			
+				with(obj_gui){
+					for(var i = 0; i < array_length(global._ui_stuff_alpha); i++){
+						global._ui_stuff_alpha[i] = 0;
+						global._ui_stuff_alphaMult[i] = 0;
+					}
+				}
+			
 				if(_timer >= 100){
 					global._bossintro = true;
 					global._seteffect = 0;
 					_start = false;
 					_timer = 0;
-					
-					if(surface_exists(_gui_surface)){
-						surface_free(_gui_surface);
-					}
-					if(surface_exists(_resizegui_surface)){
-						surface_free(_resizegui_surface);
-					}
 					
 					if(ds_map_exists(_allsounds, "emitter")){
 						audio_emitter_free(_allsounds[? "emitter"]);

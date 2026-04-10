@@ -10,7 +10,7 @@
   "compression":2,
   "compressionQuality":4,
   "conversionMode":0,
-  "duration":35.10857,
+  "duration":30.057892,
   "exportDir":"",
   "name":"mus_stageintro",
   "parent":{

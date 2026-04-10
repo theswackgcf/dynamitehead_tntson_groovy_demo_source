@@ -33,8 +33,10 @@
 				y += 2;
 				if(y >= _starty+160){
 					if(!_destroy){
-						sfx_play_proximity(snd_scream1, 0.45);
-						sfx_pitch(snd_scream1, 0.45);
+						if(!global._battlezone){
+							sfx_play_proximity(snd_scream1, 0.45);
+							sfx_pitch(snd_scream1, 0.45);
+						}
 						_destroy = true;
 					}
 				}

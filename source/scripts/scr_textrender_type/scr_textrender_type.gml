@@ -28,6 +28,8 @@ function scr_textrender_type(x, y, text, shadow = false, color = make_color_rgb(
 		
 		var textNoCols = string_replace_all(text, "\n", "/n");
 		
+		var keyscale_nes = global._keyscale_nes;;
+		
 		//replace invisible characters
 		
 		/*var invsArray = [];
@@ -69,8 +71,16 @@ function scr_textrender_type(x, y, text, shadow = false, color = make_color_rgb(
 		var lineHasKey = false;
 		var PlineHasKey = false;
 		var keyheight = 0;
-		var defkeyheight = global._keybindH*scale_y;
-		var change = global._keybindW*scale_x;
+		
+		var _init_keyscale_x = scale_x;
+		var _init_keyscale_y = scale_y;
+		if(global._font == "dh_fontnes" || global._font == "dh_fontnes_lode"){
+			_init_keyscale_x = scale_x*keyscale_nes;
+			_init_keyscale_y = scale_y*keyscale_nes;
+		}
+		
+		var defkeyheight = global._keybindH*_init_keyscale_y;
+		var change = global._keybindW*_init_keyscale_x;
 		var offsety = 0;
 		var waveoffset = [0,0];
 		
@@ -279,8 +289,10 @@ function scr_textrender_type(x, y, text, shadow = false, color = make_color_rgb(
 						}
 						if(drawchar){
 							if(variable_instance_exists(self.id, "u_position") && variable_instance_exists(self.id, "_hue")){
-								shader_set(shd_hue);
-								shader_set_uniform_f(u_position, _hue);
+								if(_hue <> 0){
+									shader_set(shd_hue);
+									shader_set_uniform_f(u_position, _hue);
+								}
 							}
 							if(!invisible){
 								var shakerange = [random_range(-global._textshaking[0],global._textshaking[0]),random_range(-global._textshaking[1],global._textshaking[1])];
@@ -310,7 +322,11 @@ function scr_textrender_type(x, y, text, shadow = false, color = make_color_rgb(
 								}
 								draw_sprite_part_ext(asset_get_index("spr_"+global._font), 0, curletter[0], curletter[1], curletter[2], curletter[3], (drawx+shakerange[1]+waveoffset[1])+(curchar*global._textspacing), (drawy+offsety)+shakerange[0]+waveoffset[0], scale_x, scale_y, col, alpha);
 							}
-							shader_reset();
+							if(variable_instance_exists(self.id, "u_position") && variable_instance_exists(self.id, "_hue")){
+								if(_hue <> 0){
+									shader_reset();
+								}
+							}
 							
 							drawx += curletter[2]*scale_x;
 							curchar ++;
@@ -354,7 +370,16 @@ function scr_textrender_type(x, y, text, shadow = false, color = make_color_rgb(
 										frtodraw = global._binds[st][2];
 										keysize = (sprite_get_width(sptodraw)+global._keyoffset)*scale_x;
 									}
-									draw_sprite_ext(sptodraw, frtodraw, (((drawx+(curchar*global._textspacing))-8)+random_range(-global._textshaking[1],global._textshaking[1]))+(sprite_get_xoffset(sptodraw)*scale_x)+waveoffset[1], (((drawy-8)+offsety)+random_range(-global._textshaking[0],global._textshaking[0]))+(sprite_get_yoffset(sptodraw)*scale_y)+waveoffset[0], scale_x, scale_y, 0, #FFFFFF, alpha);
+									
+									var keyscale_x = scale_x;
+									var keyscale_y = scale_y;
+									
+									if(global._font == "dh_fontnes" || global._font == "dh_fontnes_lode"){
+										keyscale_x = scale_x*keyscale_nes;
+										keyscale_y = scale_y*keyscale_nes;
+									}
+									
+									draw_sprite_ext(sptodraw, frtodraw, (((drawx+(curchar*global._textspacing))-8)+random_range(-global._textshaking[1],global._textshaking[1]))+(sprite_get_xoffset(sptodraw)*keyscale_x)+waveoffset[1], (((drawy-8)+offsety)+random_range(-global._textshaking[0],global._textshaking[0]))+(sprite_get_yoffset(sptodraw)*keyscale_y)+waveoffset[0], keyscale_x, keyscale_y, 0, #FFFFFF, alpha);
 								}
 								drawx += keysize;
 								curchar ++;
@@ -397,7 +422,15 @@ function scr_textrender_type(x, y, text, shadow = false, color = make_color_rgb(
 										keysize = (sprite_get_width(sptodraw)+global._keyoffset)*scale_x;
 									}
 									
-									draw_sprite_ext(sptodraw, frtodraw, (((drawx+(curchar*global._textspacing))-8)+random_range(-global._textshaking[1],global._textshaking[1]))+(sprite_get_xoffset(sptodraw)*scale_x)+waveoffset[1], (((drawy-8)+offsety)+random_range(-global._textshaking[0],global._textshaking[0]))+(sprite_get_yoffset(sptodraw)*scale_y)+waveoffset[0], scale_x, scale_y, 0, #FFFFFF, alpha);
+									var keyscale_x = scale_x;
+									var keyscale_y = scale_y;
+									
+									if(global._font == "dh_fontnes" || global._font == "dh_fontnes_lode"){
+										keyscale_x = scale_x*keyscale_nes;
+										keyscale_y = scale_y*keyscale_nes;
+									}
+									
+									draw_sprite_ext(sptodraw, frtodraw, (((drawx+(curchar*global._textspacing))-8)+random_range(-global._textshaking[1],global._textshaking[1]))+(sprite_get_xoffset(sptodraw)*keyscale_x)+waveoffset[1], (((drawy-8)+offsety)+random_range(-global._textshaking[0],global._textshaking[0]))+(sprite_get_yoffset(sptodraw)*keyscale_y)+waveoffset[0], keyscale_x, keyscale_y, 0, #FFFFFF, alpha);
 								}
 								drawx += keysize;
 								curchar ++;
@@ -452,7 +485,16 @@ function scr_textrender_type(x, y, text, shadow = false, color = make_color_rgb(
 													frtodraw = global._binds[i][2];
 													keysize = (sprite_get_width(sptodraw)+global._keyoffset)*scale_x;
 												}
-												draw_sprite_ext(sptodraw, frtodraw, (((drawx+(curchar*global._textspacing))-8)+random_range(-global._textshaking[1],global._textshaking[1]))+(sprite_get_xoffset(sptodraw)*scale_x)+waveoffset[1], (((drawy-8)+offsety)+random_range(-global._textshaking[0],global._textshaking[0]))+(sprite_get_yoffset(sptodraw)*scale_y)+waveoffset[0], scale_x, scale_y, 0, #FFFFFF, alpha);
+												
+												var keyscale_x = scale_x;
+												var keyscale_y = scale_y;
+									
+												if(global._font == "dh_fontnes" || global._font == "dh_fontnes_lode"){
+													keyscale_x = scale_x*keyscale_nes;
+													keyscale_y = scale_y*keyscale_nes;
+												}
+												
+												draw_sprite_ext(sptodraw, frtodraw, (((drawx+(curchar*global._textspacing))-8)+random_range(-global._textshaking[1],global._textshaking[1]))+(sprite_get_xoffset(sptodraw)*keyscale_x)+waveoffset[1], (((drawy-8)+offsety)+random_range(-global._textshaking[0],global._textshaking[0]))+(sprite_get_yoffset(sptodraw)*keyscale_y)+waveoffset[0], keyscale_x, keyscale_y, 0, #FFFFFF, alpha);
 											}
 											drawx += keysize;
 											curchar ++;
@@ -503,7 +545,15 @@ function scr_textrender_type(x, y, text, shadow = false, color = make_color_rgb(
 													keysize = (sprite_get_width(sptodraw)+global._keyoffset)*scale_x;
 												}
 												
-												draw_sprite_ext(sptodraw, frtodraw, (((drawx+(curchar*global._textspacing))-8)+random_range(-global._textshaking[1],global._textshaking[1]))+(sprite_get_xoffset(sptodraw)*scale_x)+waveoffset[1], (((drawy-8)+offsety)+random_range(-global._textshaking[0],global._textshaking[0]))+(sprite_get_yoffset(sptodraw)*scale_y)+waveoffset[0], scale_x, scale_y, 0, #FFFFFF, alpha);
+												var keyscale_x = scale_x;
+												var keyscale_y = scale_y;
+									
+												if(global._font == "dh_fontnes" || global._font == "dh_fontnes_lode"){
+													keyscale_x = scale_x*keyscale_nes;
+													keyscale_y = scale_y*keyscale_nes;
+												}
+												
+												draw_sprite_ext(sptodraw, frtodraw, (((drawx+(curchar*global._textspacing))-8)+random_range(-global._textshaking[1],global._textshaking[1]))+(sprite_get_xoffset(sptodraw)*keyscale_x)+waveoffset[1], (((drawy-8)+offsety)+random_range(-global._textshaking[0],global._textshaking[0]))+(sprite_get_yoffset(sptodraw)*keyscale_y)+waveoffset[0], keyscale_x, keyscale_y, 0, #FFFFFF, alpha);
 											}
 											drawx += keysize;
 											curchar ++;
@@ -519,7 +569,11 @@ function scr_textrender_type(x, y, text, shadow = false, color = make_color_rgb(
 		}
 		
 		if(global._font == "dh_fontnes"){
-			gpu_set_texfilter(global._texfilter);
+			if(variable_instance_exists(self.id,"_textrender_force_texfilter")){
+				gpu_set_texfilter(_textrender_force_texfilter);
+			} else {
+				gpu_set_texfilter(global._texfilter);
+			}
 		}
 	}
 }

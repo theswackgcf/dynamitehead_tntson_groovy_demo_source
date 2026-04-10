@@ -9,7 +9,8 @@ function scr_enemyscript_hurtbox(type){
 		
 		_scales = [
 			[1,1],
-			[2.1,0.5]
+			[2.1,0.85],
+			[1.6,1.3],
 		];
 		_curscale = 0;
 		
@@ -35,9 +36,15 @@ function scr_enemyscript_hurtbox(type){
 		_curscale = 0;
 		if(_parentobj._falling || _parentobj._fall_ko){
 			_curscale = 1;
+			if(_parentobj._fall_ko){
+				_offset = [0,132];
+			}
 		}
 		if(_parentobj._parachute){
 			_curscale = 0;
+		}
+		if(_parentobj._spin){
+			_curscale = 2;
 		}
 		
 		image_xscale = _scales[_curscale][0];
@@ -110,7 +117,7 @@ function scr_enemyscript_hurtbox(type){
 				
 				if(!obj._boss){
 					//show enemy hp bar
-					with(obj_game){
+					with(obj_gui){
 						global._ui_stuff_alpha[2] = 1;
 						ui_fade("enemy", 1);
 					}
@@ -121,7 +128,7 @@ function scr_enemyscript_hurtbox(type){
 		if(!global._pause){
 			//getting ko'd by other ko'd enemies
 			if(_parentobj._startTimer <= 0 && !_parentobj._death && _parentobj._sequence_finished && _parentobj._phaseend_act == 0 && !_parentobj._stunlock_dodge && _parentobj._stunlock_after <= 0){
-				if(has_trait(TRAIT_HURT, _parentobj) && !_parentobj._fall_ko && !_parentobj._falling && place_meeting_array(x, y, _parentobj._collide_hurtbox)){
+				if(has_trait(TRAIT_HURT, _parentobj) && _parentobj._immunetimer <= 0 && !_parentobj._fall_ko && !_parentobj._falling && place_meeting_array(x, y, _parentobj._collide_hurtbox)){
 					if(_parentobj._curstate == STATE_JUMP) return;
 				
 					//get objects
@@ -141,7 +148,11 @@ function scr_enemyscript_hurtbox(type){
 							_parentobj._successparry = 0;
 							
 							_parentobj._hurttimer = 0;
-							_parentobj._hp -= 3*_parentobj._dmgmultiplier;
+							_parentobj._hp -= 3*_parentobj._dmgmultiplier*_parentobj._combohit;
+							
+							with(_parentobj){
+								combohit();
+							}
 					
 							_parentobj._height = _parentobj._groundlevel+1;
 							_parentobj._vspd = 10;
@@ -187,7 +198,7 @@ function scr_enemyscript_hurtbox(type){
 					idleko = true;
 				}
 				if(_parentobj._startTimer <= 0 && !_parentobj._death && _parentobj._sequence_finished && _parentobj._phaseend_act == 0 && !_parentobj._stunlock_dodge && _parentobj._stunlock_after <= 0){
-					if(has_trait(TRAIT_HURT, _parentobj) && !blockko && !idleko && !_parentobj._dmgfall && _parentobj._dodgetimer == 0 && _parentobj._hurttimer == 0 && !_parentobj._grabbed){
+					if(has_trait(TRAIT_HURT, _parentobj) && _parentobj._immunetimer <= 0 && !blockko && !idleko && !_parentobj._dmgfall && _parentobj._dodgetimer == 0 && _parentobj._hurttimer == 0 && !_parentobj._grabbed){
 						if(place_meeting(x, y, obj_punchhitbox)){
 							var atk_obj = instance_place(x, y, obj_punchhitbox);
 							var atk_parent = atk_obj._parentobj;
@@ -260,7 +271,8 @@ function scr_enemyscript_hurtbox(type){
 															_jump = true;
 															_standup = true;
 															_height = _groundlevel + 1;
-															_vspd = 12;
+															_vspd = random_range(12,17);
+															_dodge = true;
 															_curspd = [0,0];
 															clearpath();
 														}
@@ -291,6 +303,11 @@ function scr_enemyscript_hurtbox(type){
 															}
 												
 															_parentobj._dodgetimer = 14;
+															_parentobj._dodges ++;
+															
+															_parentobj._stuntimer = 0;
+															_parentobj._stun = false;
+															_parentobj._stunact = 0;
 														
 															dodge = true;
 														}
@@ -370,8 +387,8 @@ function scr_enemyscript_hurtbox(type){
 									if(instance_exists(atk_obj) && instance_exists(atk_parent)){
 										//check blind zone
 										var checkx = 64;
-										var checky = 82;
-										var yoffset = 24;
+										var checky = 90;
+										var yoffset = 12;
 										var downattack = 0;
 										if(variable_instance_exists(atk_parent,"_downattack")){
 											if(atk_parent._downattack > 0){
@@ -387,7 +404,12 @@ function scr_enemyscript_hurtbox(type){
 										
 										if(downattack > 0 || (atk_obj._damage == ATK_KO || (atk_obj._damage != ATK_KO && (atk_obj._curdir == DIR_L && _parentobj.x <= atk_parent.x-checkx) || (atk_obj._curdir == DIR_R && _parentobj.x >= atk_parent.x+checkx)))){
 											//check other conditions
-											if((atk_obj._ptype == "pl" || atk_obj._ptype == "all") && atk_parent.id != _parentobj.id && (downattack > 0 || (diff_abs(atk_parent.y, _parentobj.y+yoffset) <= checky && diff_abs(atk_parent._height, _parentobj._height) <= 210 && diff_abs(atk_obj._height, _parentobj._height) <= 70))){
+											var checkheight = [210,70];
+											if(_parentobj._codename == "fridge" && (atk_parent._attacktype == "upper" || atk_parent._attacktype == "doublekick")){
+												checkheight = [210,280];
+											}
+											
+											if((atk_obj._ptype == "pl" || atk_obj._ptype == "all") && atk_parent.id != _parentobj.id && (downattack > 0 || (diff_abs(atk_parent.y, _parentobj.y+yoffset) <= checky && diff_abs(atk_parent._height, _parentobj._height) <= checkheight[0] && diff_abs(atk_obj._height, _parentobj._height) <= checkheight[1]))){
 												var doblock = false;
 												
 												//enemy blocking
@@ -478,6 +500,10 @@ function scr_enemyscript_hurtbox(type){
 															atk_parent._atk_timer = 10;
 															atk_parent._hits ++;
 															atk_parent._hittimer = htimer;
+															
+															with(_parentobj){
+																combohit();
+															}
 										
 															//push back
 															if(!_parentobj._falling){
@@ -495,11 +521,21 @@ function scr_enemyscript_hurtbox(type){
 															} else {
 																if(atk_parent._attacktype == "idle"){
 																	if(_parentobj._boundwall.left > 0 || _parentobj._boundwall.right > 0){
-																		_parentobj._curdir *= -1;
+																		if(_parentobj._boundwall.left > 0){
+																			_parentobj._curdir = DIR_R;
+																			_parentobj._falldir = _parentobj._curdir;
+																		} else if(_parentobj._boundwall.right > 0){
+																			_parentobj._curdir = DIR_L;
+																			_parentobj._falldir = _parentobj._curdir;
+																		}
 																		_parentobj._vspd = -4;
 																	} else {
 																		_parentobj._vspd = 3;
 																	}
+																	
+																	var dmgnums = instance_create_depth(x+_parentobj._dmgoffset[0], y-((_parentobj.sprite_height * 2))+_parentobj._dmgoffset[1], 0, obj_nums);
+																    dmgnums._num = max(1,floor(_parentobj._hplastframe - _parentobj._hp));
+																	_parentobj._hplastframe = _parentobj._hp;
 																}
 															}
 															
@@ -577,6 +613,29 @@ function scr_enemyscript_hurtbox(type){
 																if(!array_contains(_parentobj._atkallowed,ATK_NORM)) return;
 																if(_parentobj._slide) return;
 																if(_parentobj._parachute) return;
+																if(variable_instance_exists(atk_parent, "_lowkick_dive")){
+																	if(atk_parent._lowkick_dive && !atk_parent._attack) return;
+																}
+																
+																if(_parentobj._spin){
+																	//block non air punches when spinning
+																	var p = instance_create_depth(_parentobj.x, _parentobj.y, 0, obj_particle);
+																	if(atk_obj._type != "air"){
+																		p._type = "fx"+string(choose(1,2));
+																	} else {
+																		p._type = "fx"+string(choose(3,4));
+																	}
+																	p._damage = atk_obj._damage;
+																	p._curdir = atk_obj._curdir;
+															
+																	sfx_play_choose([snd_punchfail1,snd_punchfail2,snd_punchfail3]);
+																	
+																	if(instance_exists(atk_obj)){
+																		instance_destroy(atk_obj.id);
+																	}
+																	
+																	return;
+																}
 																
 																//juggling with idle attack
 																if(_parentobj._falling && _parentobj._fall_ko && (atk_parent._attacktype != "idle" || _parentobj._height <= _parentobj._groundlevel+72 || _parentobj._height >= _parentobj._groundlevel+256)){
@@ -619,7 +678,8 @@ function scr_enemyscript_hurtbox(type){
 																	_parentobj._hitadd += 0.4;
 																	_parentobj._hitadd_timer = timer;
 											
-																	_parentobj._hp -= (1+atk_obj._add_damage)*_parentobj._dmgmultiplier;
+																	_parentobj._hp -= (1+atk_obj._add_damage)*_parentobj._dmgmultiplier*_parentobj._combohit;
+																	_parentobj._curatk = 0;
 													
 																	atk_parent._freeze = global._freezeFrames.vshort_freeze;
 																	_parentobj._freeze = global._freezeFrames.vshort_freeze;
@@ -725,10 +785,11 @@ function scr_enemyscript_hurtbox(type){
 																		with(_parentobj){
 																			clearpath();
 																			do_ko();
+																			combohit();
 																		}
 											
 																		_parentobj._hurttimer = 0;
-																		_parentobj._hp -= (3+floor(_parentobj._hitadd)+atk_obj._add_damage)*_parentobj._dmgmultiplier;
+																		_parentobj._hp -= (3+floor(_parentobj._hitadd)+atk_obj._add_damage)*_parentobj._dmgmultiplier*_parentobj._combohit;
 																		_parentobj._hitadd = 0;
 																	}
 														
@@ -740,6 +801,8 @@ function scr_enemyscript_hurtbox(type){
 																	sfx_stop_array(global._kdsounds);
 																	sfx_play_choose(global._kdsounds);
 																}
+																
+																atk_parent._success_hit = 4;
 															break;
 															case ATK_KO:
 																if(_parentobj._ko_cooldown <= 0){
@@ -748,6 +811,9 @@ function scr_enemyscript_hurtbox(type){
 																		if(!array_contains(_parentobj._typeallowed, atk_parent._attacktype)) return;
 																	}
 																	if(!array_contains(_parentobj._atkallowed,ATK_KO)) return;
+																	if(variable_instance_exists(atk_parent, "_lowkick_dive")){
+																		if(atk_parent._lowkick_dive && !atk_parent._attack) return;
+																	}
 																	if(atk_parent._attacktype == "air" && !_parentobj._falling && _parentobj._fall_ko) return;
 																	if(atk_parent._attacktype == "air" && _parentobj._falling && atk_parent < _parentobj._height) return;
 																	if((atk_parent._attacktype == "crouch" || atk_parent._attacktype == "slide") && (_parentobj._falling && !_parentobj._fall_ko && _parentobj._height < _parentobj._groundlevel+48) || (_parentobj._falling && _parentobj._height >= _parentobj._groundlevel+48)) return;
@@ -760,10 +826,75 @@ function scr_enemyscript_hurtbox(type){
 																	if((atk_parent._attacktype == "crouch" || atk_parent._attacktype == "slide") && (_parentobj._standup || _parentobj._falling || _parentobj._grabout || _parentobj._grabfall || _parentobj._grabdodge)) return;
 																	if(atk_parent._attacktype == "slide" && _parentobj._falls == 1) return;
 																	if(variable_instance_exists(atk_parent, "_runroll")){
-																		if((atk_parent._runroll || atk_parent._runroll_dive) && atk_parent._height <= atk_parent._groundlevel+8 && _parentobj._standup) return;
+																		if(atk_parent._attacktype != "air"){
+																			if((atk_parent._runroll || atk_parent._runroll_dive) && atk_parent._height <= atk_parent._groundlevel+8 && _parentobj._standup) return;
+																		}
+																	}
+																	if(atk_parent._attacktype != "air" && _parentobj._spin){
+																		//block non air punches when spinning
+																		var p = instance_create_depth(_parentobj.x, _parentobj.y, 0, obj_particle);
+																		if(atk_obj._type != "air"){
+																			p._type = "fx"+string(choose(1,2));
+																		} else {
+																			p._type = "fx"+string(choose(3,4));
+																		}
+																		p._damage = atk_obj._damage;
+																		p._curdir = atk_obj._curdir;
+															
+																		sfx_play_choose([snd_punchfail1,snd_punchfail2,snd_punchfail3]);
+																		
+																		if(instance_exists(atk_obj)){
+																			instance_destroy(atk_obj.id);
+																		}
+																		
+																		return;
 																	}
 													
 																	if(_parentobj._fallfloat) return;
+																	
+																	if(_parentobj._spin){
+																		_parentobj._ko_cooldown = 30;
+																		
+																		if(_parentobj._spinatk != noone && instance_exists(_parentobj._spinatk)){
+																			(_parentobj._spinatk)._delay = 90;
+																		}
+																		
+																		with(obj_camera){
+																			_ampX = 16;
+																			_ampY = 16;
+																		}
+																		
+																		global._pad_vibrate = 4;
+														
+																		atk_parent._freeze = global._freezeFrames.long_freeze;
+																		_parentobj._freeze = global._freezeFrames.long_freeze;
+																		
+																		if(!_parentobj._boss){
+																			_parentobj._hp -= (5+floor(_parentobj._hitadd)+atk_obj._add_damage)*_parentobj._dmgmultiplier*_parentobj._combohit;
+																		} else {
+																			_parentobj._hp -= 3;
+																		}
+																		
+																		_parentobj._hitadd = 0;
+																			
+																		_parentobj._spinhits ++;
+																			
+																		//ui
+																		if(instance_exists(_parentobj)){
+																			if(has_trait(TRAIT_HP, _parentobj)){
+																				ui_hp_stuff(_parentobj);
+																			}
+																		}
+																			
+																		sfx_stop_array(global._kdsounds);
+																		sfx_play_choose(global._kdsounds);
+																			
+																		var dmgnums = instance_create_depth(x+_parentobj._dmgoffset[0], y-((_parentobj.sprite_height * 2)+150)+_parentobj._dmgoffset[1], 0, obj_nums);
+																        dmgnums._num = max(1,floor(_parentobj._hplastframe - _parentobj._hp));
+																		_parentobj._hplastframe = _parentobj._hp;	
+																		
+																		return;
+																	}
 													
 																	var hench_stuck_in_ground = false;
 																	var maxslamdown = 2;
@@ -784,7 +915,12 @@ function scr_enemyscript_hurtbox(type){
 																		
 																		if(_parentobj._falling || _parentobj._fall_ko){
 																			_parentobj._stunlock_timer = _parentobj._stunlock_formula;
-																			_parentobj._stunlock_hits += 1;
+																			_parentobj._stunlock_hits += 0.7;
+																		} else {
+																			if(atk_parent._attacktype == "upper"){
+																				_parentobj._stunlock_timer = _parentobj._stunlock_formula;
+																				_parentobj._stunlock_hits += 0.7;
+																			}
 																		}
 																		
 																		_parentobj._dh_atk = 10;
@@ -807,6 +943,9 @@ function scr_enemyscript_hurtbox(type){
 																			_parentobj._stunlock_timer = _parentobj._stunlock_formula;
 																			_parentobj._stunlock_hits += 1;
 																		
+																			atk_parent._state = "jump";
+																			atk_parent._runroll_dive = false;
+																			atk_parent._runroll = false;
 																			atk_parent._jump_enmhit = true;
 																		}
 																	}
@@ -826,29 +965,16 @@ function scr_enemyscript_hurtbox(type){
 															
 																		//instant fall from air ko
 																		with(obj_camera){
-																			_ampY = 16;
+																			_ampX = 22;
+																			_ampY = 22;
 																		}
 																		
 																		global._pad_vibrate = 4;
 													
-																		_parentobj._hp -= (2+floor(_parentobj._hitadd)+atk_obj._add_damage)*_parentobj._dmgmultiplier;
+																		_parentobj._hp -= (2+floor(_parentobj._hitadd)+atk_obj._add_damage)*_parentobj._dmgmultiplier*_parentobj._combohit;
 													
-																		//after-image
-																		with(_parentobj){
-																			var info = [
-																				[32, 1],
-																				[96, 0.8],
-																				[178, 0.7],
-																			];
-																			for(var i = 0; i < 3; i++){
-																				var im = instance_create_depth(x, y-info[i][0], depth+32, obj_enm_afterIM);
-																				im.sprite_index = asset_get_index("spr_"+string(_codename)+"_"+"fall");
-																				im.image_index = _displayobj.image_index;
-																				im.image_xscale = _displayobj.image_xscale;
-																				im.image_yscale = _displayobj.image_yscale;
-																				im._alpha = info[i][1];
-																			}
-																		}
+																		var p = instance_create_depth(x+(64*_curdir),y+48,depth, obj_particle);
+																		p._type = "fx4";
 													
 																		_parentobj._hurttimer = 0;
 														
@@ -860,9 +986,14 @@ function scr_enemyscript_hurtbox(type){
 																		_parentobj._vspd = -2;
 																		_parentobj._falls = 0;
 													
+																		with(_parentobj){
+																			combohit();
+																		}
+													
 																		if(!atk_obj._slam){
-																			atk_parent._freeze = global._freezeFrames.short_freeze;
-																			_parentobj._freeze = global._freezeFrames.short_freeze;
+																			atk_parent._force_freeze = global._freezeFrames.long_freeze-3;
+																			_parentobj._force_freeze = global._freezeFrames.long_freeze-3;
+																			_parentobj._smackdown = true;
 																		}
 													
 																		_parentobj._ko_cooldown = 20;
@@ -912,7 +1043,7 @@ function scr_enemyscript_hurtbox(type){
 																			if(_parentobj._fatalko){
 																				_parentobj._hp = 0;
 																			} else {
-																				_parentobj._hp -= (2+floor(_parentobj._hitadd)+atk_obj._add_damage)*_parentobj._dmgmultiplier;
+																				_parentobj._hp -= (2+floor(_parentobj._hitadd)+atk_obj._add_damage)*_parentobj._dmgmultiplier*_parentobj._combohit;
 																			}
 																			_parentobj._hitadd = 0;
 																		}
@@ -920,12 +1051,17 @@ function scr_enemyscript_hurtbox(type){
 																		if(hench_stuck_in_ground){
 																			//henchie
 																			if(variable_instance_exists(_parentobj.id,"_hn_shake")){
+																				var partc = instance_create_depth(_parentobj.x, _parentobj.y-96, 0, obj_particle);
+																				partc._type = "fx6";
+																				
 																				if(_parentobj._hurttimer <= 0 && _parentobj._hn_shake > 0){
-																					if(_parentobj._hn_slamdown < maxslamdown){
+																					if(_parentobj._hn_slamdown <= maxslamdown-1){
 																						_parentobj._hn_slamdown ++;
-																						_parentobj._hn_shake = 120;
+																						_parentobj._hn_shake = 150;
+																						_parentobj._hn_slamdown_timer = 24;
+																						_parentobj._hn_slamdownsnd = false;
 																					} else {
-																						_parentobj._hn_shake = 8;
+																						_parentobj._hn_shake = 2;
 																					}
 																				}
 																			}
@@ -936,7 +1072,7 @@ function scr_enemyscript_hurtbox(type){
 																				clearpath();
 																				do_ko();
 																			}
-																			
+																				
 																			_parentobj._dmgcoold = 0;
 													
 																			_parentobj._ko_cooldown = 20;
@@ -952,6 +1088,10 @@ function scr_enemyscript_hurtbox(type){
 																						ui_hp_stuff(_parentobj);
 																					}
 																				}
+																				
+																				with(_parentobj){
+																					combohit();
+																				}
 											
 																				scr_showhits();
 																			}
@@ -966,6 +1106,10 @@ function scr_enemyscript_hurtbox(type){
 																		if(hench_stuck_in_ground){
 																			_parentobj._hurttimer = 24;
 																		}
+																	}
+																	
+																	if(atk_obj._slam){
+																		_parentobj._nocked = 0;
 																	}
 																} else {
 																	_parentobj._show_hits = false;
@@ -1006,10 +1150,12 @@ function scr_enemyscript_hurtbox(type){
 																global._mashZoomTimer = 16;
 																global._mashinst = atk_parent._displayobj;
 									
+																_parentobj._combohit = 1;
+									
 																_parentobj._hurts = 0;
 																_parentobj._hurttimer = 8;
-																_parentobj._hp -= (1+atk_obj._add_damage)*_parentobj._dmgmultiplier;
-																
+																_parentobj._hp -= (1+atk_obj._add_damage)*_parentobj._dmgmultiplier*_parentobj._combohit;
+
 																if(array_length(_parentobj._mashhurt_pool) == 0){
 																	for(var m = 0; m < _parentobj._mashhurt_max; m++){
 																		_parentobj._mashhurt_pool[m] = m;
@@ -1045,6 +1191,7 @@ function scr_enemyscript_hurtbox(type){
 																	
 																	_mashdir = _curdir;
 																	_aftermash = 3;
+																	_combohit = 1;
 																}
 												
 																if(!_parentobj._boss){
@@ -1052,7 +1199,7 @@ function scr_enemyscript_hurtbox(type){
 																	_parentobj._hp = 0;
 																} else {
 																	_parentobj._hurttimer = 0;
-																	_parentobj._hp -= _parentobj._mashlosehp*_parentobj._dmgmultiplier;
+																	_parentobj._hp -= _parentobj._mashlosehp*_parentobj._dmgmultiplier*_parentobj._combohit;
 																}
 															break;
 														}
@@ -1069,7 +1216,7 @@ function scr_enemyscript_hurtbox(type){
 			}
 		
 			//damage numbers
-			if(!global._tutorial && _parentobj._showDmg && has_trait(TRAIT_HURT, _parentobj)){
+			if(!global._tutorial && _parentobj._showDmg && has_trait(TRAIT_HURT, _parentobj) && _parentobj._immunetimer <= 0){
 				if(global._finalhit <= 0 && !_parentobj._grabfall && _parentobj._hp < _parentobj._hplastframe && (_parentobj._height <= _parentobj._groundlevel || _parentobj._falling || _parentobj._slam) && _parentobj._dmgcoold <= 0){
 					var dmgnums = instance_create_depth(x+_parentobj._dmgoffset[0], y-((_parentobj.sprite_height * 2)+150)+_parentobj._dmgoffset[1], 0, obj_nums);
 			        dmgnums._num = max(1,floor(_parentobj._hplastframe - _parentobj._hp));

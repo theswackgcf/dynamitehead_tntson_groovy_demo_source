@@ -2,8 +2,8 @@
   "$GMSound":"v2",
   "%Name":"snd_swackygames",
   "audioGroupId":{
-    "name":"audiogroup_sfx",
-    "path":"audiogroups/audiogroup_sfx",
+    "name":"audiogroup_default",
+    "path":"audiogroups/audiogroup_default",
   },
   "bitDepth":1,
   "channelFormat":0,
@@ -14,8 +14,8 @@
   "exportDir":"",
   "name":"snd_swackygames",
   "parent":{
-    "name":"snd_fx",
-    "path":"folders/Sounds/snd_fx.yy",
+    "name":"game",
+    "path":"folders/Sounds/snd_fx/game.yy",
   },
   "preload":false,
   "resourceType":"GMSound",

@@ -1,6 +1,8 @@
 {
 	_codename = "";
 	
+	_finalko_obj = true;
+	
 	depth = -5001;
 	
 	_allsounds = ds_map_create();
@@ -14,7 +16,7 @@
 	_sintimer = 0;
 	_timer = 0;
 	
-	_scale = 0.65;
+	_scale = 1;
 	
 	_freeze = 0;
 	

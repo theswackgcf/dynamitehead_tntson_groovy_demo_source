@@ -28,8 +28,12 @@
 			
 			image_xscale = _scale[0];
 			image_yscale = _scale[1];
-			x = _parentobj.x + (_offset[0]*_curdir);
-			y = (_parentobj.y + _offset[1]) - _parentobj._height;
+			var folpos = [_parentobj.x,_parentobj.y];
+			if(_forcefollow){
+				folpos = [_forcefollow_pos[0],_forcefollow_pos[1]];
+			}
+			x = folpos[0] + (_offset[0]*_curdir);
+			y = (folpos[1] + _offset[1]) - _parentobj._height;
 			if(variable_instance_exists(_parentobj.id, "_behaviortype")){
 				if(_parentobj._behaviortype == "hopping"){
 					_active = true;
@@ -60,10 +64,10 @@
 					}
 				}
 				if(_destroy_timer >= 4){
-					if(_type == "slide" && (_parentobj._state != "slide" || abs(_parentobj._spd[0]) <= 12)){
+					if(_type == "slide" && !_parentobj._runroll_slide){
 						instance_destroy();
 					}
-					if(_type == "roll" && (_parentobj._state != "roll" || abs(_parentobj._rollspd) <= 10)){
+					if(_type == "roll" && (_parentobj._state != "roll" || abs(_parentobj._rollspd) <= 10) || _parentobj._runroll_dive){
 						instance_destroy();
 					}
 					if(_type == "air" && (_parentobj._state != "jump" || _parentobj._nojump > 0)){
@@ -72,10 +76,14 @@
 				}
 				
 				if(_type == "air"){
-					if(_parentobj._jumpreach >= _parentobj._mingroundko){
+					if(abs(_parentobj._rollspd) > 0){
 						_damage = ATK_KO;
 					} else {
-						_damage = ATK_NORM;
+						if(_parentobj._jumpreach >= _parentobj._mingroundko){
+							_damage = ATK_KO;
+						} else {
+							_damage = ATK_NORM;
+						}
 					}
 				}
 			}
@@ -86,10 +94,17 @@
 					instance_destroy();
 				}
 				
+				if(_parentobj._shockwave > 0 || _parentobj._mashed){
+					instance_destroy();
+				}
+				
 				if(_type == "slide_enm" && (_parentobj._curstate != STATE_SLIDE || _parentobj._falling || _parentobj._fall_ko)){
 					instance_destroy();
 				}
-				if(_type == "crouch_enm" && _parentobj._curstate == STATE_JUMP){
+				if((_type == "crouch_enm" || _type == "crouch_enm_henchie") && _parentobj._curstate == STATE_JUMP){
+					instance_destroy();
+				}
+				if(_type == "crouch_enm_henchie" && _parentobj._anim != "crouchkick"){
 					instance_destroy();
 				}
 				if(_type == "air_enm" && _parentobj._height <= _parentobj._groundlevel && _parentobj._curstate != STATE_JUMP){
@@ -101,6 +116,10 @@
 				if(_type == "blockko_enm" && _parentobj._anim != "blockko"){
 					instance_destroy();
 				}
+				if(_delay <= 0 && _type == "lowkick_enm" && _parentobj._anim != "lowkick"){
+					instance_destroy();
+				}
+				
 				if(_type == "spin_enm"){
 					_active = true;
 					_height = _parentobj._height+25;

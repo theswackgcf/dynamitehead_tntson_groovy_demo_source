@@ -37,6 +37,12 @@
 				var b = instance_create_depth(pos[i][0], pos[i][1], 0, obj_battleborder);
 				b.image_xscale = size[i][0];
 				b.image_yscale = size[i][1];
+				if(bds[i] == "u"){
+					b.image_yscale = size[i][1]*_border_top_size;
+				}
+				if(bds[i] == "d"){
+					b.image_yscale = size[i][1]*_border_bottom_size;
+				}
 				b._side = bds[i];
 				_borders[i] = b.id;
 			}
@@ -53,23 +59,27 @@
 			for(var i = 0; i < array_length(global._enemyArray); i++){
 				//delete off screen, non battlezone enemies
 				with(global._enemyArray[i]){
-					if(variable_instance_exists(self.id, "_inactive")){
-						if(_inactive){
-							killself();
-						}
-					}
-					if(variable_instance_exists(self.id, "_battlezone")){
-						if(!_battlezone && !place_meeting(x, y, obj_battlezone)){
-							_forcedeath = true;
-							_hp = 0;
-							_despawndeath = true;
-							_death = true;
-							_falling = true;
-							_fixwall = true;
-							_jump = true;
-							_height = _groundlevel + 1;
-							_falls = 0;
-							_vspd = 18;
+					if(variable_instance_exists(self.id, "_finalko_obj")){
+						if(!_finalko_obj){
+							if(variable_instance_exists(self.id, "_inactive")){
+								if(_inactive){
+									killself();
+								}
+							}
+							if(variable_instance_exists(self.id, "_battlezone")){
+								if(!_battlezone && !place_meeting(x, y, obj_battlezone)){
+									_forcedeath = true;
+									_hp = 0;
+									_despawndeath = true;
+									_death = true;
+									_falling = true;
+									_fixwall = true;
+									_jump = true;
+									_height = _groundlevel + 1;
+									_falls = 0;
+									_vspd = 18;
+								}
+							}
 						}
 					}
 				}
@@ -224,6 +234,9 @@
 						}
 						var offscreen_offset = [-96+addoffset[0],-96+addoffset[1],-100+addoffset[2],30+addoffset[3]]; //l r u d
 						var onscreen_offset = [global._cameraX-128+addoffset[0],(global._cameraX+WIDTH)+128+addoffset[1],global._cameraY+128+addoffset[2],(global._cameraY+HEIGHT)+128+addoffset[3]];
+						
+						var borderoffset = 0;
+						
 						switch(_enemies[_curwave][i][0]){
 							case "l":
 								spawnX = x-(_bzSize[0]/2)+global._battlezonerange;
@@ -244,21 +257,25 @@
 								}
 							break;
 							case "u":
+								borderoffset = sprite_get_height(spr_battleborder)*(_border_top_size-1);
+							
 								spawnX = x-(_bzSize[0]/2)+_enemies[_curwave][i][1];
-								spawnY = y-(_bzSize[1]/2)+global._battlezonerange;
+								spawnY = y-(_bzSize[1]/2)+global._battlezonerange+borderoffset;
 								offscreenspawn[0] = spawnX;
-								offscreenspawn[1] = y-(_bzSize[1]/2)-offscreen_offset[2];
+								offscreenspawn[1] = y-(_bzSize[1]/2)-offscreen_offset[2]+borderoffset;
 								if(image_yscale < 1){
-									offscreenspawn[1] = onscreen_offset[2];
+									offscreenspawn[1] = onscreen_offset[2]+borderoffset;
 								}
 							break;
 							case "d":
+								borderoffset = -(sprite_get_height(spr_battleborder)*(_border_bottom_size-1));
+							
 								spawnX = x-(_bzSize[0]/2)+_enemies[_curwave][i][1];
-								spawnY = y+(_bzSize[1]/2)-global._battlezonerange;
+								spawnY = y+(_bzSize[1]/2)-global._battlezonerange+borderoffset;
 								offscreenspawn[0] = spawnX;
-								offscreenspawn[1] = y+(_bzSize[1]/2)+offscreen_offset[3];
+								offscreenspawn[1] = y+(_bzSize[1]/2)+offscreen_offset[3]+borderoffset;
 								if(image_yscale < 1){
-									offscreenspawn[1] = onscreen_offset[3];
+									offscreenspawn[1] = onscreen_offset[3]+borderoffset;
 								}
 							break;
 							case "c":
@@ -280,7 +297,8 @@
 						}
 					
 						if(!fx){
-							var en = instance_create_depth(spawnX, spawnY, 0, obj_enmspawn);
+							var en = instance_create_depth(spawnX, spawnY+borderoffset, 0, obj_enmspawn);
+							en._spawnnum = i;
 							en._asset = asset_get_index("obj_"+enmtospawn+"_mask");
 							en._spawnX = spawnX;
 							en._spawnY = spawnY;
@@ -294,9 +312,10 @@
 							}
 							if(variable_instance_exists(en, "_startTimer")){
 								en._dostarttimer = true; //
-								en._startTimer = random_range(6, 64);
+								var multnum = 24;
+								en._startTimer = en._spawnnum*multnum;
 								if(global._delayspawn > 0){
-									en._startTimer = random_range(6, 64)+global._delayspawntime;
+									en._startTimer = (en._spawnnum*multnum)+global._delayspawntime;
 								}
 							}
 							en._battlezone = true;

@@ -1,0 +1,26 @@
+{
+  "$GMSound":"v2",
+  "%Name":"snd_whack_lanky_appear2",
+  "audioGroupId":{
+    "name":"audiogroup_sfx",
+    "path":"audiogroups/audiogroup_sfx",
+  },
+  "bitDepth":1,
+  "channelFormat":0,
+  "compression":0,
+  "compressionQuality":4,
+  "conversionMode":0,
+  "duration":0.5688889,
+  "exportDir":"",
+  "name":"snd_whack_lanky_appear2",
+  "parent":{
+    "name":"whack",
+    "path":"folders/Sounds/snd_fx/minigames/whack.yy",
+  },
+  "preload":false,
+  "resourceType":"GMSound",
+  "resourceVersion":"2.0",
+  "sampleRate":22050,
+  "soundFile":"snd_whack_lanky_appear2.wav",
+  "volume":1.0,
+}

@@ -29,6 +29,22 @@
 				global._gameshadows[? _occupy_id][? "scaley"] = 0.25*shadowmult;
 			}
 		}
-		draw_sprite_ext(sprite_index, image_index, x, y+offs, 1, 1, 0, image_blend, 1);
+		
+		//grab outline
+		if(place_meeting(x,y,obj_dh_mask)){
+			var dh = instance_place(x,y,obj_dh_mask);
+			if(instance_exists(dh)){
+				if(dh._grabhold_other != noone && instance_exists(dh._grabhold_other)){
+					if(dh._grabhold_other.id == self.id){
+						var outcol = dh._grabhold_color;
+						if(global._kohit > 0){
+							outcol = c_black;
+						}
+						scr_draw_outline(sprite_index, image_index, x, y+offs-_height, 1, 1, 0, image_blend, 1, outcol);
+					}
+				}
+			}
+		}
+		draw_sprite_ext(sprite_index, image_index, x, y+offs-_height, 1, 1, 0, image_blend, 1);
 	}
 }

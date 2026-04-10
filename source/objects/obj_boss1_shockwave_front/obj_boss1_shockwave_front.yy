@@ -33,10 +33,7 @@
   "resourceType":"GMObject",
   "resourceVersion":"2.0",
   "solid":false,
-  "spriteId":{
-    "name":"spr_boss1_shockwave_mask",
-    "path":"sprites/spr_boss1_shockwave_mask/spr_boss1_shockwave_mask.yy",
-  },
+  "spriteId":null,
   "spriteMaskId":null,
   "visible":true,
 }

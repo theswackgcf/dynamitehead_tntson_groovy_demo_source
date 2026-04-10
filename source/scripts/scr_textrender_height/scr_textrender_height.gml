@@ -5,9 +5,16 @@ function scr_textrender_height(text, array = false, scale_y = 1){
 		var textReplace2 = string_replace_all(textReplace1, "\\", "\\\\");
 		var textArray = string_split(textReplace2, "/n");
 		
+		var keyscale_nes = global._keyscale_nes;
+		
+		var _init_keyscale_y = scale_y;
+		if(global._font == "dh_fontnes" || global._font == "dh_fontnes_lode"){
+			_init_keyscale_y = scale_y*keyscale_nes;
+		}
+		
 		var textKeySplit;
 		var lineHasKey = false;
-		var defkeyheight = global._keybindH*scale_y;
+		var defkeyheight = global._keybindH*_init_keyscale_y;
 		var totalheight = 0;
 		
 		for(var o = 0; o < array_length(textArray); o++){

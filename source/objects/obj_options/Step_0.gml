@@ -183,7 +183,8 @@
 				
 				if(menu_keycheck("confirm") || menu_keycheck("menu_select")){
 					checkmenus();
-				} else if(menu_keycheck("pause") || menu_keycheck("menu_back") || (global._menumouse && mouse_check_button_pressed(mb_right))){
+				}
+				if(menu_keycheck("pause") || menu_keycheck("menu_back") || (global._menumouse && mouse_check_button_pressed(mb_right))){
 					sfx_stop_array(_menuobj._sndarray);
 					sfx_play_choose(_menuobj._sndarray);
 					if(_state != "main"){
@@ -263,6 +264,8 @@
 		if(_state == "main"){
 			_offsetY = 0;
 			_offsetYLerp = 0;
+			_scrheight = 0;
+			_curbutton = noone;
 		} else {
 			if(_keyup > 0 || _keydown > 0){
 				if(_curopt[_layer] < _scrollopt[_statenum]){
@@ -270,6 +273,8 @@
 				} else {
 					if(_curbutton != noone){
 						_offsetY = -(_curbutton._starty+_btnscrolloffset);
+					} else {
+						_offsetY = 0;
 					}
 				}
 			}
@@ -351,14 +356,11 @@
 		if(_curbutton != noone){
 			_descobj._desc = _curbutton._desc;
 		}
-	} else {
-		if(surface_exists(_gui_surface)){
-			surface_free(_gui_surface);
-		}
-		if(surface_exists(_resizegui_surface)){
-			surface_free(_resizegui_surface);
-		}
 		
+		if(!global._menumouse){
+			global._forcecustorstop = 2;
+		}
+	} else {
 		_action = "";
 		_layer = 0;
 		_state = "main";

@@ -121,9 +121,6 @@
 								if(_begintime >= 10 && _displayobj.image_index >= _displayobj.image_number-1){
 									_displayobj.image_index = 0;
 									if(!_trigger){
-										with(obj_game){
-											global._vsscreen = 1;
-										}
 										_trigger = true;
 									}
 								}

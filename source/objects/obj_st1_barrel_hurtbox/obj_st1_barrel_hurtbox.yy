@@ -32,10 +32,7 @@
   "resourceType":"GMObject",
   "resourceVersion":"2.0",
   "solid":false,
-  "spriteId":{
-    "name":"spr_st1_barrel_hurtbox",
-    "path":"sprites/spr_st1_barrel_hurtbox/spr_st1_barrel_hurtbox.yy",
-  },
+  "spriteId":null,
   "spriteMaskId":null,
   "visible":true,
 }

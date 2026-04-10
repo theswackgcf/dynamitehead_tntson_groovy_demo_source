@@ -31,10 +31,7 @@
   "resourceType":"GMObject",
   "resourceVersion":"2.0",
   "solid":false,
-  "spriteId":{
-    "name":"spr_lv1intro_fg",
-    "path":"sprites/spr_lv1intro_fg/spr_lv1intro_fg.yy",
-  },
+  "spriteId":null,
   "spriteMaskId":null,
   "visible":true,
 }

@@ -4,7 +4,7 @@
 	_codename = "st2_enm3";
 	_enmtype = -1;
 	_enmtypes = global._enmtypes[? _codename];
-	_maxhp = 15;
+	_maxhp = 10;
 	
 	//create the "sprites" object
 	_displayobj = instance_create_depth(x, y, -16, obj_st2_enm3_display);
@@ -40,11 +40,14 @@
 	_dodgezones = ["air", "crouch"];
 	_dodgezones_start = _dodgezones;
 	
+	_standup_mult = 2;
+	
 	array_push(_enemytraits,
 	TRAIT_KO, TRAIT_TAUNT,
-	TRAIT_BACKOFF, TRAIT_BLOCK, TRAIT_BLOCKKO, TRAIT_DODGE);
+	TRAIT_BACKOFF, TRAIT_BLOCK, TRAIT_BLOCKATK, TRAIT_DODGE);
 	
 	_playvoice.death = snd_gostlik_die;
+	_playvoice.smackdown = snd_gostlik_hurt;
 	_maxcolors = global._maxcolors[? _codename];
 	
 	_hpcolor = [make_color_rgb(103,154,211),make_color_rgb(113,157,53),make_color_rgb(210,66,135)];
@@ -52,6 +55,7 @@
 	_skullnum = 2;
 	
 	_animloop[? "block"] = 2;
+	_animloop[? "spin1"] = 4;
 
 	_nockanim = "blockko";
 	_nockframe = 2;
@@ -71,6 +75,34 @@
 	_gl_tongspin_timer = 0;
 	_gl_tongspin_addtime = false;
 	_gl_tongspin_amp = 0;
+	_gl_spindir = false;
+	
+	_gl_spinendtimer = 0;
+	_gl_stunblocks = false;
 	
 	_gl_particle = 0;
+	
+	_gl_stunstart = false;
+	
+	#macro GL_ATK_NONE 0
+	#macro GL_ATK_ALT1 1
+	
+	_gl_atkstate = GL_ATK_NONE;
+	_gl_atktimer = 0;
+	_gl_atkact = 0;
+	
+	_gl_totalclaps = 5;
+	_gl_curclaps = _gl_totalclaps;
+	_gl_hpadd = 0;
+	_gl_atksmoke = false;
+	_gl_atkclap = false;
+	_gl_atkend = false;
+	_gl_storepos = [x,y];
+	_gl_swishsnd = false;
+	_gl_clapintervals = [0,0];
+	
+	_gl_atk_cd = 0;
+	
+	_prompts = noone;
+	_createprompt = false;
 }

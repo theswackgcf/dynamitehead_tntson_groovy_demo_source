@@ -2,7 +2,7 @@
 	if(!global._pause){
 		if(_active){
 			repeat(abs(_xspd)){
-				if(!place_meeting_array(x+sign(_xspd),y,global._solidArray)){
+				if(!place_meeting_array(x+sign(_xspd),y,global._solidArray) && !place_meeting_array(x+sign(_xspd),y,global._solidOtherArray)){
 					x += sign(_xspd);
 				}
 			}
@@ -22,7 +22,7 @@
 		
 			if(_height > _groundlevel){
 				_height += _vspd;
-				_vspd -= 0.6;
+				_vspd -= (0.6*global._gravmult);
 			} else {
 				if(!_bump){
 					_height = _groundlevel + 8;

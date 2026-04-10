@@ -35,10 +35,7 @@
   "resourceType":"GMObject",
   "resourceVersion":"2.0",
   "solid":false,
-  "spriteId":{
-    "name":"spr_boss0_mask",
-    "path":"sprites/spr_boss0_mask/spr_boss0_mask.yy",
-  },
+  "spriteId":null,
   "spriteMaskId":null,
   "visible":true,
 }

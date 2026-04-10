@@ -1,4 +1,16 @@
 {
+	//debug
+	if(global._debug){
+		if(keyboard_check_pressed(vk_f1)){
+			global._curmonyx = 10000;
+			_curmonyx = global._curmonyx;
+		
+			with(obj_game){
+				scr_savevalue(global._curmonyx, "Monyx", _gamesavefile, "", true, true);
+			}
+		}
+	}
+	
 	//dh on beat
 	var failsafe = false;
 	if(global._cursong != -1){
@@ -18,6 +30,18 @@
 		}
 	} else {
 		failsafe = true;
+	}
+	
+	if(global._addmonyx > 0){
+		_curmonyx = global._curmonyx;
+		global._curmonyx += global._addmonyx;
+		_addmonyx = global._curmonyx;
+		
+		with(obj_game){
+			scr_savevalue(global._curmonyx, "Monyx", _gamesavefile, "", true, true);
+		}
+		
+		global._addmonyx = 0;
 	}
 	
 	_beatcount = 1-_beatcount_start+(floor((audio_sound_get_track_position(global._cursong) * _bpm) / 60)%4);
@@ -89,6 +113,65 @@
 			btn5._ysize = 75;
 			btn5._action = "rightmanual";
 			btn5._canrapidfire = true;
+			
+			var btn6 = instance_create_depth(0, 0, 0, obj_menuclickable);
+			btn6._parentbtn = self;
+			btn6._offsetx = 660;
+			btn6._offsety = 650;
+			btn6._xsize = 85;
+			btn6._ysize = 75;
+			btn6._action = "leftgame";
+			btn6._canrapidfire = true;
+	
+			var btn7 = instance_create_depth(0, 0, 0, obj_menuclickable);
+			btn7._parentbtn = self;
+			btn7._offsetx = 780;
+			btn7._offsety = 650;
+			btn7._xsize = 85;
+			btn7._ysize = 75;
+			btn7._action = "rightgame";
+			btn7._canrapidfire = true;
+			
+			var btn8 = instance_create_depth(0, 0, 0, obj_menuclickable);
+			btn8._parentbtn = self;
+			btn8._offsetx = WIDTH-232;
+			btn8._offsety = HEIGHT-82;
+			btn8._xsize = 260;
+			btn8._ysize = 110;
+			btn8._action = "startgame";
+			btn8._canrapidfire = false;
+			
+			var btn9 = instance_create_depth(0, 0, 0, obj_menuclickable);
+			btn9._parentbtn = self;
+			btn9._offsetx = floor(WIDTH/2)-124;
+			btn9._offsety = floor(HEIGHT/2)+62;
+			btn9._xsize = 135;
+			btn9._ysize = 120;
+			btn9._action = "leftdiff";
+			btn9._canrapidfire = true;
+			btn9._rapidfactor = 0.15;
+			btn9._monyx_screen = true;
+			
+			var btn10 = instance_create_depth(0, 0, 0, obj_menuclickable);
+			btn10._parentbtn = self;
+			btn10._offsetx = floor(WIDTH/2)+144;
+			btn10._offsety = floor(HEIGHT/2)+62;
+			btn10._xsize = 135;
+			btn10._ysize = 120;
+			btn10._action = "rightdiff";
+			btn10._canrapidfire = true;
+			btn10._rapidfactor = 0.15;
+			btn10._monyx_screen = true;
+			
+			var btn11 = instance_create_depth(0, 0, 0, obj_menuclickable);
+			btn11._parentbtn = self;
+			btn11._offsetx = floor(WIDTH/2);
+			btn11._offsety = HEIGHT-120;
+			btn11._xsize = 370;
+			btn11._ysize = 140;
+			btn11._action = "startdiff";
+			btn11._canrapidfire = false;
+			btn11._monyx_screen = true;
 		
 			//manual
 			for(var i = 0; i < 99; i++){
@@ -97,6 +180,19 @@
 					_manual_imgs[i] = sprite_add(file, 1, false, false, floor(_manual_dim[0]/2),floor(_manual_dim[1]/2));
 				}
 			}
+		
+			array_push(_minigame_desc_loop, _minigame_desc[array_length(_minigame_desc)-1]);
+			for(var i = 0; i < array_length(_minigame_desc); i++){
+				array_push(_minigame_desc_loop, _minigame_desc[i]);
+			}
+			array_push(_minigame_desc_loop, _minigame_desc[0]);
+			
+			
+			array_push(_minigame_monyx_loop, _minigame_monyx[array_length(_minigame_monyx)-1]);
+			for(var i = 0; i < array_length(_minigame_monyx); i++){
+				array_push(_minigame_monyx_loop, _minigame_monyx[i]);
+			}
+			array_push(_minigame_monyx_loop, _minigame_monyx[0]);
 		
 			_init = true;
 		}
@@ -177,6 +273,10 @@
 		if(global._backtomenu){
 			_skip_intro_on_start = true;
 			_stageselect_start = true;
+			if(global._menuminigame){
+				_stageselect_start = false;
+				_minigamescreen_start = true;
+			}
 			
 			global._backtomenu = false;
 		}
@@ -198,6 +298,20 @@
 					_displayselect = true;
 				}
 			}
+		}
+		if(_minigamescreen_start){
+			_option = 2;
+			_lerpedoption = _option;
+			_menustate = "minigames";
+			_curopt[0] = 1;
+			_prevopt[0] = 1;
+			_state = _menustate;
+			_setminigameoffset = true;
+			_curminigame = global._saveminigame[0];
+			_minigame_cur = global._saveminigame[1];
+			_minigame_prev = _minigame_cur;
+			
+			_minigamescreen_start = false;
 		}
 		
 		_starttimer ++
@@ -261,6 +375,10 @@
 		
 		if(_anykey_scale > 1){
 			_anykey_scale -= 0.12;
+		}
+
+		if(!global._menumouse){
+			global._forcecustorstop = 2;
 		}
 
 		switch(_menustate){
@@ -352,6 +470,12 @@
 					}
 				} else {
 					_entertimer ++;
+					
+					if(_enteract < 4 && _entertimer % 6 <= 1){
+						var p = instance_create_depth(135+random_range(-270,270),_enterpos+random_range(-42,42), -32, obj_particle);
+						p._type = "menufx";
+					}
+					
 					switch(_enteract){
 						case 0:
 							_enterscale = [0.86, 1.11];
@@ -387,6 +511,10 @@
 								_enterangle = 0;
 								_enteroffset = [0,0];
 								_enteramp = 0;
+							
+								with(obj_particle){
+									instance_destroy();
+								}
 							
 								sfx_play(snd_explosion);
 								if(_curoption != "play"){
@@ -427,19 +555,29 @@
 											_show = true;
 										}
 									break;
-									case "manual":
-										//manual
-										_menustate = "manual";
+									case "extra":
+										//extras
+										_menustate = "extra";
 										_enter = false;
+										_curopt[0] = 0;
 									break;
 									case "credits":
 										//credits
 										_menustate = "credits";
 										_enter = false;
 									break;
+									case "patreon":
+										//link to patreon
+										_menustate = "main";
+										_enter = false;
+										
+										url_open_ext("https://www.patreon.com/swackygames", "_blank");
+									break;
 									case "quit":
 										//quit game
-										room_goto(r_quit);
+										_quitmessage = irandom_range(0, array_length(_quitmessages) - 1);
+										_menustate = "quit";
+										_enter = false;
 									break;
 								}
 								_enterinit = true;
@@ -520,6 +658,30 @@
 					}
 				}
 			break;
+			case "extra":
+				_on = true;
+			
+				if(global._tntmenuAct == 0){
+					if(menu_keycheck("pause") || menu_keycheck("menu_back") || (global._menumouse && mouse_check_button_pressed(mb_right))){
+						sfx_stop_array(_sndarray);
+						sfx_play_choose(_sndarray);
+				
+						_menustate = "main";
+					}
+				
+					if(_action != ""){
+						switch(_action){
+							case "backbutton":
+								sfx_stop_array(_sndarray);
+								sfx_play_choose(_sndarray);
+				
+								_menustate = "main";
+							break;
+						}
+						_action = "";
+					}
+				}
+			break;
 			case "manual":
 				_on = true;
 				
@@ -534,7 +696,7 @@
 					sfx_stop_array(_sndarray);
 					sfx_play_choose(_sndarray);
 				
-					_menustate = "main";
+					_menustate = "extra";
 					_manual_page = 0;
 					
 					_manual_offset = 0;
@@ -567,7 +729,7 @@
 							sfx_stop_array(_sndarray);
 							sfx_play_choose(_sndarray);
 				
-							_menustate = "main";
+							_menustate = "extra";
 							_manual_page = 0;
 							
 							_manual_offset = 0;
@@ -587,6 +749,289 @@
 				}
 			
 				_manual_page_prev = _manual_page;
+			break;
+			case "minigames":
+				_on = true;
+				
+				if(_diffshake > 0){
+					_diffshake --;
+				}
+				
+				if(_monyxshake > 0){
+					_monyxshake --;
+				}
+				
+				_monyx_col[0] = lerp(_monyx_col[0], _monyx_colto[0], 0.12);
+				_monyx_col[1] = lerp(_monyx_col[1], _monyx_colto[1], 0.12);
+				_monyx_col[2] = lerp(_monyx_col[2], _monyx_colto[2], 0.12);
+				
+				_minigame_frame += 0.12;
+				_minigame_offset = lerp(_minigame_offset, _minigame_offset_to, 0.16);
+				
+				if(_action == "backbutton"){
+					if(!_monyx_screen){
+						_menustate = "extra";
+					} else {
+						if(!_minigame_begin){
+							_monyx_screen = false;
+						}
+					}
+					
+					if(!_minigame_begin){
+						sfx_stop_array(_sndarray);
+						sfx_play_choose(_sndarray);
+					}
+					
+					_action = "";
+				}
+				
+				if(!_monyx_screen){
+					if(!_minigame_begin){
+						if(_minigame_frame >= 2.9 && _addmonyx > 0){
+							if(!_addmonyx_once){
+								sfx_play(snd_addcash);
+								
+								_monyx_col = [255,212,20];
+								_monyxshake = 15;
+								
+								_addmonyx_once = true;
+							}
+							_curmonyx = lerp(_curmonyx, _addmonyx, 0.12);
+							if(diff_abs(_curmonyx, _addmonyx) <= 8){
+								_curmonyx = _addmonyx;
+								_addmonyx = 0;
+							}
+						}
+					}
+					
+					if(_priceshake > 0){
+						_priceshake --;
+					}
+					
+					if(menu_keycheck("right") || menu_keycheck("menu_right")){
+						_minigame_prev = _minigame_cur;
+						_minigame_cur ++;
+						_priceshake = 16;
+						if(_minigame_cur > array_length(_minigame_desc_loop)-1){
+							_minigame_cur = 2;
+						
+							_minigame_offset = _minigame_offset_to+(WIDTH*2);
+						}
+					} else if(menu_keycheck("left") || menu_keycheck("menu_left")){
+						_minigame_prev = _minigame_cur;
+						_minigame_cur --;
+						_priceshake = 16;
+						if(_minigame_cur < 0){
+							_minigame_cur = array_length(_minigame_desc_loop)-3;
+						
+							_minigame_offset = _minigame_offset_to-(WIDTH*2);
+						}
+					}
+					
+					if(menu_keycheck("confirm") || menu_keycheck("menu_select")){
+						if(_addmonyx > 0){
+							_curmonyx = _addmonyx;
+							_addmonyx = 0;
+						}
+						_minigame_offset = _minigame_offset_to;
+						_curminigame = _minigame_desc_loop[_minigame_cur][1];
+						_minigame_curname = _minigame_desc_loop[_minigame_cur][2];
+						_curprice = _minigame_monyx[_curminigame][0];
+						_curfactor = _minigame_monyx[_curminigame][1];
+						_curdiff = 1;
+						_monyx_screen = true;
+						sfx_stop_array(_sndarray);
+						sfx_play_choose(_sndarray);
+					}
+				
+					if(_action != ""){
+						switch(_action){
+							/*case "rightgame":
+								_minigame_prev = _minigame_cur;
+								_minigame_cur ++;
+								if(_minigame_cur > array_length(_minigame_desc_loop)-1){
+									_minigame_cur = 2;
+						
+									_minigame_offset = _minigame_offset_to+(WIDTH*2);
+								}
+							break;
+							case "leftgame":
+								_minigame_prev = _minigame_cur;
+								_minigame_cur --;
+								if(_minigame_cur < 0){
+									_minigame_cur = array_length(_minigame_desc_loop)-3;
+						
+									_minigame_offset = _minigame_offset_to-(WIDTH*2);
+								}
+							break;*/
+							case "startgame":
+								if(_addmonyx > 0){
+									_curmonyx = _addmonyx;
+									_addmonyx = 0;
+								}
+									
+								_minigame_offset = _minigame_offset_to;
+								_curminigame = _minigame_desc_loop[_minigame_cur][1];
+								_minigame_curname = _minigame_desc_loop[_minigame_cur][2];
+								_curprice = _minigame_monyx[_curminigame][0];
+								_curfactor = _minigame_monyx[_curminigame][1];
+								_curdiff = 1;
+								_monyx_screen = true;
+								sfx_stop_array(_sndarray);
+								sfx_play_choose(_sndarray);
+							break;
+						}
+						_action = "";
+					}
+				} else {
+					_pricediff = _curprice-(_curfactor*(_curdiff-1));
+					
+					if(_curmonyx >= _pricediff){
+						_start_on = true;
+					} else {
+						_start_on = false;
+					}
+					
+					if(!_minigame_begin){
+						var rapidfactor = 0.6;
+						if(menu_keycheck("confirm") || menu_keycheck("menu_select")){
+							if(_start_on){
+								sfx_play(snd_kd5);
+								sfx_play(snd_finalko);
+								mus_stop();
+								_subprice = _curmonyx-_pricediff;
+								_minigame_begin = true;
+							}
+						}
+						
+						if(menu_keycheck("right",rapidfactor) || menu_keycheck("menu_right",rapidfactor)){
+							if(_curdiff < 5){
+								sfx_play(snd_comic_advance);
+								_diffshake = 7;
+							}
+							_curdiff += 0.5;
+							if(_curdiff > 5){
+								_curdiff = 5;
+							}
+						} else if(menu_keycheck("left",rapidfactor) || menu_keycheck("menu_left",rapidfactor)){
+							if(_curdiff > 1){
+								sfx_play(snd_comic_advance);
+								_diffshake = 7;
+							}
+							_curdiff -= 0.5;
+							if(_curdiff < 1){
+								_curdiff = 1;
+							}
+						}
+					
+						if(_action != ""){
+							switch(_action){
+								case "rightdiff":
+									if(_curdiff < 5){
+										sfx_play(snd_comic_advance);
+										_diffshake = 7;
+									}
+									_curdiff += 0.5;
+									if(_curdiff > 5){
+										_curdiff = 5;
+									}
+								break;
+								case "leftdiff":
+									if(_curdiff > 1){
+										sfx_play(snd_comic_advance);
+										_diffshake = 7;
+									}
+									_curdiff -= 0.5;
+									if(_curdiff < 1){
+										_curdiff = 1;
+									}
+								break;
+								case "startdiff":
+									if(_start_on){
+										sfx_play(snd_kd5);
+										sfx_play(snd_finalko);
+										mus_stop();
+										_subprice = _curmonyx-_pricediff;
+										_minigame_begin = true;
+									}
+								break;
+							}
+						
+							_action = "";
+						}
+					} else {
+						_minigame_begintimer ++;
+						
+						if(_minigame_begintimer % 3 == 0){
+							_minigame_beginshow = !_minigame_beginshow;
+						}
+						
+						if(_minigame_begintimer >= 28){
+							if(!_minigame_submonyx){
+								global._curmonyx = _subprice;
+								
+								with(obj_game){
+									scr_savevalue(global._curmonyx, "Monyx", _gamesavefile, "", true, true);
+								}
+								
+								global._minigame_monyx = _pricediff;
+								global._minigame_diff = _curdiff-1;
+								
+								global._saveminigame = [_curminigame, _minigame_cur];
+								
+								sfx_play(snd_moneylost);
+								_monyx_col = [255,0,0];
+								_monyxshake = 15;
+								_minigame_submonyx = true;
+							}
+							_curmonyx = lerp(_curmonyx, _subprice, 0.2);
+						}
+						
+						if(_minigame_begintimer >= 60 && !_minigame_tr){
+							global._loadState = "minigame";
+							global._minigame = _minigame_curname;
+							
+							scr_lode_game_init();
+							
+							with(obj_screen_tr){
+								_show = true;
+								_type = "out";
+								_roomto = r_loading;
+							}
+							
+							_minigame_tr = true;
+						}
+					}
+				}
+				
+				if(menu_keycheck("pause") || menu_keycheck("menu_back") || (global._menumouse && mouse_check_button_pressed(mb_right))){
+					if(!_monyx_screen){
+						_menustate = "extra";
+					} else {
+						if(!_minigame_begin){
+							_monyx_screen = false;
+						}
+					}
+					
+					if(!_minigame_begin){
+						sfx_stop_array(_sndarray);
+						sfx_play_choose(_sndarray);
+					}
+				}
+				
+				if(_minigame_prev != _minigame_cur){
+					//option changed
+					sfx_stop_array(_sndarray);
+					sfx_play_choose(_sndarray);
+					
+					_minigame_prev = _minigame_cur;
+				}
+				
+				_minigame_offset_to = -_minigame_cur*WIDTH;
+				if(_setminigameoffset){
+					_minigame_offset = _minigame_offset_to;
+					_setminigameoffset = false;
+				}
 			break;
 			case "credits":
 				_on = true;
@@ -646,11 +1091,134 @@
 			
 				_prevcreditsoption = _creditsoption;
 			break;
+			case "quit":
+				if(menu_keycheck("pause") || menu_keycheck("menu_back") || (global._menumouse && mouse_check_button_pressed(mb_right))){
+					sfx_stop_array(_sndarray);
+					sfx_play_choose(_sndarray);
+				
+					_menustate = "main";
+				}
+				
+				if(menu_keycheck("confirm") || menu_keycheck("menu_select")){
+					checkmenus();
+				}
+				
+				if(menu_keycheck("left") || menu_keycheck("menu_left")){
+					_prevopt[0] = _curopt[0];
+					_curopt[0] --;
+					if(_curopt[0] < 0){
+						_curopt[0] = 1;
+					}
+				} else if(menu_keycheck("right") || menu_keycheck("menu_right")){
+					_prevopt[0] = _curopt[0];
+					_curopt[0] ++;
+					if(_curopt[0] > 1){
+						_curopt[0] = 0;
+					}
+				}
+				
+				if(_prevopt[0] != _curopt[0]){
+					//option changed
+					sfx_stop_array(_sndarray);
+					sfx_play_choose(_sndarray);
+				
+					_prevopt[0] = _curopt[0];
+				}
+				
+				if(_action != ""){
+					switch(_action){
+						case "quit_yes":
+							//quit the game
+							audio_stop_all();
+							sfx_play(snd_finalko);
+							sfx_play_choose([snd_scream1,snd_scream2,snd_scream3,snd_scream4,snd_scream5,snd_scream6]);
+							room_goto(r_quit);
+						break;
+						case "quit_no":
+							//back
+							sfx_stop_array(_sndarray);
+							sfx_play_choose(_sndarray);
+				
+							_menustate = "main";
+						break;
+					}
+					_action = "";
+				}
+			break;
 		}
 	
 		if(_menustate != "main"){
 			_mouseactive = false;
 		}
+	}
+	
+	if(_mouselect > 0){
+		_mouselect --;
+	}
+	
+	//other menu states with buttons
+	_state = _menustate;
+	_show = false;
+	if(_state != "main"){
+		_show = true;
+		var array = [];
+		switch(_state){
+			case "extra":
+				array = _extras_btns;
+			break;
+		}
+		if(array_length(array) > 0){
+			if(global._tntmenuAct == 0){
+				if(menu_keycheck("confirm") || menu_keycheck("menu_select")){
+					checkmenus();
+				}
+			
+				if(menu_keycheck("up") || menu_keycheck("menu_up")){
+					_prevopt[0] = _curopt[0];
+					_curopt[0] --;
+					if(_curopt[0] < 0){
+						_curopt[0] = array_length(array)-1;
+					}
+				} else if(menu_keycheck("down") || menu_keycheck("menu_down")){
+					_prevopt[0] = _curopt[0];
+					_curopt[0] ++;
+					if(_curopt[0] > array_length(array)-1){
+						_curopt[0] = 0;
+					}
+				}
+			
+				if(_prevopt[0] != _curopt[0]){
+					//option changed
+					sfx_stop_array(_sndarray);
+					sfx_play_choose(_sndarray);
+				
+					_prevopt[0] = _curopt[0];
+				}
+			} else if(global._tntmenuAct == 2){
+				if(_tntenter){
+					with(obj_camera){
+						_ampX = 12;
+						_ampY = 12;
+					}
+					sfx_play(snd_explosion);
+			
+					if(_tntmenustate != "return"){
+						_curind = "";
+						_menustate = _tntmenustate;
+					} else {
+						_menustate = "main";
+					}
+					
+					_state = _menustate;
+			
+					global._tntmenuAct = 0;
+					_tntenter = false;
+				}
+			}
+		}
+	} else {
+		_curopt[0] = 0;
+		_prevopt[0] = 0;
 	}
 	
 	//rapid fire keys

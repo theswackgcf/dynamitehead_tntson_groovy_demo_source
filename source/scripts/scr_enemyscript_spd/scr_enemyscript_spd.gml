@@ -94,7 +94,7 @@ function scr_enemyscript_spd(){
 		}
 		_height += _vspd;
 		if(!_fallfloat){
-			_vspd -= 0.8;
+			_vspd -= (0.8*global._gravmult);
 		} else {
 			_vspd = _fallfloat_spd;
 		}

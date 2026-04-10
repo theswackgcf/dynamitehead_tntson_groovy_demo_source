@@ -8,8 +8,8 @@
 	_enmtype = -1;
 	
 	_dir = 1;
-	_xscale = global._scale*_dir;
-	_yscale = global._scale;
+	_xscale = _dir;
+	_yscale = 1;
 	image_xscale = _xscale;
 	image_yscale = _yscale;
 	

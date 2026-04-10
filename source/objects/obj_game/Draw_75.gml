@@ -1,36 +1,28 @@
 {
-	if(global._buildver == WINDOWS){
-		_dosurfacestuff = global._full;
-	}
-	if(global._buildver == HTML){
-		_dosurfacestuff = false;
-	}
-	
 	scr_textrender_halign("left");
 	scr_textrender_valign("top");
 	
-	if(global._buildver == WINDOWS){
-		if(surface_exists(_gui_surface)){
-			if(_dosurfacestuff){
-				surface_set_target(_gui_surface);
-		
-				draw_clear_alpha(c_black, 0);
-		
-				gpu_set_blendmode_ext(bm_one, bm_inv_src_alpha);
-			}
-		
-			scr_draw_gui();
-		
-			if(_dosurfacestuff){
-				scr_surface_fullscreen_resolution();
-			}
-		} else {
-			_gui_size = [WIDTH,HEIGHT];
-			_gui_surface = surface_create(_gui_size[0],_gui_size[1]);
+	if(global._state == "game"){
+		if(global._flashbang > 0){
+			draw_set_alpha(_flashalp);
+			draw_rectangle(-global._screenSideOffset, -global._screenSideOffset, WIDTH+global._screenSideOffset, HEIGHT+global._screenSideOffset, false);
+			draw_set_alpha(1);
 		}
 	}
-	
-	if(global._buildver == HTML){
-		scr_draw_gui();
+
+	//gamepads
+	if(global._padtime > 0){
+		var text = "";
+		if(global._padmsgtype == 0){
+			text = "GAMEPAD CONNECTED";
+		} else if(global._padmsgtype == 1){
+			text = "GAMEPAD DISCONNECTED";
+		}
+		scr_textrender_switchfont("dh_font2");
+		scr_textrender_halign("right");
+		scr_textrender_valign("top");
+		scr_textrender_type(WIDTH, 0, text, true, #FFFFFF, _gp_alp);
+		scr_textrender_halign("left");
+		scr_textrender_switchfont(global._defaultFont);
 	}
 }

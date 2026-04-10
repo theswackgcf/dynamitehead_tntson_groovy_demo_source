@@ -199,4 +199,8 @@
 	
 	_ll_killskull = false;
 	_ll_disappear = false;
+	
+	_ll_dogshit = 0;
+	
+	_ll_storepos = 0;
 }

@@ -17,6 +17,7 @@ function scr_enemyscript_death(){
 		_failsafedeath ++;
 		if(_height <= _groundlevel){
 			_fall_ko = true;
+			_nocked ++;
 		}
 		if(_height > _groundlevel+32){
 			_grabfall = true;
@@ -112,7 +113,7 @@ function scr_enemyscript_death(){
 				_vspd = 18;
 				
 				if(instance_exists(_displayobj)){
-					var p = instance_create_depth(_displayobj.x,_displayobj.y-12,_displayobj.depth-1,obj_particle);
+					var p = instance_create_depth(_displayobj.x-32,_displayobj.y-46,_displayobj.depth-1,obj_particle);
 					p._type = "vanish";
 				}
 				
@@ -121,10 +122,20 @@ function scr_enemyscript_death(){
 				_death = true;
 			} else {
 				sfx_stop_array(global._kdsounds);
+				sfx_play_choose(global._kdsounds);
 				sfx_play(snd_finalko);
 				
 				global._hits += 1;
 				global._hitmeter = 50;
+				
+				var p = instance_create_depth(x,y,depth, obj_particle);
+				p._type = "hit_final";
+				global._contrasthit = global._contrasthit_max;
+				
+				with(obj_camera){
+					_ampX = 24;
+					_ampY = 24;
+				}
 				
 				if(_dh_atk > 0){
 					if(_dh_atk_inst != noone && instance_exists(_dh_atk_inst)){
@@ -253,10 +264,20 @@ function scr_enemyscript_death(){
 		} else {
 			if(!_voiceonce){
 				sfx_stop_array(global._kdsounds);
+				sfx_play_choose(global._kdsounds);
 				sfx_play(snd_finalko);
 				
 				global._hits += 1;
 				global._hitmeter = 50;
+				
+				with(obj_camera){
+					_ampX = 24;
+					_ampY = 24;
+				}
+				
+				var p = instance_create_depth(x,y,depth, obj_particle);
+				p._type = "hit_final";
+				global._contrasthit = global._contrasthit_max;
 				
 				sfx_pitch(snd_finalko, random_range(0.76,1.24));
 				if(_playvoice.death != -1){

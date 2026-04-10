@@ -1,1 +1,0 @@
-_spawntype = SPAWN_PARACHUTE;

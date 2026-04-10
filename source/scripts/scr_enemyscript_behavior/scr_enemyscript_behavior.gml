@@ -8,6 +8,13 @@ function scr_enemyscript_behavior(type){
 			}
 		}
 		
+		if(place_meeting(x,y,obj_enemy_tutorial)){
+			var tutr_obj = instance_place(x,y,obj_enemy_tutorial);
+			if(instance_exists(tutr_obj) && tutr_obj._active){
+				_alt_tutorial = true;
+			}
+		}
+		
 		//drag enemy debug
 		if(global._debug){
 			if(scr_mousehover(bbox_left,bbox_top,bbox_right,bbox_bottom, false, 1) && mouse_check_button_pressed(mb_left)){
@@ -31,6 +38,22 @@ function scr_enemyscript_behavior(type){
 			if(instance_exists(aiblock)){
 				//set ai level
 				_ailevel = aiblock._ailevel;
+			}
+		}
+		
+		if(place_meeting(x,y,obj_event_other)){
+			var ev = instance_place(x,y,obj_event_other);
+			if(instance_exists(ev)){
+				switch(ev._event){
+					case "move_only_x":
+						if(!_onlydir_set){
+							_onlydir_timer = 320;
+							_onlydir = [true,false];
+							
+							_onlydir_set = true;
+						}
+					break;
+				}
 			}
 		}
 		
@@ -163,6 +186,7 @@ function scr_enemyscript_behavior(type){
 						if(_dh._runroll && _dh._anim == "runroll" && abs(_dh._spd[0]) >= 6 && distance_to_object(_dh) <= 96){
 							if((_dh.x < x && _curdir == DIR_L) || (x < _dh.x && _curdir == DIR_R)){
 								_fall_ko = true;
+								_nocked ++;
 								_jump = true;
 								_standup = true;
 								_nocrouchatk = true;
@@ -223,6 +247,7 @@ function scr_enemyscript_behavior(type){
 									_attack = true;
 									_attacktype = "blockko";
 									_blockko_fx = false;
+									_blockko_timer = 140;
 									
 									_afterim_active = 60;
 								
@@ -247,6 +272,21 @@ function scr_enemyscript_behavior(type){
 							} else {
 								_dh_atk = 0;
 							}
+						}
+						if(has_trait(TRAIT_BLOCKATK)){
+							_displayobj.image_index = 0;
+							_immunetimer = 125;
+							switch(_codename){
+								case "st2_enm3":
+									if(variable_instance_exists(self.id, "_gl_spin")){
+										sfx_play_proximity(snd_gostlik_spawn, 0.75);
+										_gl_spinact = 0;
+										_gl_timer = 0;
+										_gl_spin = true;
+									}
+								break;
+							}
+							_gl_spin = true;
 						}
 						_blocktimer = 0;
 						_curstate = STATE_IDLE;
@@ -407,20 +447,34 @@ function scr_enemyscript_behavior(type){
 			}
 			
 			//sliding trait
-			if(has_trait(TRAIT_SLIDE)){
+			if(has_trait(TRAIT_SLIDE) || has_trait(TRAIT_LOWKICK)){
 				if(_mashed || _shockwave){
 					_slidetimer = 0;
 					_slideact = 0;
 					_slide = false;
 				}
-				if(_curstate == STATE_IDLE || _behaviortype == "move"){
+				if(_curstate == STATE_IDLE || _behaviortype == "move" || _dodgetimer > 0){
 					if(!_slide){
 						_slidetimer ++;
 						if(_stuntimer > 0){
 							_slidetimer = 0;
 						}
 					
-						if(_slidetimer >= scr_ailevel(120, 280)){
+						if(_slidetimer >= scr_ailevel(80, 140) || _dodges >= _dodge_max){
+							if(_dodges >= _dodge_max){
+								_interest = 0;
+								_dh = noone;
+								
+								_forcehop = true;
+								_dodges = 0;
+								
+								_immunetimer = 20;
+								_dodge_snd = true;
+								_dodge_trait = [true,120];
+								_dodges = 0;
+								_stuntimer = 0;
+								_grabdodge = false;
+							}
 							_dh = instance_nearest(x, y, obj_dh_mask);
 							if(instance_exists(_dh)){
 								var checkdist = _dh.x;
@@ -433,26 +487,45 @@ function scr_enemyscript_behavior(type){
 										_curdir = DIR_L;
 									}
 								}
-							
-								if(diff_abs(x, checkdist) <= 64){
-									//enemy is close to dh, slide
-									doslide();
-								} else if(diff_abs(x, checkdist) > 64 && diff_abs(x, checkdist) <= _noticedist){
-									if(_stuntimer <= 0 && !_grabdodge){
-										//hop to the spot and then slide
-										scr_hopspot(HOP_SLIDE);
+								if(has_trait(TRAIT_SLIDE)){
+									if(diff_abs(x, checkdist) <= 64){
+										//enemy is close to dh, slide
+										doslide();
+									} else if(diff_abs(x, checkdist) > 64 && diff_abs(x, checkdist) <= _noticedist){
+										if(_stuntimer <= 0 && !_grabdodge){
+											//hop to the spot and then slide
+											scr_hopspot(HOP_SLIDE);
 								
-										if(scr_enemyscript_calculatejump()){
-											_hopslide = true;
-											_dohop = true;
+											if(scr_enemyscript_calculatejump()){
+												_hopslide = true;
+												_dohop = true;
+											} else {
+												_jumpingtimer = 0;
+											}
 										} else {
 											_jumpingtimer = 0;
 										}
 									} else {
+										_slidetimer = 0;
+									}
+								} else if(has_trait(TRAIT_LOWKICK)){
+									if(_stuntimer <= 0 && !_grabdodge && !_forcehop){
+										//hop to the spot and then lowkick
+										scr_hopspot(HOP_LOWKICK);
+								
+										if(scr_enemyscript_calculatejump(0)){
+											_hopslide = true;
+											
+											_dohop = true;
+											_dodges = 0;
+											
+											_atkallowed = [ATK_NORM,ATK_KO];
+											
+											_slidetimer = 0;
+										}
+									} else {
 										_jumpingtimer = 0;
 									}
-								} else {
-									_slidetimer = 0;
 								}
 							}
 						}
@@ -475,53 +548,92 @@ function scr_enemyscript_behavior(type){
 				clearpath();
 				switch(_slideact){
 					case 0:
-						if(_slidetimer >= scr_ailevel(24,60)){
+						if(_slidetimer >= scr_ailevel(4,10)){
 							_fixwall = true;
 							_slideact = 1;
-							_slidespd = _slidespd_max*_curdir;
-							_slidedir = _curdir;
-							_slidedecel = _slidedecel_max;
+							if(has_trait(TRAIT_SLIDE)){
+								_slidespd = _slidespd_max*_curdir;
+								_slidedir = _curdir;
+								_slidedecel = _slidedecel_max;
+							} else if(has_trait(TRAIT_LOWKICK)){
+								if(instance_exists(_displayobj)){
+									_displayobj.image_index = 0;
+								}
+							}
 							
 							var atk = instance_create_depth(x, y, -1, obj_punchhitbox);
 							atk._parentobj = self.id;
 							atk._ptype = "enm";
 							atk._scale = [4, 4];
 							atk._offset = [180,-24];
-							atk._timer = 120;
-							atk._type = "slide_enm";
+							if(has_trait(TRAIT_LOWKICK)){
+								atk._offset = [240,0];
+								atk._scale = [7, 4];
+							}
+							if(has_trait(TRAIT_SLIDE)){
+								atk._type = "slide_enm";
+								atk._timer = 120;
+							} else if(has_trait(TRAIT_LOWKICK)){
+								atk._type = "lowkick_enm";
+								atk._frame = 2;
+								atk._timer = 5;
+							}
+							atk._delay = 3;
 							atk._damage = ATK_KO;
 							atk._persist = true;
 							
-							sfx_play_proximity(snd_slide);
+							if(has_trait(TRAIT_SLIDE)){
+								sfx_play_proximity(snd_slide);
+							} else if(has_trait(TRAIT_LOWKICK)){
+								sfx_play_choose_proximity(global._swishsounds[0]);
+							}
 						}
 					break;
 					case 1:
 						if(_codename != "boss2"){
 							_afterim_active = 3;
 						}
-						_fallxspd = _slidespd;
-						if(_slidedir == DIR_R){
-							_slidespd -= _slidedecel;
-							if(_slidespd < 0){
+						if(!has_trait(TRAIT_LOWKICK)){
+							_fallxspd = _slidespd;
+							if(_slidedir == DIR_R){
+								_slidespd -= _slidedecel;
+								if(_slidespd < 0){
+									_slidespd = 0;
+								}
+							} else {
+								_slidespd += _slidedecel;
+								if(_slidespd > 0){
+									_slidespd = 0;
+								}
+							}
+							_slidedecel += 0.07;
+							if(abs(_slidespd) <= 0.05){
+								//end slide
+								_displayobj.image_index = 0;
+								_anim_tr_anim = "crouch_out";
+								_anim_tr_init = false;
+								_anim_transition = true;
+								
+								_slide = false;
+								_slidetimer = 0;
+								_slideact = 0;
 								_slidespd = 0;
 							}
 						} else {
-							_slidespd += _slidedecel;
-							if(_slidespd > 0){
+							_fallxspd = 0;
+							_slidespd = 0;
+							if(_displayobj.image_index >= _displayobj.image_number-1){
+								//end lowkick
+								_displayobj.image_index = 0;
+								_anim_tr_anim = "crouch_out";
+								_anim_tr_init = false;
+								_anim_transition = true;
+								
+								_slide = false;
+								_slidetimer = 0;
+								_slideact = 0;
 								_slidespd = 0;
 							}
-						}
-						_slidedecel += 0.07;
-						if(abs(_slidespd) <= 0.05){
-							_displayobj.image_index = 0;
-							_anim_tr_anim = "crouch_out";
-							_anim_tr_init = false;
-							_anim_transition = true;
-								
-							_slide = false;
-							_slidetimer = 0;
-							_slideact = 0;
-							_slidespd = 0;
 						}
 					break;
 				}
@@ -634,7 +746,7 @@ function scr_enemyscript_behavior(type){
 		
 		//moving/following
 		_drawifmoving --;
-		if(_freespd || _falling || (_standup && _init_fallxspd <> 0) || (_slide && _slideact > 0) || _afterhop > 0){
+		if(_freespd || _falling || (_standup && _init_fallxspd <> 0) || (_slide && _slideact > 0) || _afterhop > 0 || _dodge){
 			if(_freeze <= 0){
 				clearpath();
 				_curspd = [0,0];
@@ -710,6 +822,9 @@ function scr_enemyscript_behavior(type){
 				if(_init_fallxspd <> 0){
 					_fallxspd = _init_fallxspd;
 				}
+				if(_dodge){
+					_fallxspd = _dodgespd*_curdir;
+				}
 				_floatx = frac(_fallxspd);
 				_floaty = frac(_fallyspd);
 			} else {
@@ -728,7 +843,7 @@ function scr_enemyscript_behavior(type){
 			
 			function wallbonk() {
 				if(_codename != "fridge"){
-					if(_afterhop <= 0 && _curstate != STATE_JUMP && (_fallxspd <> 0 || _fallyspd <> 0)){
+					if(_afterhop <= 0 && _curstate != STATE_JUMP && (_fallxspd <> 0 || _fallyspd <> 0) && !_dodge){
 						_dh_atk = 0;
 						if(_fallxspd <> 0){
 							if(!_freespd){
@@ -1309,6 +1424,11 @@ function scr_enemyscript_behavior(type){
 						//dh found, walk around dh
 				
 						var care = true;
+						if(_codename = "st2_enm1" && variable_instance_exists(self.id, "_hn_ring_fake")){
+							if(_hn_ring_fake){
+								care = false;
+							}
+						}
 						if(_codename = "st2_enm3" && variable_instance_exists(self.id, "_gl_passive")){
 							if(_gl_passive){
 								care = false;
@@ -1332,25 +1452,54 @@ function scr_enemyscript_behavior(type){
 						}
 						//otherwise walk around its own position
 					
-					
-						//enemy reached the point
-						if(diff_abs(_walktopos[0],x) <= 32 && diff_abs(_walktopos[1],y) <= 32 && _walktimer < 40){
-							_walktimer = 40;
-						}
-					
 						//reset walking point
-						if(_walktimer >= scr_ailevel(45,random_range(90, 120))){
-							if(!_walksuccess){
-								_walktopos[0] = sourcepos[0]+random_range(-_walkdist[0],_walkdist[0]);
-								_walktopos[1] = sourcepos[1]+random_range(-_walkdist[1],_walkdist[1]);
-						
+						if(!_walksuccess){
+							var walkval = scr_ailevel(30,random_range(45, 90))/max(0.01,(_movespd[? SPD_WALK]*0.4));
+							if(_fastwalk > 0){
+								walkval = 0;
+							}
+							if(_walktimer >= walkval){
 								var fakex = x;
 								var fakey = y;
 								var prevx = x;
 								var prevy = y;
-						
-								//normalize distance, account for walls
-								repeat(16){
+								
+								var dhnear = false;
+								
+								if(instance_exists(dh) && distance_to_object(dh) <= _dhdist[0]*2){
+									dhnear = true;
+								}
+								
+								if(!dhnear){
+									_walktopos[0] = sourcepos[0]+random_range(-_walkdist[0],_walkdist[0]);
+									_walktopos[1] = sourcepos[1]+random_range(-_walkdist[1],_walkdist[1]);
+								
+									if(_battlezone && _bzobj != noone && instance_exists(_bzobj)){
+										_walktopos[0] = random_range(_bzobj.bbox_left,_bzobj.bbox_right);
+										_walktopos[1] = random_range(_bzobj.bbox_top,_bzobj.bbox_bottom);
+									}
+								} else {
+									if(instance_exists(dh)){
+										if(dh.x+32 < x){
+											_walktopos[0] = sourcepos[0]+random_range(-_walkdist[0],32);
+										} else if(x < dh.x+32){
+											_walktopos[0] = sourcepos[0]+random_range(_walkdist[0],32);
+										}
+										
+										if(dh.y+32 < y){
+											_walktopos[1] = sourcepos[1]+random_range(-_walkdist[1],32);
+										} else if(y < dh.y+32){
+											_walktopos[1] = sourcepos[1]+random_range(_walkdist[1],32);
+										} else {
+											_walktopos[1] = sourcepos[1];
+										}
+									}
+								}
+								
+								_walktimer = 0;
+								_walk_stop_timer = 0;
+								
+								repeat(24){
 									if(place_meeting_array(fakex, fakey, _collide_solid) || place_meeting(fakex, fakey, obj_battleborder)){
 										fakex = prevx;
 										fakey = prevy;
@@ -1358,42 +1507,44 @@ function scr_enemyscript_behavior(type){
 									} else {
 										if(fakex > _walktopos[0]){
 											prevx = fakex;
-											fakex -= 12;
+											fakex -= 16;
 										} else if(fakex < _walktopos[0]){
 											prevx = fakex;
-											fakex += 12;
+											fakex += 16;
 										}
 										if(fakey > _walktopos[1]){
 											prevy = fakey;
-											fakey -= 12;
+											fakey -= 16;
 										} else if(fakey < _walktopos[1]){
 											prevy = fakey;
-											fakey += 12;
+											fakey += 16;
 										}
 									}
 								}
-						
+								
 								_walktopos[0] = fakex;
 								_walktopos[1] = fakey;
 						
 								_pointtime = 8;
-								if(diff_abs(_walktopos[0], x) <= 64 && diff_abs(_walktopos[1], y) <= 64){
-									_walktopos[0] = x;
-									_walktopos[1] = y;
-									_walktimer = 120;
-								} else {
-									_pathpoint = [_walktopos[0], _walktopos[1]];
-									_walksuccess = true;
-								}
-							} else {
-								_walktimer = 0;
-								_walkto = [_walktopos[0],_walktopos[1]];
-								_walksuccess = false;
+								_walkto = [_walktopos[0], _walktopos[1]];
+								_pathpoint = [_walktopos[0], _walktopos[1]];
+								_walksuccess = true;
 							}
-						} else {
-							//reset
-							_walksuccess = false;
-							_walktopos = [x,y]; 
+						}
+						
+						//enemy reached the point
+						if(_walksuccess){
+							if(_anim == "idle"){
+								_walk_stop_timer ++;
+							} else {
+								_walk_stop_timer = 0;
+							}
+							
+							if(_walk_stop_timer >= 4 || _walktimer >= random_range(120,250)){
+								_curstate = STATE_FOLLOW;
+								_walksuccess = false;
+								_walktimer = 999;
+							}
 						}
 					} else {
 						_dh = instance_nearest(x, y, obj_dh_mask);
@@ -1426,7 +1577,7 @@ function scr_enemyscript_behavior(type){
 		if(type == "follow"){
 			if(_anim == "idle"){
 				_badidletimer ++;
-				if(_badidletimer >= scr_ailevel(4, random_range(15,36))){
+				if(_badidletimer >= 24){
 					//reset state if enemy is idling for a bit
 					_curstate = STATE_WALK;
 					_interest = 0;
@@ -1460,9 +1611,9 @@ function scr_enemyscript_behavior(type){
 									_walkto = [_dh.x+_dh._occupdist+_attackdist,_dh.y];
 								}
 										
-								if(_available[0] && x < _dh.x){
+								if(_available[1] && x < _dh.x){
 									_walkto = [_dh.x-_dh._occupdist-_attackdist,_dh.y];
-								} else if(_available[1] && x > _dh.x){
+								} else if(_available[0] && x > _dh.x){
 									_walkto = [_dh.x+_dh._occupdist+_attackdist,_dh.y];
 								}
 								
@@ -1495,15 +1646,13 @@ function scr_enemyscript_behavior(type){
 								
 								//attacking if almost at the spot
 								if(!_block && _spdmode != 1){
-									if(diff_abs(x, _walkto[0]) <= 64 && diff_abs(y, _walkto[1]) <= 64){
-										if(_dh.x > x){
-											_curdir = DIR_R;
-										} else {
-											_curdir = DIR_L;
-										}
+									if(diff_abs(x, _walkto[0]) <= 32 && diff_abs(y, _walkto[1]) <= 32){
+										_lerppos = 40;
+										_lerppos_to = [_walkto[0],_walkto[1]];
 										if(_total_ailevel > 4){
 											_atktimer = 999;
 										}
+										
 										_interest = 30;
 										_curstate = STATE_ATTACK;
 									}
@@ -1548,6 +1697,21 @@ function scr_enemyscript_behavior(type){
 	
 	if(!_death){
 		if(type == "attack"){
+			if(_lerppos > 0){
+				x = lerp(x, _lerppos_to[0], 0.05);
+				y = lerp(y, _lerppos_to[1], 0.05);
+				
+				_dh = instance_nearest(x,y,obj_dh_mask);
+				if(instance_exists(_dh)){
+					if(_dh.x > x){
+						_curdir = DIR_R;
+					} else {
+						_curdir = DIR_L;
+					}
+				}
+				
+				_lerppos --;
+			}
 			if(!_falling && !_fall_ko && !_standup){
 				_atktimer ++;
 				if(_attack){
@@ -1564,7 +1728,11 @@ function scr_enemyscript_behavior(type){
 				if(_dh != noone && instance_exists(_dh)){
 					if(!_dh._falling && !_dh._dead){
 						if(_dh._mashact == 0 && _dh._invframe <= 0 && _dh._hurtTimer <= 0){
-							if(_atktimer >= scr_ailevel(8,42)){
+							var vals = [8,42]
+							if(!has_trait(TRAIT_JABS)){
+								var vals = [32,56];
+							}
+							if(_atktimer >= scr_ailevel(vals[0],vals[1])){
 								_curatktimer = _atktimer + 10;
 								_atktimer = 0;
 								//direction
@@ -1581,11 +1749,11 @@ function scr_enemyscript_behavior(type){
 									}
 								}
 								if(pass){
-									if(!_dh._crouch && _attacktype != "blockko"){
+									if(_dh._crouchtimer <= 32 && _attacktype != "blockko"){
 										x += 8*_curdir;
-						
+											
 										_curatk ++;
-							
+											
 										_displayobj.image_index = 0;
 										_attack = true;
 										_attacktype = "idle";
@@ -1598,13 +1766,17 @@ function scr_enemyscript_behavior(type){
 												var atk = instance_create_depth(x, y, -1, obj_punchhitbox);
 												atk._parentobj = self.id;
 												atk._ptype = "enm";
-												atk._scale = [4, 2.2];
-												atk._offset = [136,-76];
+												atk._scale = [4.32, 4];
+												atk._offset = [170,-50];
 												atk._timer = 9;
 												if(_curatk > _meleeanims){
 													
 													atk._frame = _atkdelay.meleeko;
 													atk._damage = ATK_KO;
+													
+													atk._scale = [4.32, 5.35];
+													atk._offset = [170,-15];
+													
 													_curatk = 0;
 												}
 									
@@ -1614,7 +1786,7 @@ function scr_enemyscript_behavior(type){
 									} else {
 										//crouch kick if dynamitehead is seen dodging attacks by crouching
 										_curatk = 0;
-										var requirecrouchai = 4;
+										var requirecrouchai = 5.5;
 										if(_codename == "boss2"){
 											requirecrouchai = 0;
 										}
@@ -1623,6 +1795,7 @@ function scr_enemyscript_behavior(type){
 												if(distance_to_object(_dh) <= 320){
 													if(_ckick_cd <= 0 && !_standup && !_hop_walk && !_grabbed && !_grabdodge){
 														_fall_ko = true;
+														_nocked ++;
 														_jump = true;
 														_standup = true;
 														_grabout = false;
@@ -1758,7 +1931,7 @@ function scr_enemyscript_behavior(type){
 								_dh._graboffsetsimple[1] = _dh._graboffset[animval][curframe][1];
 						
 								if(_slam){
-									_displayobj.image_index = curframe;
+									_slamframe = curframe;
 								}
 							}
 							

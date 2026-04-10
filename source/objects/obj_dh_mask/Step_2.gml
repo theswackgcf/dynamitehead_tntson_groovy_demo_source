@@ -115,6 +115,7 @@
 						_attacktype = "";
 						_anim = "finalko";
 					} else {
+						_anim_prev = _anim;
 						_anim = "idle";
 					}
 				}
@@ -125,8 +126,8 @@
 	if(_phasehit > 0){
 		_displayobj.depth = -2000;
 		if(_kickass_obj != noone && instance_exists(_kickass_obj)){
-			_kickass_obj.image_xscale = global._scale;
-			_kickass_obj.image_yscale = global._scale;
+			_kickass_obj.image_xscale = 1;
+			_kickass_obj.image_yscale = 1;
 			_displayobj.image_xscale = _kickass_obj.image_xscale;
 			_displayobj.image_yscale = _kickass_obj.image_yscale;
 			

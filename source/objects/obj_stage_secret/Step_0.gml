@@ -5,8 +5,8 @@
 	if(!_checkdelete){
 		if(global._deleteready){
 			if(ds_map_exists(global._deletedStuff, self.id)){
-				if(place_meeting_array(x,y,global._solidArray,false,true)){
-					var sol = place_meeting_array(x,y,global._solidArray,true,true);
+				if(place_meeting(x,y,obj_stage_secret_solid)){
+					var sol = instance_place(x,y,obj_stage_secret_solid);
 					if(instance_exists(sol)){
 						if(variable_instance_exists(sol,"_delete")){
 							if(sol._delete){
@@ -46,8 +46,8 @@
 			
 			sfx_play_proximity(snd_secret);
 		
-			if(place_meeting_array(x,y,global._solidArray,false,true)){
-				var sol = place_meeting_array(x,y,global._solidArray,true,true);
+			if(place_meeting(x,y,obj_stage_secret_solid)){
+				var sol = instance_place(x,y,obj_stage_secret_solid);
 				if(instance_exists(sol)){
 					if(variable_instance_exists(sol,"_delete")){
 						if(sol._delete){
@@ -83,6 +83,7 @@
 		
 		if(_destroy){
 			if(!sfx_isplaying(snd_secret)){
+				global._deletedStuff[? self.id] = self.id;
 				instance_destroy();
 			}
 		}

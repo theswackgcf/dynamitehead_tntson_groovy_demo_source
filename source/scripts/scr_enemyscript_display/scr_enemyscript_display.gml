@@ -1,13 +1,15 @@
 function scr_enemyscript_display(type){
 	if(type == "create"){
+		_disptimer = 0;
+		
 		_shadowmult = 1;
 	
 		_scale = 1;
 		_xscale = _scale;
 		_yscale = _scale;
 		
-		image_xscale = global._scale;
-		image_yscale = global._scale;
+		image_xscale = 1;
+		image_yscale = 1;
 	
 		_height = 0;
 	
@@ -57,7 +59,7 @@ function scr_enemyscript_display(type){
 			}
 		}
 		
-		_scale = global._scale;
+		_scale = 1;
 	
 		var _dispscale_spd = 0.16;
 		_parentobj._dispscale[0] = lerp(_parentobj._dispscale[0], 1, _dispscale_spd);
@@ -72,7 +74,8 @@ function scr_enemyscript_display(type){
 		}
 	}
 	if(type == "draw"){
-		if(_parentobj._draw_display){
+		_disptimer ++;
+		if(_parentobj._draw_display && _disptimer >= 2){
 			if(!_shadowsinit){
 				//shadows
 				global._gameshadows[? _occupy_id] = ds_map_create();
@@ -168,7 +171,7 @@ function scr_enemyscript_display(type){
 								global._gameshadows[? _occupy_id][? "y"] = y+_parentobj._shadowoffset[1];
 								global._gameshadows[? _occupy_id][? "scalex"] = _parentobj._shadowsize*_shadowmult;
 								global._gameshadows[? _occupy_id][? "scaley"] = _parentobj._shadowsize*_shadowmult;
-							
+
 								if(_parentobj._phaseend_act >= 3){
 									global._gameshadows[? _occupy_id][? "draw"] = false;
 								}
@@ -237,6 +240,9 @@ function scr_enemyscript_display(type){
 							if(_parentobj._successparry > 0){
 								addxoffs = random_range(-10,10);
 							}
+							if(_parentobj._blocktimer > 0){
+								addxoffs = min(random_range(-1,1)*(_parentobj._blocktimer*0.65),30);
+							}
 						
 							if(_parentobj._stunlock_after > 0 && _parentobj._anim == "ricochet"){
 								addxoffs = sin(random(480))*(_parentobj._stunlock_after/1.5);
@@ -254,6 +260,10 @@ function scr_enemyscript_display(type){
 								_parentobj._dispoffset[0] = sin(_parentobj._sintimer/timdiv)*32;
 								_parentobj._dispangle = sin(_parentobj._sintimer/timdiv)*24;
 								_parentobj._shadowoffset[0] = sin(_parentobj._sintimer/timdiv)*96;
+							}
+					
+							if(_parentobj._grabbed && _parentobj._slam){
+								image_index = _parentobj._slamframe;
 							}
 					
 							if(sprite_exists(sprite_index)){
@@ -285,9 +295,37 @@ function scr_enemyscript_display(type){
 						}
 					}
 	
+					function graboutline(posx,posy) {
+						//grab outline
+						if(place_meeting(x,y,obj_dh_mask)){
+							if(instance_exists(_parentobj)){
+								var dh = instance_place(x,y,obj_dh_mask);
+								if(instance_exists(dh)){
+									if(dh._grabhold_enemy != noone && instance_exists(dh._grabhold_enemy)){
+										if(dh._grabhold_enemy.id == _parentobj.id){
+											var outcol = c_white;
+											if(is_array(_parentobj._hpcolor)){
+												outcol = _parentobj._hpcolor[_parentobj._enmtype+1];
+											} else {
+												outcol = _parentobj._hpcolor;
+											}
+											if(global._kohit > 0){
+												outcol = c_black;
+											}
+											var colarray = [color_get_red(outcol),color_get_green(outcol),color_get_blue(outcol)];
+											scr_draw_outline(sprite_index, image_index, posx+_parentobj._dispoffset[0], posy+_parentobj._dispoffset[1]+_parentobj._heightoffset, image_xscale, image_yscale, _parentobj._dispangle, _colorblend, image_alpha, colarray);
+										}
+									}
+								}
+							}
+						}
+					}
+	
 					if(_parentobj._colorsinit){
 						if(drawshader){
 							//draw recolored version	
+							graboutline(posx,posy);
+							
 							var _shdr = asset_get_index("shd_replace_col");
 							if(global._buildver == HTML){
 								_shdr = asset_get_index("shd_replace_col"+string(_parentobj._maxcolors));
@@ -306,10 +344,12 @@ function scr_enemyscript_display(type){
 							shader_reset();
 						} else {
 							//draw default version
+							graboutline(posx,posy);
 							drawSprite(posx,posy);
 						}
 					} else {
 						//draw default version
+						graboutline(posx,posy);
 						drawSprite(posx,posy);
 					}
 		

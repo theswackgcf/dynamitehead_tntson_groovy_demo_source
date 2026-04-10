@@ -107,6 +107,7 @@ function scr_spawnenemy(enemyobj){
 						inst._nocrouchatk = true;
 						inst._jump = true;
 						inst._fall_ko = true;
+						inst._nocked ++;
 						inst._standup = true;
 						inst._height = inst._groundlevel+(HEIGHT*1.4);
 					break;

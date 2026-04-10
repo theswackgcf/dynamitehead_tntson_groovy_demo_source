@@ -98,13 +98,13 @@
 				}
 			
 				if(_scrdir == "d"){
-					with(obj_game){
+					with(obj_gui){
 						ui_fade("dh",0);
 						ui_fade("tnt",0);
 					}
 				}
 				if(_scrdir == "u"){
-					with(obj_game){
+					with(obj_gui){
 						ui_fade("boss",0);
 						ui_fade("enemy",0);
 					}
@@ -298,13 +298,6 @@
 					_noiseframe = 0;
 				}
 			} else {
-				if(surface_exists(_gui_surface)){
-					surface_free(_gui_surface);
-				}
-				if(surface_exists(_resizegui_surface)){
-					surface_free(_resizegui_surface);
-				}
-				
 				if(_stopmove){
 					if(!global._battlezone){
 						with(obj_camera){

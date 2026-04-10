@@ -33,8 +33,8 @@
   "resourceVersion":"2.0",
   "solid":false,
   "spriteId":{
-    "name":"spr_deadenemy_enm1",
-    "path":"sprites/spr_deadenemy_enm1/spr_deadenemy_enm1.yy",
+    "name":"spr_deadenemy_st2_enm1",
+    "path":"sprites/spr_deadenemy_st2_enm1/spr_deadenemy_st2_enm1.yy",
   },
   "spriteMaskId":null,
   "visible":true,

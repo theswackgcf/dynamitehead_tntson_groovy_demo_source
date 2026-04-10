@@ -30,10 +30,7 @@
   "resourceType":"GMObject",
   "resourceVersion":"2.0",
   "solid":false,
-  "spriteId":{
-    "name":"spr_barrel_enemies",
-    "path":"sprites/spr_barrel_enemies/spr_barrel_enemies.yy",
-  },
+  "spriteId":null,
   "spriteMaskId":null,
   "visible":true,
 }

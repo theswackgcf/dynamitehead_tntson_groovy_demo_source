@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"minigame_lose_draw",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"minigame_lose_draw",
+  "parent":{
+    "name":"minigames",
+    "path":"folders/Scripts/minigames.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

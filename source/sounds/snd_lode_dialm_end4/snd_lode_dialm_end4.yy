@@ -1,0 +1,26 @@
+{
+  "$GMSound":"v2",
+  "%Name":"snd_lode_dialm_end4",
+  "audioGroupId":{
+    "name":"audiogroup_sfx",
+    "path":"audiogroups/audiogroup_sfx",
+  },
+  "bitDepth":1,
+  "channelFormat":0,
+  "compression":0,
+  "compressionQuality":4,
+  "conversionMode":0,
+  "duration":0.85333335,
+  "exportDir":"",
+  "name":"snd_lode_dialm_end4",
+  "parent":{
+    "name":"lode",
+    "path":"folders/Sounds/snd_fx/minigames/lode.yy",
+  },
+  "preload":false,
+  "resourceType":"GMSound",
+  "resourceVersion":"2.0",
+  "sampleRate":22050,
+  "soundFile":"snd_lode_dialm_end4.wav",
+  "volume":1.0,
+}

@@ -30,10 +30,7 @@
   "resourceType":"GMObject",
   "resourceVersion":"2.0",
   "solid":false,
-  "spriteId":{
-    "name":"spr_barrelfly",
-    "path":"sprites/spr_barrelfly/spr_barrelfly.yy",
-  },
+  "spriteId":null,
   "spriteMaskId":null,
   "visible":true,
 }

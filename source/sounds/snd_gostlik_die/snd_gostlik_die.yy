@@ -10,7 +10,7 @@
   "compression":0,
   "compressionQuality":4,
   "conversionMode":0,
-  "duration":0.6594331,
+  "duration":2.9112017,
   "exportDir":"",
   "name":"snd_gostlik_die",
   "parent":{

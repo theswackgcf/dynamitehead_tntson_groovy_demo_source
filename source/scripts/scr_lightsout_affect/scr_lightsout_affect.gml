@@ -5,12 +5,27 @@ function scr_lightsout_affect(){
 		}
 	}
 	with(obj_fade){
+		if(layer_exists(layer_get_id("desaturate"))){
+			var desat_layer = layer_get_id("desaturate");
+			var params = fx_get_parameters(layer_get_fx(desat_layer));
+			var fxval = 0;
+		}
+		
 		if(global._lightsout){
 			_fade = 1;
 			_fadefg = 1;
+			
+			fxval = 0;
 		} else {
 			_fade = 0;
 			_fadefg = 0;
+			
+			fxval = _store_layerfx;
+		}
+		
+		if(layer_exists(layer_get_id("desaturate"))){
+			params.g_Intensity = fxval;
+			fx_set_parameters(layer_get_fx(desat_layer), params);
 		}
 		
 		var fade = _fade;

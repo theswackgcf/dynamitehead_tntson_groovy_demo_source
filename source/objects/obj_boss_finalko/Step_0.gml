@@ -16,8 +16,8 @@
 		if(_act >= 1){
 			x = global._cameraX+(WIDTH/2);
 			y = global._cameraY+(HEIGHT/2);
-			image_xscale = 1.4;
-			image_yscale = 1.4;
+			image_xscale = 2;
+			image_yscale = 2;
 		}
 		
 		switch(_act){
@@ -43,7 +43,7 @@
 				y += _spd[1];
 				image_xscale = _dir*_scale;
 				image_yscale = _scale;
-				_scale += 0.02;
+				_scale += 0.032;
 				_spd[1] += 0.52;
 				
 				if(!_dh){
@@ -63,13 +63,13 @@
 						_blowup = false;
 						_blowuptimer = 0;
 						_explosiontimer = 0;
-						_wintimeroffset = 120;
+						_wintimeroffset = 180;
 						_doWin = true;
 					}
 					_dh = true;
 				}
 				
-				if(_scale >= 2){
+				if(_scale >= 3.28){
 					sfx_stop(snd_whistle);
 					sfx_play(snd_screencrack);
 					if(array_length(_boss_sounds[global._location]) > 0){
@@ -129,7 +129,6 @@
 						p._type = "vanish";
 						p._forcedepth = -5001;
 						p._scale = 4;
-						p._truescale = true;
 						
 						sfx_play(snd_ghost);
 						

@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"scr_lode_enm_create",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"scr_lode_enm_create",
+  "parent":{
+    "name":"lode",
+    "path":"folders/Scripts/minigames/lode.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

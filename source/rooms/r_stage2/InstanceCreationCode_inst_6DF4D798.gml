@@ -1,2 +1,2 @@
-_itemarray = [ITEM_TOMATO];
+_itemarray = [ITEM_CORN];
 _dir = "r";

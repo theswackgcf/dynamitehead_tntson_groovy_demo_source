@@ -33,9 +33,13 @@ function sfx_pause_all(pause){
 						
 						if(ds_map_exists(_allsounds, sfxarray[i])){
 							if(pause){
-								audio_pause_sound(_allsounds[? sfxarray[i]]);
+								if(audio_exists(_allsounds[? sfxarray[i]])){
+									audio_pause_sound(_allsounds[? sfxarray[i]]);
+								}
 							} else {
-								audio_resume_sound(_allsounds[? sfxarray[i]]);
+								if(audio_exists(_allsounds[? sfxarray[i]])){
+									audio_resume_sound(_allsounds[? sfxarray[i]]);
+								}
 							}
 						}
 						

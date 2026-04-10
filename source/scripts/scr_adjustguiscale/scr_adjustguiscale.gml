@@ -3,24 +3,24 @@
 function scr_adjustguiscale(){
 	var scale = [];
 	if(global._buildver == HTML){
-		scale = [WIDTH,HEIGHT];
+		scale = [HTML_W,HTML_H];
 	
 		global._guisizeX = scale[0]/WIDTH;
 		global._guisizeY = scale[1]/HEIGHT;
 	
-		surface_resize(application_surface, WIDTH,HEIGHT);
-		display_set_gui_size(WIDTH,HEIGHT);
+		surface_resize(application_surface, HTML_W,HTML_H);
+		display_set_gui_size(HTML_W,HTML_H);
 		display_set_gui_maximize(global._guisizeX,global._guisizeY);
 	} else {
 		if(!global._full){
-			scale = [global._res[global._curres][0],global._res[global._curres][1]];
+			scale = [global._res[global._curres][0]/WIDTH, global._res[global._curres][1]/HEIGHT];
 		} else {
-			scale = [display_get_width(),display_get_height()];
+			scale = [display_get_width()/WIDTH, display_get_height()/HEIGHT];
 		}
-	
-		global._guisizeX = scale[0]/WIDTH;
-		global._guisizeY = scale[1]/HEIGHT;
-	
+		
+		global._guisizeX = scale[0];
+		global._guisizeY = scale[1];
+		
 		surface_resize(application_surface, global._res[global._curres][0],global._res[global._curres][1]);
 		display_set_gui_size(global._res[global._curres][0],global._res[global._curres][1]);
 		display_set_gui_maximize(global._guisizeX,global._guisizeY);

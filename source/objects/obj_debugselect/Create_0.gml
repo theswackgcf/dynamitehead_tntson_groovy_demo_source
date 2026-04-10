@@ -8,6 +8,7 @@
 		r_stage2,
 		r_tutorial,
 		r_st2_enemiestest,
+		r_debug_minigames,
 		r_groovy,
 		r_briefing,
 		r_easing_test,
@@ -19,6 +20,7 @@
 		r_fontmaker,
 		r_debug_texttest,
 		r_color_test,
+		r_spritechecker,
 		r_dead,
 		r_enddemo,
 	];

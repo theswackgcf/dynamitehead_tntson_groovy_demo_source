@@ -7,6 +7,10 @@
 	
 	scr_sequence_pause();
 	
+	if(_combohit > 2){
+		_combohit = 2;
+	}
+	
 	//yell fix
 	if(global._pause){
 		if(audio_is_playing(snd_lanky_screamspin)){
@@ -33,7 +37,7 @@
 		
 		if(_ll_dizzyfix){
 			if(_ll_dizzytime < audio_sound_length(snd_lanky_dizzy)){
-				voice_play_proximity(snd_lanky_dizzy, global._bossvoices);
+				voice_play_proximity(snd_lanky_dizzy, global._bossvoices, 0.55);
 				if(_allsounds != undefined && _allsounds != -1 && ds_map_exists(_allsounds, snd_lanky_dizzy)){
 					audio_sound_set_track_position(_allsounds[? snd_lanky_dizzy], _ll_dizzytime);
 				}
@@ -66,6 +70,14 @@
 	}
 	
 	if(!global._pause){
+		if(global._bossmusic){
+			_ll_storepos = audio_sound_get_track_position(global._cursong);
+			if(!_flyout && global._finalhit <= 0 && !audio_is_playing(mus_boss2)){
+				mus_play(mus_boss2, global._bossgains[global._location]);
+				audio_sound_set_track_position(global._cursong, _ll_storepos);
+			}
+		}
+		
 		scr_enemyscript_colors();
 		
 		if(!_init){
@@ -309,13 +321,13 @@
 					
 						if(_taunt <= 0){
 							//show boss hp bar
-							with(obj_game){
+							with(obj_gui){
 								global._ui_stuff_alpha[3] = 1;
 								ui_fade("boss", 1);
 							}
 						} else {
 							//hide during taunt
-							with(obj_game){
+							with(obj_gui){
 								ui_fade("boss", 0);
 							}
 						}
@@ -431,6 +443,9 @@
 									//play mid phase cutscene
 									global._finalhit_phase = true;
 									global._finalhit = 45;
+
+									var p = instance_create_depth(x,y,depth, obj_particle);
+									p._type = "hit_final";
 
 									//show appropriate dh animation
 									if(_dh_atk_inst != noone && instance_exists(_dh_atk_inst)){
@@ -994,7 +1009,7 @@
 								}
 								switch(_ll_atk3_act){
 									case 1:
-										if(!_shockwave){
+										if(!_shockwave && !_falling){
 											_fall_ko = false;
 											_standup = false;
 											_height = _groundlevel;
@@ -1022,7 +1037,7 @@
 										}
 									break;
 									case 2:
-										if(!_shockwave){
+										if(!_shockwave && !_falling){
 											_ll_atk3_quickflash = true;
 								
 											if(_behaviortype == "hopping"){
@@ -1117,8 +1132,8 @@
 										if(_ll_lightgag <> 1){
 											if(_ll_atk4_poses >= _ll_atk4_maxposes-3){
 												voice_play_choose_proximity([snd_lanky_lights2,snd_lanky_lights3],global._bossvoices);
-												sfx_pitch(snd_lanky_lights2, random_range(0.8,1.12));
-												sfx_pitch(snd_lanky_lights3, random_range(0.8,1.12));
+												sfx_pitch(snd_lanky_lights2, random_range(0.97,1.07));
+												sfx_pitch(snd_lanky_lights3, random_range(0.97,1.07));
 											} else {
 												voice_play_choose_proximity([snd_lanky_lights1,snd_lanky_lights4,snd_lanky_lights5],global._bossvoices);
 											}
@@ -1168,7 +1183,7 @@
 						
 								switch(_ll_atk4_act){
 									case 1:
-										if(!_shockwave){
+										if(!_shockwave && !_falling){
 											if(abs(_slidespd) < 3){
 												_fall_ko = false;
 												_standup = false;
@@ -1238,7 +1253,7 @@
 										}
 									break;
 									case 2:
-										if(!_shockwave){
+										if(!_shockwave && !_falling){
 											_ll_atk4_dopose = true;
 								
 											if(!has_trait(TRAIT_HURT)){
@@ -1295,7 +1310,7 @@
 									}
 								}
 						
-								if((_phase == 2 && _ll_atknum == 1 && _ll_atk5_act > 0) || (_phase == 2 && _ll_atknum == 2 && _ll_atk6_act > 0)){
+								if((_phase == 2 && _ll_atknum == 1 && _ll_atk5_act >= 2) || (_phase == 2 && _ll_atknum == 2 && _ll_atk6_act > 0)){
 									if(has_trait(TRAIT_HURT)){
 										remove_trait(TRAIT_HURT);
 									}
@@ -1313,6 +1328,10 @@
 						
 								switch(_ll_atk5_act){
 									case 1:
+										if(!has_trait(TRAIT_HURT)){
+											add_trait(TRAIT_HURT);
+										}
+									
 										if(_falling || _fall_ko){
 											_falling = false;
 											_fall_ko = false;
@@ -1326,19 +1345,23 @@
 										_hurttimer = 0;
 										_stuntimer = 0;
 								
+										_spin = true;
+								
 										//pre attack spinning
 										_curspd = [0,0];
 										clearpath();
 									
 										_ll_atk5_spintimer ++;
-										_ll_atk5_spinamp += 0.7;
+										_ll_atk5_spinamp += 0.36;
 										_dispoffset[0] = sin(_ll_atk5_spintimer/2)*_ll_atk5_spinamp;
 										_dispoffset[1] = cos(_ll_atk5_spintimer/2)*(_ll_atk5_spinamp/2);
-										if(_ll_atk5_spinamp >= 40){
+										if(_ll_atk5_spinamp >= 46){
 											_freedir = choose(DIR_L,DIR_R);
 											_freedir_v = choose(DIR_U, DIR_D);
 											
 											_spin = true;
+											_spinhits = 0;
+											_falldecay = 1;
 											
 											var atk = instance_create_depth(x, y, -1, obj_punchhitbox);
 											atk._parentobj = self.id;
@@ -1355,7 +1378,6 @@
 									
 											_ll_atk5_act = 2;
 										} else {
-											_spin = false;
 											_freespd = false;
 											_fallxspd = 0;
 											_fallyspd = 0;
@@ -1380,7 +1402,7 @@
 								
 										_slidespd = 0;
 									
-										var spd = 20;
+										var spd = 14;
 									
 										_freespd = true;
 									
@@ -1409,7 +1431,7 @@
 											
 												_hurttimer = 0;
 											
-												voice_play_proximity(snd_lanky_dizzy, global._bossvoices, 0.82);
+												voice_play_proximity(snd_lanky_dizzy, global._bossvoices, 0.55);
 												sfx_pitch(snd_lanky_dizzy, random_range(0.85,1.12));
 											
 												_stuntimer = 320;
@@ -1473,12 +1495,13 @@
 															enm._init_fallxspd = 10*spd[i];
 															enm._jump = true;
 															enm._fall_ko = true;
+															enm._nocked ++;
 															enm._standup = true;
 															enm._height = _groundlevel+4;
 															enm._vspd = 16;
 															enm._fixwall = true;
 															enm._nocrouchatk = true;
-															enm._maxhp = 6;
+															enm._maxhp = 4;
 															enm._hp = enm._maxhp;
 														}
 										
@@ -1541,6 +1564,13 @@
 								if(_phase == 0){
 									_ll_atknum = 2;
 								}
+								if(_phase == 1){
+									if(_hp <= _phasehp[_phase]+20){
+										_ll_atknum = 2;
+									} else {
+										_ll_atknum = 1;
+									}
+								}
 							}
 						
 							//immediate attack after stunlock dodging is done
@@ -1569,7 +1599,21 @@
 										_ll_atk2_attack = true;
 									}
 								}
-							}	
+							}
+							
+							//IDIOT
+							if(_anim == "idle1" || _anim == "idle2" || _anim == "idle3"){
+								_ll_dogshit ++;
+							} else {
+								_ll_dogshit --;
+								if(_ll_dogshit <= 0){
+									_ll_dogshit = 0;
+								}
+							}
+							
+							if(_ll_dogshit >= 24){
+								_ll_atk_timer = 9999;
+							}
 							
 							if(_hurttimer == 0){
 								switch(_behaviortype){
@@ -1751,7 +1795,7 @@
 													case 2:
 														//phase 2 attack 2 - lights off
 														if(_ll_atk4_act == 0){
-															if(!_shockwave){
+															if(!_shockwave && !_falling){
 																if(_ll_atk_addtimer){
 																	_ll_atk_timer ++;
 																}
@@ -1764,7 +1808,7 @@
 																		if(scr_enemyscript_calculatejump(0)){
 																			x = _jumptopos[0];
 																			y = _jumptopos[1];
-															
+																			
 																			_ll_atkactive = true;
 															
 																			_ll_atk4_posetype = irandom_range(1, _ll_atk4_maxframes);
@@ -1944,12 +1988,10 @@
 									if(!_shockwave){
 										_ll_atk3_claptimer ++;
 										if(_displayobj.image_index >= 4 && !_ll_atk3_clap){
-											var vinyl = instance_create_depth(x+(100*_curdir), y+random_range(-32,32), _displayobj.depth, obj_boss2_vinyl_projectile);
+											var vinyl = instance_create_depth(x+(100*_curdir), y+random_range(32,64), _displayobj.depth, obj_boss2_vinyl_projectile);
 											vinyl._damage = ATK_NORM;
 											vinyl._curdir = _curdir;
 											vinyl._startheight = random_range(0,96);
-										
-											voice_play_choose_proximity([snd_lanky_grunt3,snd_lanky_grunt4,snd_lanky_grunt5], global._bossvoices, 0.56);
 										
 											sfx_play_proximity(snd_lanky_vinyl);
 										
@@ -2106,6 +2148,7 @@
 									_ll_atk4_act = 0;
 									_ll_atk4_afterattack = true;
 									_ll_atk4_dopose = false;
+									
 									_ll_atk5_act = 0;
 									_ll_atk5_spinamp = 0;
 									_ll_atk5_spintimer = 0;
@@ -2257,16 +2300,14 @@
 						if(_anim == "runprepare"){
 							prepsnd = true;
 						}
+						
+						if(_death){
+							spinsnd = false;
+						}
 					
 						if((!_attack && _attacktype != "idle") || _anim != "runattack"){
 							if(sfx_isplaying(snd_lanky_attack)){
 								sfx_stop(snd_lanky_attack);
-							}
-						}
-						
-						if(_anim != "dizzy"){
-							if(audio_is_playing(snd_lanky_dizzy)){
-								audio_stop_sound(snd_lanky_dizzy);
 							}
 						}
 					
@@ -2300,6 +2341,32 @@
 						_fallyspd = 0;
 					}
 				
+					//quick fix
+					if(_phase == 1){
+						if(_falling || _fall_ko || _standup){
+							_ll_atk3_act = 0;
+							_ll_atk3_curclaps = 0;
+							_ll_atk3_claps = 0;
+							_ll_atk3_claptimer = 0;
+							_ll_atk3_offscreen = false;
+							_ll_atk3_curpos = [x,y];
+							_ll_atk3_clappos = [x,y];
+							_ll_atk3_gotopos = [x,y];
+							_ll_atk3_quickflash = false;
+							_ll_atk3_after = 0;
+							
+							_ll_atk4_act = 0;
+							_ll_atk4_timer = 0;
+							_ll_atk4_poses = 0;
+							_ll_atk4_maxposes = 7;
+							_ll_atk4_dopose = false;
+							_ll_atk4_posetype = 1;
+							_ll_atk4_maxframes = 3;
+							_ll_atk4_afterattack = false;
+							_ll_atk4_offset = 256;
+						}
+					}
+				
 					//flying out
 					if(_death){
 						with(_displayobj){
@@ -2318,5 +2385,12 @@
 		with(_displayobj){
 			image_speed = 0;
 		}
+	}
+	
+	if(global._finalhit > 0){
+		_ll_atk5_act = 0;
+		_ll_atk5_spinamp = 0;
+		_ll_atk5_spintimer = 0;
+		_ll_atk5_endspin = 0;
 	}
 }

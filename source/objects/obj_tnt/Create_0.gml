@@ -10,8 +10,8 @@
 	
 	_collidewith = "all";
 	
-	image_xscale = global._scale;
-	image_yscale = global._scale;
+	image_xscale = 1;
+	image_yscale = 1;
 	
 	_freeze = 0;
 	_trigger = false;

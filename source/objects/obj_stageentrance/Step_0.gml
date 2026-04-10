@@ -11,6 +11,10 @@
 			_colorsinit = true;
 		}
 		
+		if(_poster_scaleup > 0){
+			_poster_scaleup --;
+		}
+		
 		_starttimer ++;
 		if(_starttimer >= _startval){
 			if(global._stageentrance){
@@ -25,7 +29,7 @@
 				if(dh != noone && instance_exists(dh)){
 					dh._hptimer = 25;
 				}
-				with(obj_game){
+				with(obj_gui){
 					ui_fade("dh", 0);
 					ui_fade("tnt", 0);
 				}
@@ -47,7 +51,7 @@
 			}
 			switch(_act){
 				case 0:
-					if(_timer >= 40){
+					if(_timer >= 25){
 						_timer = 0;
 						_act ++;
 						sfx_play(snd_wantedamb);
@@ -56,22 +60,26 @@
 				break;
 				case 1:
 					_postertimer ++;
-					if(_postertimer >= 3){
+					if(_postertimer >= 2){
 						_postertimer = 0;
 						_posterframe ++;
 						if(_posterframe >= 3){
+							if(!_poster_scaleup_bool){
+								_poster_scaleup = 3;
+								_poster_scaleup_bool = true;
+							}
 							_postershow = false;
 						}
 					}
 				
-					if(_timer >= 60){
+					if(_timer >= 25){
 						_timer = 0;
 					
 						if(!global._tutorial){
 							_handshow = true;
 							sfx_play_choose(global._swishsounds[0]);
 						}
-						voice_play_choose([snd_dh_voice_ready1,snd_dh_voice_ready2,snd_dh_voice_ready3,snd_dh_voice_ready4,snd_dh_voice_ready5,snd_dh_voice_ready6,snd_dh_voice_ready7], global._dhvoices, 1);
+						voice_play_choose([snd_dh_voice_ready1,snd_dh_voice_ready2,snd_dh_voice_ready3,snd_dh_voice_ready4,snd_dh_voice_ready5,snd_dh_voice_ready6], global._dhvoices, 1);
 					
 						_act ++;
 					}
@@ -80,7 +88,7 @@
 					_handtimer ++;
 					if(_handtimer >= 3){
 						_handtimer = 0;
-						_handframe ++;
+						_handframe += 1.24;
 						if(_handframe >= 2){
 							if(!_ripped){
 								_ripped = true;
@@ -159,13 +167,13 @@
 							}
 							if(_yvel < 0){
 								_xpos = lerp(_xpos, (dh.x-global._cameraX)+(_dhoffset[0]*_dir), 0.05);
-								_scale -= 0.017;
+								_scale -= 0.03;
 							} else {
-								_scale -= 0.08;
+								_scale -= 0.14;
 								_xpos += _xvel*_dir;
 								_xvel -= 0.6;
-								if(_scale < 0.52){
-									_scale = 0.52;
+								if(_scale < 0.84){
+									_scale = 0.84;
 								}
 							}
 						
@@ -221,15 +229,6 @@
 						}
 					}
 				break;
-			}
-		}
-		
-		if(!global._stageentrance){
-			if(surface_exists(_gui_surface)){
-				surface_free(_gui_surface);
-			}
-			if(surface_exists(_resizegui_surface)){
-				surface_free(_resizegui_surface);
 			}
 		}
 	}

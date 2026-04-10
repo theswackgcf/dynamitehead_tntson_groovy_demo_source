@@ -2,8 +2,8 @@
 	_allsounds = ds_map_create();
 	
 	_scale = 1.12;
-	image_xscale = global._scale*_scale;
-	image_yscale = global._scale*_scale;
+	image_xscale = _scale;
+	image_yscale = _scale;
 	_xscale = 1;
 	
 	_height = -HEIGHT;
@@ -21,7 +21,7 @@
 	_codename = "st2_gostlikbag_mask";
 	_enmtype = -1;
 	
-	_defshadowsize = 0.42;
+	_defshadowsize = 0.54;
 	_shadoffset = 780;
 	_shadowsinit = false;
 	

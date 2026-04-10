@@ -10,7 +10,7 @@
 					sfx_pitch(snd_bonecrack, random_range(0.7,1.1));
 				break;
 				case "henchie_sfx_notice":
-					sfx_play_proximity(snd_henchie_notice);
+					voice_play_overlap_proximity(snd_henchie_notice);
 				break;
 				case "henchie_sfx_land":
 					sfx_play_choose_proximity([asset_get_index("snd_land1_"+_floortype),asset_get_index("snd_land2_"+_floortype)]);

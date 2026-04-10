@@ -91,6 +91,39 @@ function scr_enemyscript_falling(){
 					
 		_walkto = [x+(32*_curdir),yto];
 		if(_height <= _groundlevel && _fallcd <= 0){
+			if(!_death && _smackdown){
+				//after-image
+				var info = [
+					[32, 1],
+					[120, 0.8],
+					[180, 0.7],
+					[290, 0.6],
+				];
+				for(var i = 0; i < 4; i++){
+					var im = instance_create_depth(x, y-info[i][0], depth+32, obj_enm_afterIM);
+					im.sprite_index = asset_get_index("spr_"+string(_codename)+"_"+"fall");
+					im.image_index = _displayobj.image_index;
+					im.image_xscale = _displayobj.image_xscale;
+					im.image_yscale = _displayobj.image_yscale;
+					im._alpha = info[i][1];
+				}
+				
+				_displayobj.image_index = 0;
+				
+				with(obj_camera){
+					_ampY = 48;
+				}
+				
+				sfx_play_proximity(snd_smackdown);
+				sfx_pitch(snd_smackdown,random_range(1,1.16));
+				if(_playvoice.smackdown != -1){
+					voice_play_overlap_proximity(_playvoice.smackdown);
+					sfx_pitch(_playvoice.smackdown,random_range(0.8,0.94));
+				}
+				_falls = 0;
+				_smackdown = false;
+			}
+			
 			if(_grabout){
 				//dh gets punched while grabbing an enemy
 								
@@ -103,6 +136,7 @@ function scr_enemyscript_falling(){
 								
 				_curstate = STATE_IDLE;
 								
+				_dodge = false;
 				_standup = false;
 								
 				_grabout = false;
@@ -119,7 +153,7 @@ function scr_enemyscript_falling(){
 					
 						sfx_play_choose_proximity([snd_thud,snd_thud2,snd_thud3,snd_thud4]);
 					
-						_vspd = 9;
+						_vspd = 11;
 						_jump = true;
 						_height = _groundlevel + 8;
 						_fallcd = 8;
@@ -145,6 +179,7 @@ function scr_enemyscript_falling(){
 						
 						if(_stunlock_after <= 0){
 							_fall_ko = true;
+							_nocked ++;
 						}
 						_ko_cooldown = 0;
 						_ko_fall = false;
@@ -251,7 +286,11 @@ function scr_enemyscript_falling(){
 		_slide = false;
 		_fallxspd = 0;
 		
-		var komax = scr_ailevel(8,32);
+		var komax = max(45*_standup_mult,scr_ailevel(8,32)*_standup_mult);
+		if(_nocked >= 2){
+			_nocked = 0;
+			komax = 0;
+		}
 		if(!_death){
 			if(_pissedoff > 0){
 				_kotimer = komax;
@@ -265,10 +304,11 @@ function scr_enemyscript_falling(){
 				_kotimer = 0;
 				
 				_jump = true;
-				_vspd = 12;
+				_vspd = random_range(5,14);
 				
 				_displayobj.image_index = 0;
 				
+				_nocked = 0;
 				_standup = true;
 			}
 			if(_standup && _height < _groundlevel){
@@ -277,9 +317,12 @@ function scr_enemyscript_falling(){
 					var dh = instance_nearest(x, y, obj_dh_mask);
 					if(distance_to_object(dh) <= 320 && _codename != "boss2"){
 						_standup = false;
-						if(!_hop_walk && !_nocrouchatk && !_grabbed && !_grabdodge){
-							_docrouchkick = true;
+						if(!_dodge){
+							if(!_hop_walk && !_nocrouchatk && !_grabbed && !_grabdodge){
+								_docrouchkick = true;
+							}
 						}
+						_dodge = false;
 					} else {
 						_curstate = STATE_WALK;
 					}
@@ -296,6 +339,7 @@ function scr_enemyscript_falling(){
 				
 				_fall_ko = false;
 				
+				_dodge = false;
 				_standup = false;
 			}
 		} else {
@@ -335,12 +379,12 @@ function scr_enemyscript_falling(){
 							if(sprite_exists(ghostspr)){
 								dnm.sprite_index = ghostspr;
 							} else {
-								dnm.sprite_index = spr_deadenemy_enm1;
+								dnm.sprite_index = spr_deadenemy_st2_enm1;
 							}
 						}
 					}
 				
-					var p = instance_create_depth(x, y, 0, obj_particle);
+					var p = instance_create_depth(x-42, y-42, 0, obj_particle);
 					p._type = "vanish";
 					global._deadid = self.id;
 				

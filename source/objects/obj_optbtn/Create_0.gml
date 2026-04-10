@@ -3,6 +3,9 @@
 	
 	_optionsobj = noone;
 	
+	_getwidth = false;
+	_getsize = false;
+	
 	_xpos = 0;
 	_ypos = 0;
 	
@@ -37,8 +40,11 @@
 	_inifile = "settings";
 	
 	_pausebtn = false;
+	_menubtn = false;
 	
 	_init = false;
+	
+	_unavailable = false;
 	
 	_showbtn = false;
 	_btnonscreen = false;
@@ -50,12 +56,4 @@
 	_scaleparam = [1,1];
 	
 	_lastbtn = -1;
-	
-	_dosurfacestuff = true;
-	
-	_gui_size = [1,1];
-	_gui_surface = surface_create(_gui_size[0],_gui_size[1]);
-	
-	_resizegui_size = [1,1];
-	_resizegui_surface = surface_create(_resizegui_size[0],_resizegui_size[1]);
 }

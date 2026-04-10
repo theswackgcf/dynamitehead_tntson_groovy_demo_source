@@ -17,6 +17,7 @@
 	
 	global._swackygames = false;
 	global._menututorial = false;
+	global._menuminigame = false;
 	global._backtomenu = false;
 	
 	global._dowindow = false;
@@ -28,7 +29,7 @@
 	
 	global._masterVolume = 0.75;
 	global._defvalues[? "Master"] = global._masterVolume;
-	global._musVolume = 0.75;
+	global._musVolume = 0.85;
 	global._defvalues[? "Music"] = global._musVolume;
 	global._sfxVolume = 1;
 	if(global._buildver == HTML){
@@ -112,7 +113,7 @@
 	global._defvalues[? "Color Blending"] = global._colorblending;
 	global._texfilter = true;
 	global._defvalues[? "Interpolation"] = global._texfilter;
-	global._shakevals = [0,0.25,0.5,0.75,1,2,3,4];
+	global._shakevals = [0,0.25,0.5,0.75,1,1.25,1.5,1.75];
 	global._shakeval = 4;
 	global._defvalues[? "Screenshake"] = global._shakeval;
 	
@@ -169,6 +170,10 @@
 	//game settings
 	global._menumouse = true;
 	global._defvalues[? "Mouse in Menu"] = global._menumouse;
+	global._surflighting = true;
+	global._defvalues[? "Surface Lighting"] = global._surflighting;
+	global._skyshader = true;
+	global._defvalues[? "Background Shaders"] = global._skyshader;
 	global._kdeffect = true;
 	global._defvalues[? "Knockdown effect"] = global._kdeffect;
 	global._showtips = true;
@@ -176,12 +181,17 @@
 	global._freezevals = [0,0.25,0.5,0.75,1,1.25,1.5];
 	global._freezeval = 4;
 	global._defvalues[? "Freeze Frame Intensity"] = global._freezeval;
+	global._birdmode = false;
+	global._defvalues[? "Flying Robot"] = global._birdmode;
 	
 	//load game settings
 	global._menumouse = scr_loadvalue("bool", "Mouse in Menu", _settingsfile, global._defvalues[? "Mouse in Menu"], "Game", true, false);
+	global._surflighting = scr_loadvalue("bool", "Surface Lighting", _settingsfile, global._defvalues[? "Surface Lighting"], "Game", false, false);
+	global._skyshader = scr_loadvalue("bool", "Background Shaders", _settingsfile, global._defvalues[? "Background Shaders"], "Game", false, false);
 	global._kdeffect = scr_loadvalue("bool", "Knockdown effect", _settingsfile, global._defvalues[? "Knockdown effect"], "Game", false, false);
 	global._showtips = scr_loadvalue("bool", "Show Tips", _settingsfile, global._defvalues[? "Show Tips"], "Game", false, false);
-	global._freezeval = scr_loadvalue("number", "Freeze Frame Intensity", _settingsfile, global._defvalues[? "Freeze Frame Intensity"], "Game", false, true);
+	global._freezeval = scr_loadvalue("number", "Freeze Frame Intensity", _settingsfile, global._defvalues[? "Freeze Frame Intensity"], "Game", false, false);
+	global._birdmode = scr_loadvalue("bool", "Flying Robot", _settingsfile, global._defvalues[? "Flying Robot"], "Game", false, true);
 	
 	if(global._buildver == HTML){
 		global._menumouse = false;
@@ -204,7 +214,7 @@
 	global._input[0][? "tnt"] = ord("C");
 	global._input[0][? "grab"] = ord("S");
 	global._input[0][? "crouch"] = vk_shift;
-	global._input[0][? "slide"] = 17;
+	global._input[0][? "dive"] = 17;
 	global._input[0][? "shield"] = ord("A");
 	global._input[0][? "taunt"] = ord("D");
 	global._input[0][? "confirm"] = vk_enter;
@@ -228,7 +238,7 @@
 	global._input[1][? "tnt"] = gp_face4;
 	global._input[1][? "grab"] = gp_face2;
 	global._input[1][? "crouch"] = gp_shoulderlb;
-	global._input[1][? "slide"] = gp_shoulderrb;
+	global._input[1][? "dive"] = gp_shoulderrb;
 	global._input[1][? "shield"] = gp_shoulderl;
 	global._input[1][? "taunt"] = gp_shoulderr;
 	global._input[1][? "confirm"] = gp_start;
@@ -287,14 +297,14 @@
 	
 	//game info
 	global._location = 1;
-	global._locations = ["tOxIc TrEnCheS","GrOoVy gRaVeYaRd"];
+	global._locations = ["tOxIc TrEnCheS ","GrOoVy gRaVeYaRd "];
 	
 	global._metric = false;
 	
 	global._gametips = ds_map_create();
 	//[trigger, show again];
 	global._gametips[? "punch"] = [false,false];
-	global._gametips[? "slide"] = [false,false];
+	global._gametips[? "lowkick"] = [false,false];
 	global._gametips[? "upper"] = [false,false];
 	
 	global._gametips[? "grab"] = [false,false];
@@ -304,6 +314,26 @@
 	global._bossintro = false;
 	global._bossphase_save = 0;
 	global._bosswave_save = 0;
+	
+	//load game ini
+	global._curmonyx = 15000;
+	global._defvalues[? "Monyx"] = global._curmonyx;
+	
+	global._curmonyx = scr_loadvalue("number", "Monyx", _gamesavefile, global._defvalues[? "Monyx"], "", true, true);
+	
+	global._addmonyx = 0;
+	global._minigame_monyx = 0;
+	global._minigame_diff = 0;
+	global._minigame = "";
+	
+	global._saveminigame = [0,0];
+	
+	//minigames stuff
+	global._lode_testlayout = [];
+	global._lode_testsigns = ds_map_create();
+	global._lode_playmode = true;
+	global._lode_testmode = false;
+	global._lode_testmode_load = false;
 	
 	//font
 	global._font = "";
@@ -324,16 +354,19 @@
 	global._fontInit = false;
 	global._keybindW = 52;
 	global._keybindH = 26;
+	global._keyscale_nes = 0.32;
 	
 	global._acceptedFonts = [];
 	
 	scr_textrender_setfont("dh_font1", global._charset[? "ascii"]);
 	scr_textrender_setfont("dh_font2", global._charset[? "ascii"]);
+	scr_textrender_setfont("dh_font2_hue", global._charset[? "ascii"]);
 	scr_textrender_setfont("dh_font2_big", global._charset[? "ascii"]);
 	scr_textrender_setfont("dh_font3", " HP/0123456789");
 	scr_textrender_setfont("dh_font4", global._charset[? "letters_nums"]);
 	scr_textrender_setfont("dh_font4_big", global._charset[? "letters_nums"]);
-	scr_textrender_setfont("dh_fontnes", global._charset[? "ascii"]);
+	scr_textrender_setfont("dh_fontnes", global._charset[? "ascii"]+"±º¹²³");
+	scr_textrender_setfont("dh_fontnes_lode", global._charset[? "ascii"]+"±º¹²³");
 	scr_textrender_setfont("dh_fontcomic1", global._charset[? "ascii"]);
 	scr_textrender_setfont("dh_fontmenu1", global._charset[? "letters_nums"]);
 	scr_textrender_setfont("dh_fontmenu2", global._charset[? "letters_nums"]);
@@ -341,6 +374,7 @@
 	global._fontSpacing = ds_map_create();
 	global._fontSpacing[? "dh_font1"] = 1;
 	global._fontSpacing[? "dh_font2"] = -2;
+	global._fontSpacing[? "dh_font2_hue"] = -2;
 	global._fontSpacing[? "dh_font2_big"] = -6;
 	global._fontSpacing[? "dh_fontcomic1"] = 2;
 	global._fontSpacing[? "dh_fontmenu1"] = -24;
@@ -364,6 +398,7 @@
 	
 	global._showHitbox = false;
 	global._freeRoam = false;
+	global._enableCamera = true;
 	
 	//musics
 	global._saveMusPos = 0;
@@ -391,6 +426,27 @@
 	global._deletedStuff = ds_map_create();
 	global._checkps = ds_map_create();
 	
+	global._whack_help = false;
+	global._lode_help = false;
+	
+	global._lode_deletedStuff = ds_map_create();
+	global._lode_tutorial = false;
+	global._lode_stage = 0;
+	global._lode_curboss = 0;
+	global._lode_lives = 0;
+	global._lode_tnt = 0;
+	global._lode_tnt_store = 0;
+	global._lode_tntmax = 100;
+	global._lode_score = 0;
+	global._lode_score_store = 0;
+	global._lode_spawnstuff = false;
+	global._lode_loopback = false;
+	global._lode_curloop = 0;
+	global._lode_spd = 1;
+	global._lode_muspitch = 1;
+	
+	global._lode_editor = false;
+	
 	global._died = false;
 	
 	global._seenvs = false;
@@ -398,6 +454,9 @@
 	global._cursong = -1;
 	global._looped = 0;
 	global._curSongGain = 1;
+	
+	global._stageintro_theme = -1;
+	global._stageintro_leit = -1;
 	
 	global._horse = false;
 	global._speedruntimer = 0;

@@ -1,3 +1,3 @@
-_delay = 0;
+_delay = 90;
 _prompt = "tutr_jump";
 _active = false;

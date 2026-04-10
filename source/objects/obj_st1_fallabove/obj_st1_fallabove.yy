@@ -33,10 +33,7 @@
   "resourceType":"GMObject",
   "resourceVersion":"2.0",
   "solid":false,
-  "spriteId":{
-    "name":"spr_st1_fallabove",
-    "path":"sprites/spr_st1_fallabove/spr_st1_fallabove.yy",
-  },
+  "spriteId":null,
   "spriteMaskId":null,
   "visible":true,
 }

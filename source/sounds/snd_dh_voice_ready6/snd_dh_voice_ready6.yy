@@ -10,7 +10,7 @@
   "compression":0,
   "compressionQuality":4,
   "conversionMode":0,
-  "duration":1.1873696,
+  "duration":1.4050341,
   "exportDir":"",
   "name":"snd_dh_voice_ready6",
   "parent":{

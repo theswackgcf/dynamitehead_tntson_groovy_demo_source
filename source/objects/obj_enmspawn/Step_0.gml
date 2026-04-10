@@ -4,6 +4,7 @@
 		if(global._enmorder >= _order || _canspawn >= 8){
 			if(_asset != noone){
 				var en = instance_create_depth(_spawnX, _spawnY, 0, _asset);
+				en._spawnnum = _spawnnum;
 				en._spawndir = _spawndir;
 				en._spawnpos = [_spawnpos[0], _spawnpos[1]];
 				en._offscreenpos = [_offscreenpos[0], _offscreenpos[1]];
@@ -49,6 +50,7 @@
 							en._nocrouchatk = true;
 							en._jump = true;
 							en._fall_ko = true;
+							en._nocked ++;
 							en._standup = true;
 							en._height = en._groundlevel+(HEIGHT*1.4);
 						break;

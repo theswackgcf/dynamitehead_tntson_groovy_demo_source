@@ -5,6 +5,7 @@
 	
 	_speed = 1;
 	_freeze = 0;
+	_force_freeze = 0;
 	
 	_init = false;
 	
@@ -12,7 +13,10 @@
 	_allsoundstimer = 0;
 	
 	_idleguitimer = 0;
-	_idleguithreshold = 30;
+	_idleguithreshold = 100;
+	
+	//culling
+	_cullingtimer = 999;
 	
 	//sfx
 	_sfx = ds_map_create();
@@ -43,6 +47,8 @@
 	
 	_lowhp = false;
 	
+	_hpcolor = make_color_rgb(225, 26, 26);
+	
 	_startx = x;
 	_starty = y;
 	
@@ -63,6 +69,9 @@
 	_nojump_end = false;
 	_rolljump = false;
 	_roll_bounceoff = 0;
+	
+	_afterslam = false;
+	_afterslam_spd = 0;
 	
 	_height = 0;
 	_vspd = 0;
@@ -160,6 +169,7 @@
 	_animloop[? "tauntdown"] = 5;
 	_animloop[? "tauntup"] = 6;
 	_animloop[? "tauntmoney"] = 4;
+	_animloop[? "afterslam"] = 2;
 	_animloop[? "finalko"] = 2;
 	
 	_dispoffset = [0,0];
@@ -169,6 +179,8 @@
 	
 	//crouch / sliding
 	_crouch = false;
+	_crouchtimer = 0;
+	_crouchspd = 0;
 	_slide = false;
 	_runslide = false;
 	_slidespd = 0;
@@ -206,6 +218,8 @@
 	_onecombocd = 0;
 	_ocombotimer = 0;
 	_finalcombo = false;
+	
+	_success_hit = 0;
 	
 	_hurtTimer = 0;
 	_damageTimer = 0;
@@ -280,11 +294,20 @@
 	
 	_graboffsetsimple = [];
 	
+	_grabhold_enemy = noone;
+	_grabhold_enemy_timer = 0;
+	_grabhold_downfail = false;
+	_grabhold_other = noone;
+	_grabhold_other_timer = 0;
+	
+	_grabhold_color = [255, 182, 13];
+	
 	_slam = false;
 	_slamdir = DIR_R;
 	_slam_init = false;
 	_slamcooldown = 0;
 	_slamcount = 0;
+	_slambonks = 0;
 	_slamsounds = [
 		[[snd_slambong1,snd_slambong2,snd_slambong3,snd_slambong4,snd_slambong5,snd_slambong6,snd_slambong7], "slam", 1, false, DIR_R],	//index, type, frame, occured, dir
 		[[snd_slamswish1,snd_slamswish2,snd_slamswish3], "", 4, false, DIR_R],
@@ -293,6 +316,8 @@
 	];
 	_slamspd = 1;
 	_canslam = true;
+	
+	_slam_bufferkeys = [false,true];
 	
 	_throw = false;
 	
@@ -317,6 +342,12 @@
 	_parryenmx = -999;
 	
 	_successparry = 0;
+	
+	_parry_hpamnt = 5;
+	_parry_hpheal = false;
+	_parry_mult = 1;
+	_parry_timer = 0;
+	_parry_timer_max = 600;
 	
 	_parryzoom = global._defCamZoom;
 	
@@ -347,6 +378,7 @@
 	_runparticle = 0;
 	_skidparticle = 0;
 	_skidsound = false;
+	_afterrun_timer = 0;
 	
 	_blowupenmmax = 0;
 	_blowupenm = 0;
@@ -354,9 +386,21 @@
 	//run roll
 	_runroll = false;
 	_rollspd = 0;
+	_runhops = 0;
 	_runroll_bump = false;
 	_runroll_dive = false;
+	_runroll_dive_timer = 0;
 	_runroll_slide = false;
+	_runroll_after = 0;
+	_dive_run = 0;
+	_lowkick_dive = false;
+	_nodive_timer = 0;
+	
+	_delaydive = false;
+	_delayjump = false;
+	_delayupper = false;
+	
+	_forceroll = false;
 	
 	//arrays
 	_collidesolid = [];
@@ -403,7 +447,7 @@
 	function setinput() {
 		_inptype = global._inptype; //inptype is the input method (keyboard, gamepad)
 		_input = [ds_map_create(),ds_map_create()];
-		_tempinputs = ["left","right","up","down", "jump", "punch", "tnt", "crouch", "slide", "grab", "shield", "taunt"];
+		_tempinputs = ["left","right","up","down", "jump", "punch", "tnt", "crouch", "dive", "grab", "shield", "taunt"];
 		for(var j = 0; j < array_length(global._input); j++){
 			for(var i = 0; i < array_length(_tempinputs); i++){
 				if(is_string(global._input[j][? _tempinputs[i]])){
@@ -469,6 +513,7 @@
 	function throw_enemy(){
 		//throwing enemies
 		if(_slam){
+			_height = _groundlevel+36;
 			_curdir = _tempdir;
 			global._cameraOffset = [global._defCamOffset[0], global._defCamOffset[1]];
 		}
@@ -479,6 +524,12 @@
 		
 		if(instance_exists(_grabinst)){
 			if(variable_instance_exists(_grabinst, "_grabbed")){
+				if(instance_exists(_grabinst._dh)){
+					if((_grabinst._dh)._afterslam){
+						_freeze = global._freezeFrames.mid_freeze;
+						_grabinst._force_freeze = global._freezeFrames.mid_freeze;
+					}
+				}
 				_grabinst._dh = noone;
 				_grabinst._height += 190;
 				_grabinst._vspd = 16;
@@ -512,7 +563,17 @@
 		
 		_grabinst = noone;
 		_enemygrab = false;
-		_throw = true;
+							
+		if(!_afterslam){
+			_throw = true;
+		} else {
+			_state = "jump";
+			_jumpback = true;
+			_jump = true;
+			_afterslam_spd = 6*-_slamdir;
+			_height += 10;
+			_vspd = 13;
+		}
 							
 		sfx_play_choose(global._swishsounds[2]);
 	}

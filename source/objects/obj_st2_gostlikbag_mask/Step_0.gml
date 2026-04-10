@@ -1,8 +1,8 @@
 {
 	depth = -2000;
 	
-	image_xscale = global._scale*_scale*_xscale;
-	image_yscale = global._scale*_scale;
+	image_xscale = _scale*_xscale;
+	image_yscale = _scale;
 	
 	if(_deathact < 2 && !_shadowsinit){
 		//shadows
@@ -48,7 +48,7 @@
 		
 		//receiving hits
 		if(!_death){
-			if(_height >= 0 && place_meeting(x,y,obj_punchhitbox)){
+			if(_height <= 110 && place_meeting(x,y,obj_punchhitbox)){
 				var p = instance_place(x,y,obj_punchhitbox);
 				var parent = p._parentobj;
 				if(instance_exists(p) && instance_exists(parent)){
@@ -61,19 +61,28 @@
 								_amp = 20;
 								_height = -4;
 								_vspd = -18;
+								
+								sfx_play_choose_proximity(global._swishsounds[2]);
+								
+								instance_destroy(p.id);
+								return;
 							} else if(parent._attacktype == "upper"){
 								sfx_play(snd_finalko);
+								sfx_play_choose(global._kdsounds);
 								sfx_pitch(snd_finalko, 1.35);
 								
+								_height = 0;
+								
+								var p = instance_create_depth(x,y+_shadoffset-64,depth, obj_particle);
+								p._type = "hit_final";
+								global._contrasthit = global._contrasthit_max;
+								
 								if(instance_exists(parent._displayobj)){
-									(parent._displayobj).image_index = 1;
+									(parent._displayobj).image_index = 2;
 								}
 								
 								global._hits += 1;
 								global._hitmeter = 50;
-								
-								var p = instance_create_depth(x-24,(y+_shadoffset)-96,depth-16,obj_particle);
-								p._type = "fx6";
 								
 								_curdir = parent._curdir;
 								_death_inst = parent;

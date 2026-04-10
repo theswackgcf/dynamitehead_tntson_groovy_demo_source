@@ -9,8 +9,8 @@
 	
 	_allsounds = ds_map_create();
 	
-	image_xscale = global._scale;
-	image_yscale = global._scale;
+	image_xscale = 1;
+	image_yscale = 1;
 	
 	visible = false;
 	

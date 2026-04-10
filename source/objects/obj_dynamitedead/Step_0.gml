@@ -17,9 +17,9 @@
 		_colorsinit = true;
 	}
 	
-	x = lerp(x, _posTo[0]+(obj_game._loseOpt*10), 0.05);
+	x = lerp(x, _posTo[0]+(obj_lost._loseOpt*10), 0.05);
 	y = lerp(y, _posTo[1], 0.05);
-	_scaleTo = lerp(_scaleTo, clamp(1-obj_game._loseOpt, 0.9, 1), 0.035);
+	_scaleTo = lerp(_scaleTo, clamp(1-obj_lost._loseOpt, 0.9, 1), 0.035);
 	
 	if(image_index >= image_number-1){
 		image_index = image_number-3;
@@ -60,7 +60,7 @@
 				with(obj_music){
 					mus_play(mus_gameover);
 				}
-				with(obj_game){
+				with(obj_lost){
 					_drawloserPos = [0-scr_textrender_width(_losertext),WIDTH+scr_textrender_width(_losertext)];
 					_drawloser = 1;
 				}
@@ -76,7 +76,7 @@
 		break;
 		case 2:
 			if(_timer > 100){
-				with(obj_game){
+				with(obj_lost){
 					_drawloser = 2;
 				}
 				_act = 3;

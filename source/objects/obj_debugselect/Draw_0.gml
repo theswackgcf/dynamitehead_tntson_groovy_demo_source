@@ -1,4 +1,6 @@
 {
+	global._menuminigame = false;
+	
 	var curarray = _rooms;
 	if(_full){
 		curarray = _allrooms;

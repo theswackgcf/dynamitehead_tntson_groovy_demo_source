@@ -3,10 +3,10 @@
 		if(_sequence_hop_obj == noone){
 			switch(event_data[? "message"]){
 				case "gostlik_sfx_cloud":
-					sfx_play_proximity(snd_gostlik_cloud, 0.8);
+					sfx_play_proximity(snd_gostlik_cloud, 0.65);
 				break;
 				case "gostlik_sfx_spawn":
-					sfx_play_proximity(snd_gostlik_spawn, 0.65);
+					sfx_play_proximity(snd_gostlik_spawn, 0.45);
 				break;
 			}
 		}

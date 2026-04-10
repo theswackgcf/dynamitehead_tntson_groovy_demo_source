@@ -17,7 +17,10 @@
 	} else {
 		_color = global._guiNumColors[? "dmg"];
 	}
-	_numstring = _addstr+string(_num);
+	_numstring = _addstr+string(round(_num));
+	if(_nocked){
+		_numstring = "N";
+	}
 	
 	if(!global._pause){
 		if(!_init){
@@ -60,8 +63,11 @@
 			image_yscale = lerp(image_yscale, 1.4, 0.15);
 			image_xscale = lerp(image_xscale, 1.4, 0.15);
 			
-			if(_num < 10){
+			if(!is_string(_num) && _num < 10){
 				_addoffset = -16;
+			}
+			if(!is_string(_num) && _num > 999){
+				_addoffset = 60;
 			}
 			
 			//destroying

@@ -20,6 +20,9 @@
 	_resize = false;
 	_activated = false;
 	
+	_border_top_size = 1;
+	_border_bottom_size = 1;
+	
 	_camOffsetX = 0;
 	_camOffsetY = 0;
 	

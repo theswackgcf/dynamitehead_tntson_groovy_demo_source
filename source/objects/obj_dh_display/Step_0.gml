@@ -12,7 +12,7 @@
 	}
 	
 	if(!global._pause){
-		_scale = global._scale;
+		_scale = 1;
 	
 		_shadowoffset[0] = lerp(_shadowoffset[0], _shadowlerp[0], 0.06);
 		_shadowoffset[1] = lerp(_shadowoffset[1], _shadowlerp[1], 0.06);
@@ -42,6 +42,34 @@
 			_ampY--;
 		} else if(_ampY < 0){
 			_ampY = 0;
+		}
+		
+		_outline_alp = _outline_alpto;
+		if(_outline_timer > 0){
+			if(_outline_timer > 10){
+				_outline_dist += 0.1;
+			} else {
+				_outline_dist -= 0.1;
+			}
+			if(_outline_dist < 0){
+				_outline_dist = 0;
+			}
+			if(_outline_dist > 1){
+				_outline_dist = 1;
+			}
+			
+			var cansub = true;
+			if(_parentobj != noone && instance_exists(_parentobj)){
+				if(_parentobj._freeze > 0){
+					cansub = false;
+				}
+			}
+			if(cansub){
+				_outline_timer --;
+			}
+		} else {
+			_outline_dist = 0;
+			_outline_alpto = 0;
 		}
 		
 		_starttime ++;

@@ -66,6 +66,11 @@
 		if(!global._padfound && _action == "change-inp"){
 			_active = false;
 		}
+		if(variable_instance_exists(_parentbtn, "_monyx_screen")){
+			if(!_parentbtn._monyx_screen && _monyx_screen){
+				_active = false;
+			}
+		}
 	
 		if(_active && _coold == 0){
 			_timer ++;
@@ -74,7 +79,7 @@
 					with(obj_options){
 						_mouselect = 2;
 					}
-					if(mouse_check_button_pressed(mb_left) || (mouse_check_button(mb_left) && _rapidfire[0] && _timer % global._rapidtimer == 0)){
+					if(mouse_check_button_pressed(mb_left) || (mouse_check_button(mb_left) && _rapidfire[0] && _timer % (global._rapidtimer*_rapidfactor) == 0)){
 						_coold = global._rapidtimer-1;
 						_parentbtn._action = _action;
 					}

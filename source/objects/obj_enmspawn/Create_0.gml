@@ -12,6 +12,8 @@
 	_spawnpos = [0,0];
 	_offscreenpos = [0,0];
 	
+	_spawnnum = 0;
+	
 	_doenmtype = false;
 	_enmtype = -1;
 	

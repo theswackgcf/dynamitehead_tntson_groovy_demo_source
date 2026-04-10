@@ -33,10 +33,7 @@
   "resourceType":"GMObject",
   "resourceVersion":"2.0",
   "solid":false,
-  "spriteId":{
-    "name":"spr_enm1_skull",
-    "path":"sprites/spr_enm1_skull/spr_enm1_skull.yy",
-  },
+  "spriteId":null,
   "spriteMaskId":null,
   "visible":true,
 }
