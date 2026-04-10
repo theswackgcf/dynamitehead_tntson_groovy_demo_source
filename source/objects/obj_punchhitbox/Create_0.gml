@@ -2,6 +2,8 @@
 	visible = false;
 	
 	_parentobj = noone;
+	_forcefollow = false;
+	_forcefollow_pos = [x,y];
 	_offset = [0,0];
 	_scale = [0,0];
 	_timer = 16;

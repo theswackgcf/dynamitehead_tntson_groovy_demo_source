@@ -10,7 +10,6 @@
 			var p = instance_create_depth(x, y, depth, obj_particle);
 			p._type = "barrelfly";
 			p._forcedepth = depth+1;
-			p._truescale = true;
 			p._move = false;
 			p._xspd = -4;
 		}

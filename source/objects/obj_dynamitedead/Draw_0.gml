@@ -25,7 +25,7 @@
 		shader_set_uniform_f_array(shader_get_uniform(_shdr, "blend"), _mult_blendArray);
 	
 		if(_zoom <> 0){
-			draw_sprite_ext(sprite_index, image_index, x, y, (image_xscale*_scaleTo)/_zoom, (image_yscale*_scaleTo)/_zoom, 0, #FFFFFF, 1);
+			draw_sprite_ext(sprite_index, image_index, x, y, (image_xscale*(_scaleTo*1.15))/_zoom, (image_yscale*(_scaleTo*1.15))/_zoom, 0, #FFFFFF, 1);
 		}
 
 		shader_reset();

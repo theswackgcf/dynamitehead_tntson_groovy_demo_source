@@ -59,7 +59,7 @@
 		var valign = string_trim(string_lower(talign_array[1]));
 		var obj = instance_create_depth(floor(WIDTH/2),floor(HEIGHT/2),0,obj_guimaker_spr);
 		obj._guimaker = self;
-		obj.sprite_index = asset_get_index(spr_enm1_spawner);
+		obj.sprite_index = asset_get_index(spr_st2_enm1_spawner);
 		obj._font = tfont;
 		obj._text = texts;
 		obj._scale = [xscale,yscale];

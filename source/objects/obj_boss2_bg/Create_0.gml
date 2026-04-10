@@ -6,6 +6,8 @@
 	_intro = true;
 	_freeze = 0;
 	
+	_bossheadpos = 0;
+	
 	_phase = 1;
 	
 	_spawndir = choose(DIR_L,DIR_R);

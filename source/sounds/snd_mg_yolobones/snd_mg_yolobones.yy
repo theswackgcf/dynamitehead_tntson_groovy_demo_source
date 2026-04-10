@@ -1,0 +1,26 @@
+{
+  "$GMSound":"v2",
+  "%Name":"snd_mg_yolobones",
+  "audioGroupId":{
+    "name":"audiogroup_sfx",
+    "path":"audiogroups/audiogroup_sfx",
+  },
+  "bitDepth":1,
+  "channelFormat":0,
+  "compression":0,
+  "compressionQuality":4,
+  "conversionMode":0,
+  "duration":1.1411338,
+  "exportDir":"",
+  "name":"snd_mg_yolobones",
+  "parent":{
+    "name":"minigames",
+    "path":"folders/Sounds/snd_fx/minigames.yy",
+  },
+  "preload":false,
+  "resourceType":"GMSound",
+  "resourceVersion":"2.0",
+  "sampleRate":22050,
+  "soundFile":"snd_mg_yolobones.wav",
+  "volume":1.0,
+}

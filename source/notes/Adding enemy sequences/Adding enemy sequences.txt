@@ -1,7 +1,5 @@
 Read this before adding a new enemy sequence.
 
-Make sure to resize imported sprites to 60.7%, both sides.
-
 If you want the enemy to jump to its starting position correctly, set the origin
 point to the center of the jumping/walking sprite right at the end of the sequence. Make sure the sprite is no longer
 visible once the hopping happens. A new hopping object will be made in place of it which will do

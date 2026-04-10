@@ -1,5 +1,8 @@
 function scr_player_falling(){
 	if(_falling){
+		_attack = false;
+		_attacktype = "";
+		
 		_finalcombo = false;
 		_spd[0] = _initspeed*_curdir;
 		_spd[1] = 0;
@@ -57,7 +60,7 @@ function scr_player_falling(){
 	if(_dead){
 		if(!_jumpback){
 			_deadtimer ++;
-			if(_deadtimer >= 45 || (_stunnedtimer <= 0 && keypress("jump"))){
+			if(_deadtimer >= 45 || (_deadtimer >= 4 && _stunnedtimer <= 0 && keypress("jump"))){
 				_jumpreach = 0;
 				_jump = true;
 				_height = _groundlevel+4;

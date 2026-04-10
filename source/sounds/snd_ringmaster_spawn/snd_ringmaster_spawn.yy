@@ -1,0 +1,26 @@
+{
+  "$GMSound":"v2",
+  "%Name":"snd_ringmaster_spawn",
+  "audioGroupId":{
+    "name":"audiogroup_sfx",
+    "path":"audiogroups/audiogroup_sfx",
+  },
+  "bitDepth":1,
+  "channelFormat":0,
+  "compression":0,
+  "compressionQuality":4,
+  "conversionMode":0,
+  "duration":2.8792744,
+  "exportDir":"",
+  "name":"snd_ringmaster_spawn",
+  "parent":{
+    "name":"game",
+    "path":"folders/Sounds/snd_fx/game.yy",
+  },
+  "preload":false,
+  "resourceType":"GMSound",
+  "resourceVersion":"2.0",
+  "sampleRate":44100,
+  "soundFile":"snd_ringmaster_spawn.wav",
+  "volume":1.0,
+}

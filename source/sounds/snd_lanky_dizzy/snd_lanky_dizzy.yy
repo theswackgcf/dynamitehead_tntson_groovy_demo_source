@@ -10,7 +10,7 @@
   "compression":0,
   "compressionQuality":4,
   "conversionMode":0,
-  "duration":7.286463,
+  "duration":3.3320634,
   "exportDir":"",
   "name":"snd_lanky_dizzy",
   "parent":{

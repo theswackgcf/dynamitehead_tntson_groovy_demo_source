@@ -15,7 +15,7 @@
 	
 	if(!global._pause){
 		if(place_meeting(x,y,obj_dh_mask)){
-			with(obj_game){
+			with(obj_gui){
 				_uitextshow = true;
 				_uitext = other._text;
 			}

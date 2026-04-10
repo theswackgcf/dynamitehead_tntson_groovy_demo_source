@@ -55,6 +55,22 @@
 						_mode = 0;
 					}
 					
+					var offs_ = [-24,-12];
+					if(_side == "u" || _side == "d"){
+						offs_[0] = 0;
+					}
+					
+					var p = instance_create_depth((x+_offset[0])+offs_[0],(y+_offset[1])+offs_[1], depth, obj_particle);
+					p._type = "next_gone";
+					
+					sfx_play(snd_next_gone);
+	
+					var nextsndnum = 6;
+	
+					for(var i = 1; i < nextsndnum+1; i++){
+						audio_stop_sound(asset_get_index("snd_gonext"+string(i)));
+					}
+					
 					_inactive = true;
 				}
 			}

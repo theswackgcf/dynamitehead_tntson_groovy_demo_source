@@ -46,6 +46,21 @@
 				_walktimer_max = 999;
 				_jump = true;
 			break;
+			case "junga":
+				_xspd_max = 3.8;
+				_idletimer_max = 140;
+				_walktimer_max = 120;
+			break;
+			case "gizmo":
+				_xspd_max = 6.4;
+				_idletimer_max = 55;
+				_walktimer_max = 380;
+			break;
+			case "booger":
+				_xspd_max = 5;
+				_idletimer_max = 24;
+				_walktimer_max = 600;
+			break;
 		}
 		
 		_xspd_max += random_range(-0.3,0.3);

@@ -15,6 +15,16 @@
 			global.music_bus.effects[0] = undefined;
 		}
 		
+		switch(global._location){
+			case 1:
+				_bgspr = spr_lv2intro_bg;
+			break;
+		}
+		
+		for(var i = 0; i < sprite_get_info(_bgspr).num_subimages; i++){
+			_bgpos[i] = 0;
+		}
+		
 		_init = true;
 	}
 	
@@ -25,10 +35,11 @@
 	if(_xpos <= -2000+(WIDTH/2)){
 		_xpos = WIDTH/2;
 	}
-	_bgpos[0] -= 7;
-	_bgpos[1] -= 12;
 	
-	for(var i = 0; i < 2; i++){
+	_bgspd += 0.06;
+	
+	for(var i = 0; i < sprite_get_info(_bgspr).num_subimages; i++){
+		_bgpos[i] -= _bgspd*((i+1)*0.7);
 		if(_bgpos[i] <= -WIDTH){
 			_bgpos[i] = 0;
 		}
@@ -73,7 +84,8 @@
 	//fg stuff
 	_randfgtimer ++;
 	if(_randfgtimer >= random_range(30,70)){
-		instance_create_depth(WIDTH+512, HEIGHT, -1000, obj_intro_fg);
+		var fg = instance_create_depth(WIDTH+512, HEIGHT, -1000, obj_intro_fg);
+		fg._fgspd = _bgspd * 3.14;
 		_randfgtimer = 0;
 	}
 	
@@ -84,10 +96,35 @@
 				_show = true;
 				_type = "out";
 				_roomto = r_loading;
-				_audiostop = true;
+				_audiostop = false;
 			}
+			audio_stop_sound(snd_surf);
 			
 			_confirm = true;
 		}
+	}
+	
+	//timed effects
+	var trackpos = 0;
+	if(global._stageintro_theme != -1){
+		trackpos = audio_sound_get_track_position(global._stageintro_theme);
+	}
+	
+	if(!_stageeffect){
+		switch(global._location){
+			case 1:
+				if(trackpos >= 1.91){
+					_thunder_alp = 1.32;
+					
+					sfx_play(snd_lvintro2_laugh);
+					
+					_stageeffect = true;
+				}
+			break;
+		}
+	}
+	
+	if(_thunder_alp > 0){
+		_thunder_alp -= 0.01;
 	}
 }

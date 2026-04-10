@@ -1,0 +1,26 @@
+{
+  "$GMSound":"v2",
+  "%Name":"snd_whack_thunder",
+  "audioGroupId":{
+    "name":"audiogroup_sfx",
+    "path":"audiogroups/audiogroup_sfx",
+  },
+  "bitDepth":1,
+  "channelFormat":0,
+  "compression":0,
+  "compressionQuality":4,
+  "conversionMode":0,
+  "duration":2.3684354,
+  "exportDir":"",
+  "name":"snd_whack_thunder",
+  "parent":{
+    "name":"whack",
+    "path":"folders/Sounds/snd_fx/minigames/whack.yy",
+  },
+  "preload":false,
+  "resourceType":"GMSound",
+  "resourceVersion":"2.0",
+  "sampleRate":22050,
+  "soundFile":"snd_whack_thunder.wav",
+  "volume":1.0,
+}

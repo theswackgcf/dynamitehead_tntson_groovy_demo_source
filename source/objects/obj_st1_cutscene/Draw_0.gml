@@ -7,7 +7,6 @@
 				var p = instance_create_depth((_barrelpos[0]+global._cameraX)-64, (_barrelpos[1]+global._cameraY)-64, depth, obj_particle);
 				p._type = "barrelfly";
 				p._forcedepth = depth+1;
-				p._truescale = true;
 				p._move = true;
 				p._yspd = -3;
 				p._xspd = -2;

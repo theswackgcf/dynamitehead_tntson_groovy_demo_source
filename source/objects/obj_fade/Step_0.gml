@@ -1,5 +1,18 @@
 {
 	if(!global._pause){
+		if(!_init){
+			//store desaturation value at the beginning
+			if(layer_exists(layer_get_id("desaturate"))){
+				var desat_layer = layer_get_id("desaturate");
+				var fx = fx_get_parameters(layer_get_fx(desat_layer));
+				fx.g_Intensity = _layerfx_val;
+				_store_layerfx = fx.g_Intensity;
+				fx_set_parameters(layer_get_fx(desat_layer), fx);
+			}
+			
+			_init = true;
+		}
+		
 		if(global._lightsout){
 			_fadeTo = 1;
 			_fade = 1;

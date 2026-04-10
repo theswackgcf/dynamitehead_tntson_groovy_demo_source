@@ -5,6 +5,24 @@
 		global._kohit = 0;
 	}
 	
+	if(!global._pause){
+		if(global._contrasthit > 0){
+			global._seteffect = 2;
+			global._effect = EFFECT_CONTRAST;
+			
+			global._contrasthit_val -= 0.02;
+			if(global._contrasthit_val <= 1){
+				global._contrasthit_val = 1;
+			}
+			
+			global._contrasthit --;
+		} else {
+			if(global._seteffect <= 0){
+				global._contrasthit_val = 1.2;
+			}
+		}
+	}
+	
 	if(global._kohit > 0){
 		if(!global._pause){
 			global._kohit --;
@@ -24,7 +42,7 @@
 			_init = true;
 		} else {
 			with(all){
-				image_blend = c_black;
+				image_blend = make_color_rgb(3, 3, 3);
 			}
 			if(global._kohit <= 1){
 				global._kohit_after = 2;
@@ -49,6 +67,16 @@
 				image_blend = c_white;
 			}
 			_init = false;
+		}
+		
+		_checktimer ++;
+		if(_checktimer >= 4){
+			with(all){
+				if(image_blend == make_color_rgb(3, 3, 3)){
+					image_blend = c_white;
+				}
+			}
+			_checktimer = 0;
 		}
 	}
 }

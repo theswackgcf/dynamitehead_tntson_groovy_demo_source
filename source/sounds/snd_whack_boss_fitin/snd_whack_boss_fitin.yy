@@ -1,0 +1,26 @@
+{
+  "$GMSound":"v2",
+  "%Name":"snd_whack_boss_fitin",
+  "audioGroupId":{
+    "name":"audiogroup_sfx",
+    "path":"audiogroups/audiogroup_sfx",
+  },
+  "bitDepth":1,
+  "channelFormat":0,
+  "compression":0,
+  "compressionQuality":4,
+  "conversionMode":0,
+  "duration":1.3119274,
+  "exportDir":"",
+  "name":"snd_whack_boss_fitin",
+  "parent":{
+    "name":"whack",
+    "path":"folders/Sounds/snd_fx/minigames/whack.yy",
+  },
+  "preload":false,
+  "resourceType":"GMSound",
+  "resourceVersion":"2.0",
+  "sampleRate":22050,
+  "soundFile":"snd_whack_boss_fitin.wav",
+  "volume":1.0,
+}

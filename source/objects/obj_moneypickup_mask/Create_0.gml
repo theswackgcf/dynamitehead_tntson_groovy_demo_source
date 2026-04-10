@@ -10,8 +10,8 @@
 	_scrclearend = true;
 	_freeze = 0;
 	
-	image_xscale = global._scale;
-	image_yscale = global._scale;
+	image_xscale = 1;
+	image_yscale = 1;
 	_height = HEIGHT;
 	_act = 0;
 	_picked = false;

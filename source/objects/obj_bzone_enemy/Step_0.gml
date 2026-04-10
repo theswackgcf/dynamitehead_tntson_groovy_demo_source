@@ -87,7 +87,7 @@
 		image_yscale = 1;
 	
 		if(scr_mousehover(bbox_left,bbox_top,bbox_right,bbox_bottom,false,1)){
-			with(obj_game){
+			with(obj_bz_maker){
 				_hover_enm = other.id;
 				_hovertimer = 5;
 			}
@@ -101,7 +101,7 @@
 	
 	if(global._battleobj != noone && instance_exists(global._battleobj)){	
 		if(_wave > array_length(global._battleobj._enemies)){
-			with(obj_game){
+			with(obj_bz_maker){
 				_hover_enm = noone;
 				_last_enm = noone;
 				_hovertimer = 0;

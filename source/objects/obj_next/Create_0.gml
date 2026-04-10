@@ -18,12 +18,4 @@
 	_sndarray = [snd_gonext1,snd_gonext2,snd_gonext3,snd_gonext4,snd_gonext5,snd_gonext6];
 	
 	_inactive = false;
-	
-	_dosurfacestuff = true;
-	
-	_gui_size = [WIDTH,HEIGHT];
-	_gui_surface = surface_create(_gui_size[0],_gui_size[1]);
-	
-	_resizegui_size = [1,1];
-	_resizegui_surface = surface_create(_resizegui_size[0],_resizegui_size[1]);
 }

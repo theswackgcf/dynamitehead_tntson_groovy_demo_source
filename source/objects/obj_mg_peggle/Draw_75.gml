@@ -1,0 +1,1 @@
+draw_sprite(spr_peggle_overlay, 0, 0, 0);

@@ -1,6 +1,8 @@
 {
 	visible = false;
 	
+	_inittimer = 0;
+	
 	_dir = "l";
 	_timer = 0;
 	_parentobj = noone;

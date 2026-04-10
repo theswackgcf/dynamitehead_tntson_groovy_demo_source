@@ -6,6 +6,6 @@
 		draw_sprite_ext(spr_screencrack, 0, x, y, 2.5, 2.5, 0, c_white, clamp(0,_crackalpha,1));
 	}
 	if(_skull){
-		draw_sprite_ext(asset_get_index("spr_"+_codename+"_skull"), 0, _skullpos[0], _skullpos[1], 1, 1, _skullangle, c_white, 1);
+		draw_sprite_ext(asset_get_index("spr_"+_codename+"_skull"), 0, _skullpos[0], _skullpos[1], 1.64, 1.64, _skullangle, c_white, 1);
 	}
 }

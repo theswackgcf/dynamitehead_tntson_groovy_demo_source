@@ -9,6 +9,12 @@
 				shader_set(shd_sepia);
 				shader_set_uniform_f(shader_get_uniform(shd_sepia, "u_SepiaAmount"), 1);
 			break;
+			case EFFECT_CONTRAST:
+				if(global._kdeffect){
+					shader_set(shd_highcontrast);
+					shader_set_uniform_f(shader_get_uniform(shd_highcontrast, "contrast"), global._contrasthit_val);
+				}
+			break;
 		}
 		
 		if(!global._pause){
@@ -16,13 +22,9 @@
 		}
 	}
 	
-	if(global._buildver == WINDOWS){
-		draw_surface_stretched(application_surface, global._screenOffsetX, global._screenOffsetY, window_get_width()/max(0.01,global._guisizeX),window_get_height()/max(0.01,global._guisizeY));
-	} else if(global._buildver == HTML){
-		draw_surface_stretched(application_surface, global._screenOffsetX, global._screenOffsetY, WIDTH,HEIGHT);
-	}
+	draw_surface_stretched(application_surface, global._screenOffsetX, global._screenOffsetY, WIDTH, HEIGHT);
 	
-	if(global._seteffect > 0){
+	if(global._seteffect > 0 || global._contrasthit > 0){
 		shader_reset();
 	}
 	

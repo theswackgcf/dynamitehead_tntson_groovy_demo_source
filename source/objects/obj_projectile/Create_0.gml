@@ -1,6 +1,9 @@
 {
 	_allsounds = ds_map_create();
 
+	_delay = 0;
+	_delayed = false;
+
 	_active = true;
 	_shielded = false;
 	_shieldt = 0;
@@ -55,8 +58,8 @@
 	//other cases
 	_bike = false;
 	
-	image_xscale = (1*_scale2[0])*_curdir;
-	image_yscale = (1*_scale2[1]);
+	image_xscale = _scale2[0]*_curdir;
+	image_yscale = _scale2[1];
 	
 	//set occupy id
 	_occupy_id = "";

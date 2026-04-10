@@ -4,7 +4,7 @@ function scr_dg_tutr(act = 0){
 			//intro
 			_textarray = [
 				["What's up, Head? I was wondering if you'd ever show up, man.", "dialm", true],
-				["C'mon, M. Let's just get this done.", "dh", true],
+				["C'mon, Dial-M. Let's just get this done.", "dh", true],
 				["Got it!", "dialm", true],
 			];
 		break;
@@ -16,11 +16,10 @@ function scr_dg_tutr(act = 0){
 			];
 		break;
 		case 2:
-			//slide and crouch
+			//lowkick
 			_textarray = [
 				["Good stuff, man.", "dialm", true],
-				["The way to this fridge is blocked.", "dialm", true],
-				["I'm thinking sliding underneath should do the job.", "dialm", true],
+				["This fridge up ahead is asking to get lowkicked. Get on it!", "dialm", true],
 			];
 		break;
 		case 3:
@@ -126,7 +125,7 @@ function scr_dg_tutr(act = 0){
 				["The last thing you'll learn today is /yCOMBOs/w!","dialm",true],
 				["So there's this fridge here...","dialm",true],
 				["Typical.","dh",true],
-				["Slide into it to send it flying, punch it in the air and kick it into the screen!","dialm",true],
+				["Lowkick it to send it flying, punch it in the air and kick it into the screen!","dialm",true],
 				["I think you've got this, Head.","dialm",true],
 			];
 		break;

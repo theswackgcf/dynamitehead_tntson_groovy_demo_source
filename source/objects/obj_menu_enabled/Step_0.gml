@@ -1,9 +1,5 @@
 {
-	if(global._buildver == HTML){
-		instance_destroy();
-	}
-	
-	depth = -11003;
+	depth = -11002;
 	if(_optionsobj != noone){
 		if(!_optionsobj._show || _ypos <= -96){
 			instance_destroy();

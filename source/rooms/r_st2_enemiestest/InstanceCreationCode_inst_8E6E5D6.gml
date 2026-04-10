@@ -1,1 +1,1 @@
-text = "battlezone AI level 15";
+text = "battlezone AI level 9";

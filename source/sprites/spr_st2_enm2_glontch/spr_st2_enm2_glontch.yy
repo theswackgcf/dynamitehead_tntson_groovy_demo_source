@@ -81,7 +81,7 @@
     },
     "name":"spr_st2_enm2_glontch",
     "playback":1,
-    "playbackSpeed":18.0,
+    "playbackSpeed":24.0,
     "playbackSpeedType":0,
     "resourceType":"GMSequence",
     "resourceVersion":"2.0",

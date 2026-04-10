@@ -19,6 +19,21 @@
 					posoffset[0] = 360;
 					texttodraw = "keycode@RIGHTkeycode";
 				break;
+				case "jump":
+					posoffset[1] = 90;
+					texttodraw = "keycode@JUMPkeycode";
+					scale = 1.6;
+				break;
+				case "smackdown_b":
+					posoffset[1] = 32;
+					texttodraw = "keycode@JUMPkeycode + keycode@PUNCHkeycode";
+					scale = 1.2;
+				break;
+				case "smackdown_t":
+					posoffset[1] = -320;
+					texttodraw = "keycode@JUMPkeycode + keycode@PUNCHkeycode";
+					scale = 1.2;
+				break;
 			}
 				
 			scr_textrender_halign("center");

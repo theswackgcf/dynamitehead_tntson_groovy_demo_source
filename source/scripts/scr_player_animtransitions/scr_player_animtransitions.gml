@@ -147,6 +147,11 @@ function scr_player_animtransitions(type = ""){
 				_anim_tr_init = false;
 				_anim_transition = true;
 			}
+			if(compare_anim("afterslam", "idle") || compare_anim("afterslam", "walk")){
+				_anim_tr_anim = "fall_idle";
+				_anim_tr_init = false;
+				_anim_transition = true;
+			}
 			
 			if(compare_anim("runroll", "idle")){
 				_anim_tr_anim = "fall_idle";
@@ -280,6 +285,28 @@ function scr_player_animtransitions(type = ""){
 				
 			if(compare_anim("melee_down1", "idle") || compare_anim("melee_down1", "walk") || compare_anim("melee_down2", "idle") || compare_anim("melee_down2", "walk")){
 				_anim_tr_anim = "meleedown_idle";
+				_anim_tr_init = false;
+				_anim_transition = true;
+			}
+			
+			if(compare_anim("dive", "run")){
+				_anim_tr_anim = "fall_walk";
+				_anim_tr_init = false;
+				_anim_transition = true;
+			}
+			if(compare_anim("dive", "idle")){
+				_anim_tr_anim = "fall_idle";
+				_anim_tr_init = false;
+				_anim_transition = true;
+			}
+			if(compare_anim("runhit", "crouch")){
+				_anim_tr_anim = "slide_crouch";
+				_anim_tr_init = false;
+				_anim_transition = true;
+			}
+			
+			if(compare_anim("finalko", "idle")){
+				_anim_tr_anim = "fall_idle";
 				_anim_tr_init = false;
 				_anim_transition = true;
 			}

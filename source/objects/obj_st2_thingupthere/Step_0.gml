@@ -45,17 +45,14 @@
 		//get punched
 		if(_secret){
 			if(_parentobj != noone && instance_exists(_parentobj)){
-				if(!_trigger && place_meeting(x,y,obj_punchhitbox)){
-					var p = instance_place(x,y,obj_punchhitbox);
-					var parent = p._parentobj;
-					if(instance_exists(p) && instance_exists(parent)){
-						if(p._ptype == "pl" && p._damage == ATK_KO){
-							if(parent._attacktype == "air" && p._height >= 30){
-								global._deletedStuff[? self.id] = self.id;
+				if(!_trigger && place_meeting(x,y,obj_dh_mask)){
+					var p = instance_place(x,y,obj_dh_mask);
+					if(instance_exists(p)){
+						if(p._attacktype == "air" && p._height >= 30){
+							global._deletedStuff[? self.id] = self.id;
 								
-								_trigger = true;
-								_parentobj._trigger = true;
-							}
+							_trigger = true;
+							_parentobj._trigger = true;
 						}
 					}
 				}

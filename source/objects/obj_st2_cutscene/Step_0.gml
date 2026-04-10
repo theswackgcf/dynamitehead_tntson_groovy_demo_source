@@ -48,7 +48,7 @@
 				_henchvol -= 0.006;
 				if(_henchtimer >= random_range(10,30)){
 					if(_allsounds != -1){
-						sfx_play_proximity(snd_henchie_notice, _henchvol);
+						voice_play_overlap_proximity(snd_henchie_notice, _henchvol);
 						sfx_pitch(snd_henchie_notice, random_range(0.7,1.1));
 					}
 					_henchtimer = 0;

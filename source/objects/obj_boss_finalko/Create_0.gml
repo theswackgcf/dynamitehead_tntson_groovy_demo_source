@@ -23,7 +23,7 @@
 	_sintimer = 0;
 	_timer = 0;
 	
-	_scale = 0.6;
+	_scale = 1;
 	
 	_amp = 0;
 	_crack = false;

@@ -6,11 +6,15 @@
 		draw_rectangle(-128, -128, WIDTH+global._screenSideOffset, HEIGHT+global._screenSideOffset, false)
 		draw_set_color(#FFFFFF);
 	}
-	if(_show){
-		if(global._buildver == WINDOWS){
-			_dosurfacestuff = global._full;
+	
+	if(global._state == "minigame" && global._minigame == "lode"){
+		if(_type == "in"){
+			image_index = image_number-1;
 		}
-		
+		visible = false;
+	}
+	
+	if(_show){
 		_timer ++;
 		if(_timer > _starttime){
 			image_speed = 1;
@@ -24,36 +28,10 @@
 					spr = spr_screen_out;
 				}
 				sprite_index = spr;
-			
-				if(global._buildver == WINDOWS){
-					_gui_surface = surface_create(_gui_size[0],_gui_size[1]);
-					_resizegui_surface = surface_create(_resizegui_size[0],_resizegui_size[1]);	
-				}
-			
+				
 				_init = true;
 			} else {
-				if(global._buildver == WINDOWS){
-					if(surface_exists(_gui_surface)){
-						if(_dosurfacestuff){
-							surface_set_target(_gui_surface);
-		
-							draw_clear_alpha(c_black, 0);
-		
-							gpu_set_blendmode_ext(bm_one, bm_inv_src_alpha);
-						}
-
-						draw_sprite(sprite_index, image_index, 0, 0);
-
-						if(_dosurfacestuff){
-							scr_surface_fullscreen_resolution();
-						}
-					} else {
-						_gui_size = [WIDTH,HEIGHT];
-						_gui_surface = surface_create(_gui_size[0],_gui_size[1]);
-					}
-				} else if(global._buildver == HTML){
-					draw_sprite(sprite_index, image_index, 0, 0);
-				}
+				draw_sprite(sprite_index, image_index, 0, 0);
 			
 				if(_type == "out"){
 					_timer = _starttime+1;
@@ -77,19 +55,6 @@
 							room_goto(_roomto);
 						}
 					}
-				}
-			}
-		}
-	} else {
-		if(global._buildver == WINDOWS){
-			if(_gui_surface != 0){
-				if(surface_exists(_gui_surface)){
-					surface_free(_gui_surface);
-				}
-			}
-			if(_resizegui_surface != 0){
-				if(surface_exists(_resizegui_surface)){
-					surface_free(_resizegui_surface);
 				}
 			}
 		}

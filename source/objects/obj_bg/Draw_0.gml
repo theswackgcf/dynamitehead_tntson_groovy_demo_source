@@ -9,48 +9,50 @@
 			sprite_index = spr_lv2_bg1_html;
 		}
 		
-		gpu_set_texrepeat(true);
+		if(global._skyshader){
+			gpu_set_texrepeat(true);
 		
-		shader_set(shd_wavy);
-		shader_set_uniform_f(t, _timer);
+			shader_set(shd_wavy);
+			shader_set_uniform_f(t, _timer);
 		
-		//default (tutorial)
-		var shaderprops = {
-			aX: 0.008,
-			aY: 0,
-			s: 0.04,
-			fX: 120,
-			fY: 0,
+			//default (tutorial)
+			var shaderprops = {
+				aX: 0.008,
+				aY: 0,
+				s: 0.04,
+				fX: 120,
+				fY: 0,
+			}
+		
+			switch(global._location){
+				case 0:
+					//toxic trenches
+					shaderprops = {
+						aX: 0.015,
+						aY: 0.015,
+						s: 0.07,
+						fX, 120,
+						fY, 120,
+					}
+				break;
+				case 1:
+					//groovy graveyard
+					shaderprops = {
+						aX: 0.007,
+						aY: 0.007,
+						s: 0.2,
+						fX, 90,
+						fY, 90,
+					}
+				break;
+			}
+		
+			shader_set_uniform_f(aX, shaderprops.aX);
+			shader_set_uniform_f(aY, shaderprops.aY);
+			shader_set_uniform_f(s, shaderprops.s);
+			shader_set_uniform_f(fX, shaderprops.fX);
+			shader_set_uniform_f(fY, shaderprops.fY);
 		}
-		
-		switch(global._location){
-			case 0:
-				//toxic trenches
-				shaderprops = {
-					aX: 0.015,
-					aY: 0.015,
-					s: 0.07,
-					fX, 120,
-					fY, 120,
-				}
-			break;
-			case 1:
-				//groovy graveyard
-				shaderprops = {
-					aX: 0.007,
-					aY: 0.007,
-					s: 0.2,
-					fX, 90,
-					fY, 90,
-				}
-			break;
-		}
-		
-		shader_set_uniform_f(aX, shaderprops.aX);
-		shader_set_uniform_f(aY, shaderprops.aY);
-		shader_set_uniform_f(s, shaderprops.s);
-		shader_set_uniform_f(fX, shaderprops.fX);
-		shader_set_uniform_f(fY, shaderprops.fY);
 		
 		if(!global._pause){
 			var spdarray = [0.14, 0.04];
@@ -92,8 +94,10 @@
 			}
 		}
 		
-		shader_reset();
-		gpu_set_texrepeat(false);
+		if(global._skyshader){
+			shader_reset();
+			gpu_set_texrepeat(false);
+		}
 		
 		if(_thunder){
 			if(!global._pause){

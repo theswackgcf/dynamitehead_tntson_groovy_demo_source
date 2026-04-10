@@ -1,5 +1,5 @@
 ///@function scr_wordwrap(string, width, break, split)
-function scr_wordwrap(){
+function scr_wordwrap(argument0,argument1,argument2,argument3){
 	//  Returns a given string, word wrapped to a pixel width,
 	//  with line break characters inserted between words.
 	//  Uses the currently defined font to determine text width.

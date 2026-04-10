@@ -1,7 +1,7 @@
 {
 	_rep = "";
 	
-	_entities = ["dh","st2_enm1","st2_enm2","st2_enm3","enm1","enm2","enm3"];
+	_entities = ["dh","st2_enm1","st2_enm2","st2_enm3"];
 	
 	_addsprite = ds_map_create();
 	_addsprite[? "st2_enm1"] = spr_st2_enm1_entD_boneloop;
@@ -14,22 +14,6 @@
 		["st1","toxic trenches colors"],
 		["st2","groovy graveyard colors"],
 		["st3","hellish havoc colors"]
-	];
-	
-	_names[? "enm1"] = [
-		["def","sourosaur"],
-		["toxic","toxicsaur"],
-		["hazard","hazardsaur"],
-	];
-	_names[? "enm2"] = [
-		["def","musclethug"],
-		["apple","applethug"],
-		["rock","ROCKHARD"],
-	];
-	_names[? "enm3"] = [
-		["def","bagdiot"],
-		["cycliot","cycliot"],
-		["crawler","night crawler"],
 	];
 	
 	_names[? "st2_enm1"] = [
@@ -45,7 +29,7 @@
 	_names[? "st2_enm3"] = [
 		["def","Gostlik"],
 		["grinzy","Grinzy"],
-		["inty","Inty"],
+		["pinky","Pinky"],
 	];
 	_curname = 0;
 

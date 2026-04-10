@@ -23,4 +23,8 @@
 	_main = false;
 	_coold = 0;
 	_backbutton = false;
+	
+	_monyx_screen = false;
+	
+	_rapidfactor = 1;
 }

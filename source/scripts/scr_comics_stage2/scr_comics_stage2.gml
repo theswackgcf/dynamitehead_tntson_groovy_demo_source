@@ -10,7 +10,7 @@ function scr_comics_stage2(){
 	// "f" - front (scale from 2 to 1)
 	// "b" - back (scale from 0 to 1)
 
-	for(var i = 0; i < 16; i++){
+	for(var i = 0; i < 14; i++){
 		_comics[? comicname][? "page"+string(i+1)] = ds_map_create();
 	}
 	
@@ -239,34 +239,6 @@ function scr_comics_stage2(){
 		["sprite", "page07"],
 		[
 			{
-				slidefrom: "r",
-				easetype: defease,
-				slidedur: defduration,
-				alpha: defalpha,
-				shake: 0,
-				sfx: -1,
-				delay: 0,
-				plusdepth: 0,
-				text_: -1,
-			},
-			{
-				slidefrom: "l",
-				easetype: defease,
-				slidedur: defduration,
-				alpha: defalpha,
-				shake: 0,
-				sfx: -1,
-				delay: 0,
-				plusdepth: 0,
-				text_: -1,
-			},
-		]
-	];
-	
-	_comics[? comicname][? "page8"] = [
-		["sprite", "page08"],
-		[
-			{
 				slidefrom: "d",
 				easetype: defease,
 				slidedur: defduration,
@@ -291,8 +263,8 @@ function scr_comics_stage2(){
 		]
 	];
 	
-	_comics[? comicname][? "page9"] = [
-		["sprite", "page09"],
+	_comics[? comicname][? "page8"] = [
+		["sprite", "page08"],
 		[
 			{
 				slidefrom: "b",
@@ -308,8 +280,8 @@ function scr_comics_stage2(){
 		]
 	];
 	
-	_comics[? comicname][? "page10"] = [
-		["sprite", "page10"],
+	_comics[? comicname][? "page9"] = [
+		["sprite", "page09"],
 		[
 			{
 				slidefrom: "l",
@@ -338,8 +310,8 @@ function scr_comics_stage2(){
 		]
 	];
 	
-	_comics[? comicname][? "page11"] = [
-		["sprite", "page11"],
+	_comics[? comicname][? "page10"] = [
+		["sprite", "page10"],
 		[
 			{
 				slidefrom: "d",
@@ -355,8 +327,8 @@ function scr_comics_stage2(){
 		]
 	];
 	
-	_comics[? comicname][? "page12"] = [
-		["sprite", "page12"],
+	_comics[? comicname][? "page11"] = [
+		["sprite", "page11"],
 		[
 			{
 				slidefrom: "l",
@@ -385,8 +357,8 @@ function scr_comics_stage2(){
 		]
 	];
 	
-	_comics[? comicname][? "page13"] = [
-		["sprite", "page13"],
+	_comics[? comicname][? "page12"] = [
+		["sprite", "page12"],
 		[
 			{
 				slidefrom: "u",
@@ -424,47 +396,8 @@ function scr_comics_stage2(){
 		]
 	];
 	
-	_comics[? comicname][? "page14"] = [
-		["sprite", "page14"],
-		[
-			{
-				slidefrom: "d",
-				easetype: defease,
-				slidedur: defduration,
-				alpha: defalpha,
-				shake: 0,
-				sfx: [snd_whistle, 0.7],
-				delay: 0,
-				plusdepth: 0,
-				text_: -1,
-			},
-			{
-				slidefrom: "u",
-				easetype: defease,
-				slidedur: defduration,
-				alpha: defalpha,
-				shake: 0,
-				sfx: -1,
-				delay: 0,
-				plusdepth: 0,
-				text_: -1,
-			},
-			{
-				slidefrom: "d",
-				easetype: defease,
-				slidedur: defduration,
-				alpha: defalpha,
-				shake: 0,
-				sfx: -1,
-				delay: 0,
-				plusdepth: 0,
-				text_: -1,
-			},
-		]
-	];
-	
-	_comics[? comicname][? "page15"] = [
-		["sprite", "page15"],
+	_comics[? comicname][? "page13"] = [
+		["sprite", "page13"],
 		[
 			{
 				slidefrom: "r",
@@ -491,8 +424,8 @@ function scr_comics_stage2(){
 		]
 	];
 	
-	_comics[? comicname][? "page16"] = [
-		["sprite", "page16"],
+	_comics[? comicname][? "page14"] = [
+		["sprite", "page14"],
 		[
 			{
 				slidefrom: "f",

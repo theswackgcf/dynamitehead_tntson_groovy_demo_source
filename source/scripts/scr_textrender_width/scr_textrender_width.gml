@@ -9,10 +9,17 @@ function scr_textrender_width(text, line = -1, scale_x = 1){
 	
 		var totalwidth = [];
 	
+		var keyscale_nes = global._keyscale_nes;
+	
+		var _init_keyscale_x = scale_x;
+		if(global._font == "dh_fontnes" || global._font == "dh_fontnes_lode"){
+			_init_keyscale_x = scale_x*keyscale_nes;
+		}
+	
 		var textKeySplit;
 		var doText;
 		var bindInput;
-		var change = global._keybindW*scale_x;
+		var change = global._keybindW*_init_keyscale_x;
 	
 		for(var o = 0; o < array_length(textArray); o++){
 			textKeySplit = string_split(textArray[o], "keycode");

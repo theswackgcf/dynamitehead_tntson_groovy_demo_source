@@ -22,7 +22,7 @@ function scr_dg_stage2(act = 0){
 		["", "fx_static", false],
 		["You're thinking what I'm thinking?", "dialm", true],
 		["I'm thinking about big money.", "dh", true],
-		["Exactly. Kick his ass, and those ten thousand monyx are in the bag.", "dialm", true],
+		["Exactly. Kick his ass, and those ten thousand Monyx are in the bag.", "dialm", true],
 		["LET'S DO THIS!", "dh", true],
 	];
 }

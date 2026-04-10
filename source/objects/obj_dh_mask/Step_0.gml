@@ -1,4 +1,8 @@
 {	
+	if(!global._tutorial){
+		scr_culling();
+	}
+	
 	if(!global._pause){
 		_allsoundstimer ++;
 		if(_allsoundstimer >= 180){
@@ -74,26 +78,33 @@
 			var divide = 1;
 			var mult = 3;
 			var progress_mult = 1;
+			var knockout_mult = 0;
 			switch(global._location){
 				case 0:
 					maxclamp = 5;
 					divide = 8;
 					mult = 3;
+					
+					knockout_mult = 0.1;
 				break;
 				case 1:
-					maxclamp = 5.5;
+					maxclamp = 6.65;
 					divide = 40;
 					mult = 7;
-					progress_mult = 0.42;
+					progress_mult = 0.58;
+					
+					knockout_mult = 0.15;
 				break;
 			}
 			
 			global._progress = (((room_width*room_height)/(WIDTH*HEIGHT))/divide)-(distance_to_object(obj_finish)/(HEIGHT*mult));
-			global._progress = clamp(global._progress*progress_mult, 0, maxclamp);
+			global._progress = max(2, clamp(global._progress*progress_mult, 0, maxclamp)-(global._knockouts*knockout_mult));
 			
 			if(instance_number(obj_finish) == 0){
-				global._progress = 1;
+				global._progress = 3.5;
 			}
+			
+			//show_debug_message(global._progress);
 			
 			if(!global._dialogue){
 				if(!_doWin && place_meeting(x, y, obj_finish)){
@@ -112,7 +123,7 @@
 		
 			//light spot
 			_showlight = false;
-			if(global._location == 1 && global._bossstart && !global._lightsout){
+			if(global._location == 1 && instance_number(obj_boss2_mask) > 0 && !global._lightsout){
 				_showlight = true;
 			}
 			if(!_showlight){
@@ -161,12 +172,16 @@
 
 			//winning
 			if(_state == "win"){
+				if(!global._winscreen){
+					mus_stop();
+				}
 				if(_wintimer >= 180+_wintimeroffset && !global._winscreen){
 					if(!global._tutorial){
-						with(obj_game){
-							_dhwinobj = instance_create_depth(-WIDTH, 0, 0, obj_windh);
-							_bgwinobj = instance_create_depth(0, 0, 0, obj_winbg);
-						}
+						var results = instance_create_depth(0,0,0,obj_results);
+						
+						results._dhwinobj = instance_create_depth(-WIDTH, 0, 0, obj_windh);
+						results._bgwinobj = instance_create_depth(0, 0, 0, obj_winbg);
+						
 						global._winscreen = true;
 						mus_play(mus_win);
 						
@@ -275,14 +290,15 @@
 						_attackhb = true;
 						var atk = instance_create_depth(x, y, -1, obj_punchhitbox);
 						atk._parentobj = self.id;
-						atk._scale = [4, 3.4];
-						atk._offset = [76,18];
+						atk._scale = [6, 5.2];
+						atk._offset = [180,90];
 						atk._timer = 320;
 						if(_height >= _groundlevel + _mingroundko){
 							atk._damage = ATK_KO;
 						} else {
 							atk._damage = ATK_NORM;
 						}
+						atk._frame = 2;
 						atk._type = "air";
 						atk._persist = true;
 					}
@@ -292,8 +308,8 @@
 						_attackhb = true;
 						var atk = instance_create_depth(x, y, -1, obj_punchhitbox);
 						atk._parentobj = self.id;
-						atk._scale = [3.3, 4];
-						atk._offset = [142,-110];
+						atk._scale = [6.2, 4];
+						atk._offset = [170,-100];
 						atk._timer = 9;
 						atk._damage = ATK_KO;
 					}
@@ -305,13 +321,13 @@
 						var atk2 = instance_create_depth(x, y, -1, obj_punchhitbox);
 						atk._parentobj = self.id;
 						atk2._parentobj = self.id;
-						atk._scale = [5.2, 6];
-						atk._offset = [165, -75];
+						atk._scale = [6.25, 6];
+						atk._offset = [220, -75];
 						atk._curdir = DIR_R;
 						atk._parentdir = false;
 						atk._persist = true;
-						atk2._scale = [5.2, 6];
-						atk2._offset = [165, -75];
+						atk2._scale = [6.25, 6];
+						atk2._offset = [220, -75];
 						atk2._curdir = DIR_L;
 						atk2._parentdir = false;
 						atk._timer = 10;
@@ -319,6 +335,7 @@
 						atk._damage = ATK_KO;
 						atk2._damage = ATK_KO;
 						atk2._persist = true;
+						atk2._delay = 5;
 					}
 				}
 				if(_attacktype == "air" && _jump_enmhit){
@@ -389,6 +406,21 @@
 			if(_enemygrab && _slam){
 				if(_freeze <= 0){
 					if(_grabinst._hp <= 0){
+						_displayobj.image_index = 0;
+									
+						_afterslam = true;
+									
+						with(obj_camera){
+							_ampY = 28;
+						}
+									
+						var pos = 350;
+						var curpos = pos*_slamdir;
+						var partc = instance_create_depth((x-170)+curpos, y, 0, obj_particle);
+						partc._type = "fx5";
+									
+						sfx_play_choose([snd_dhthud,snd_dhthud2,snd_dhthud3]);
+						
 						throw_enemy();
 					}
 					
@@ -426,7 +458,7 @@
 								_canslam = false;
 								//damage enemy
 								if(_grabinst != noone && instance_exists(_grabinst) && _grabinst._freeze <= 0){
-									with(obj_game){
+									with(obj_gui){
 										ui_fade("enemy", 1);
 									}
 									if(_hurtTimer <= 0 && _grabinst._hurttimer <= 0){
@@ -434,7 +466,13 @@
 										_grabinst._stunlock_timer = _grabinst._stunlock_formula;
 										_grabinst._dmgcoold = 0;
 										_grabinst._hurttimer = 3;
-										_grabinst._hp -= ceil((_slamcount+1)*0.48);
+										var minval = 0;
+										if(_grabinst._codename != "fridge"){
+											minval = ceil((_slamcount+1)*0.48);
+										} else {
+											minval = 3;
+										}
+										_grabinst._hp -= minval;
 										_grabinst._deathoffset = [pos, 42];
 										with(_grabinst._hitobj){
 											if(has_trait(TRAIT_HP, _parentobj)){
@@ -465,8 +503,8 @@
 										//create hurtbox
 										var atk = instance_create_depth(x, y, -1, obj_punchhitbox);
 										atk._parentobj = self.id;
-										atk._scale = [7.7, 5.4];
-										atk._offset = [boxpos*0.7,-72];
+										atk._scale = [7.8, 7.2];
+										atk._offset = [boxpos*1,70];
 										atk._timer = 10;
 										atk._damage = ATK_KO;
 										atk._slam = true;
@@ -480,6 +518,8 @@
 											sfx_pitch(randsound, random_range(_grabinst._slampitch[0],_grabinst._slampitch[1]));
 										}
 									}
+									
+									_slambonks ++;
 								}
 							}
 							if(_slamsounds[i][1] != "slam"){
@@ -495,7 +535,7 @@
 					if(_displayobj.image_index >= _displayobj.image_number-1){
 						_displayobj.image_index = 0;
 						if(_hurtTimer <= 0){
-							_slamcount += 1.35;
+							_slamcount += 2.24;
 						}
 						for(var i = 0; i < array_length(_slamsounds); i++){
 							_slamsounds[i][3] = false;
@@ -589,7 +629,7 @@
 				if(_state == "default" && _mashattack == 0 && _height <= _groundlevel && !_dead && !_enemygrab && !_slam){
 					if(place_meeting(x, y, obj_item)){
 						var inst = instance_place(x, y, obj_item);
-						if(!inst._hopping){
+						if(!inst._hopping && !inst._falloff){
 							_prompts._help_prompt = global._help_prompt_time;
 							_prompts._prompt_type = "grab";
 						}
@@ -673,12 +713,12 @@
 								_state = "default";
 								if(!inst._boss){
 									//global._curenemy = inst;
-									with(obj_game){
+									with(obj_gui){
 										ui_fade("enemy", 1);
 									}
 								} else {
 									global._curboss = inst;
-									with(obj_game){
+									with(obj_gui){
 										ui_fade("boss", 1);
 									}
 								}
@@ -709,8 +749,21 @@
 		}
 		
 		if(_idleguitimer >= _idleguithreshold){
-			with(obj_game){
+			with(obj_dh_display){
+				if(!_outline_idle){
+					_outline_alpto = 1;
+					_outline_timer = _outline_maxtimer;
+					
+					_outline_idle = true;
+				}
+			}
+			
+			with(obj_gui){
 				ui_all_fade(1);
+			}
+		} else {
+			with(obj_dh_display){
+				_outline_idle = false;
 			}
 		}
 		
@@ -749,6 +802,7 @@
 						_anim = "melee_crouch";
 					break;
 					case "upper":
+						_height = _groundlevel;
 						if(_hurtTimer > 0){
 							_attack = false;
 							_attacktype = "";
@@ -757,6 +811,8 @@
 						_anim = "melee_uppercut";
 					break;
 					case "doublekick":
+						_height = _groundlevel;
+					
 						_anim_prev = _anim;
 						_anim = "doublekick";
 					
@@ -774,7 +830,11 @@
 			case "down":
 				if(_finalcombo){
 					_anim_prev = _anim;
-					_anim = "melee_"+_attacktype+"3";
+					if(_height <= _groundlevel){
+						_anim = "melee_"+_attacktype+"3";
+					} else {
+						_anim = "melee_jump";
+					}
 					_onecombo = 0;
 				}
 			break;
@@ -785,6 +845,31 @@
 		}
 		if(global._finalhit <= 0 && _freeze <= 0 && _phasehit > 0){
 			_phasehit --;
+		}
+		
+		if(!_runroll_slide){
+			if(_crouch || (_attack && _attacktype == "idle")){
+				_spd[0] = _crouchspd;
+				var mult = 1;
+				if(_attack){
+					mult = 2.6;
+				}
+				if(_afterrun_timer > 0){
+					_crouchspd = lerp(_crouchspd, 0, 0.045*mult);
+				} else {
+					_crouchspd = lerp(_crouchspd, 0, 0.18*mult);
+				}
+				if(_crouchspd < 0 && _crouchspd > -1){
+					_crouchspd = 0;
+				}
+				if(_crouchspd > 0 && _crouchspd < 1){
+					_crouchspd = 0;
+				}
+			} else {
+				if(_height <= _groundlevel){
+					_crouchspd = _spd[0];
+				}
+			}
 		}
 		
 		//stage specific

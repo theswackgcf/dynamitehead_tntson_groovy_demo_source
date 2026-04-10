@@ -12,7 +12,28 @@ function scr_enemyscript_bottomscript(){
 			if(_successparry % 10 == 0){
 				_parryframe = irandom(_mashhurt_max-1);
 			}
-			_anim = "mashhurt";
+			if(!_death){
+				if(_height > _groundlevel){
+					_anim = "fall"
+				} else {
+					_anim = "mashhurt";
+				}
+			}
+			if(_falling && _vspd < 0 && _height <= _groundlevel+12){
+				if(_falls == 0){
+					_height = _groundlevel+13;
+				} else {
+					_falling = false;
+					_fall_ko = false;
+					_standup = false;
+					_vspd = 0;
+					_height = _groundlevel;
+				}
+			}
+			if(_standup){
+				_standup = false;
+				_height = _groundlevel;
+			}
 			_displayobj.image_index = _parryframe;
 			_successparry --;
 		}
@@ -52,5 +73,10 @@ function scr_enemyscript_bottomscript(){
 	}
 	if(_freeze == 0 && _speed == 0){
 		_speed = 1;
+	}
+	
+	if(_force_freeze > 0){
+		_freeze = _force_freeze;
+		_force_freeze --;
 	}
 }

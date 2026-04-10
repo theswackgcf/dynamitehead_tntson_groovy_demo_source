@@ -234,4 +234,10 @@
 			global._screenOffsetY = 0;
 		}
 	}
+	
+	//debug shit
+	if(global._debug){
+		view_enabled = global._enableCamera;
+		view_set_visible(0, global._enableCamera);
+	}
 }

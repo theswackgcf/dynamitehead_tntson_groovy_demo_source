@@ -15,6 +15,8 @@
 			_mult_blendArray = other._mult_blendArray;
 		}
 		
+		_outline_col = _parentobj._hpcolor;
+		
 		_colorsinit = true;
 	}
 	
@@ -54,10 +56,19 @@
 		}
 			
 		if(_colorsinit){
+			var sptodraw = sprite_index;
+			if(_parentobj._anim == "idle" && global._tutorial){
+				sptodraw = asset_get_index("spr_"+_parentobj._codename+"_idle_tutr");
+			}
+			
 			if(_parentobj._phasehit > 0){
 				var kickobj = _parentobj._kickass_obj;
 				if(kickobj != noone && instance_exists(kickobj)){
 					draw_sprite_ext(kickobj.sprite_index, kickobj.image_index, x+_parentobj._dispoffset[0], y+_parentobj._dispoffset[1]-_height, kickobj.image_xscale, kickobj.image_yscale, 0, c_white, 1);
+				}
+			} else {
+				if(_outline_alp > 0){
+					scr_draw_outline(sptodraw, image_index, x+_parentobj._dispoffset[0], y+_parentobj._dispoffset[1]-_height, image_xscale, image_yscale, image_angle, c_white, _outline_alp, [color_get_red(_outline_col)*0.86,color_get_green(_outline_col)*0.86,color_get_blue(_outline_col)*0.86],(5.6+(sin(_outline_timer/8)*3))*_outline_dist);
 				}
 			}
 			
@@ -84,10 +95,6 @@
 					fireoffset[0] = -32*_parentobj._curdir;
 				}
 				draw_sprite_ext(asset_get_index("spr_"+_parentobj._codename+"_block_fire"), image_index, x+_parentobj._dispoffset[0]+fireoffset[0], y+_parentobj._dispoffset[1]-_height+fireoffset[1], image_xscale*(_parentobj._shieldpower+0.4), image_yscale*(_parentobj._shieldpower+0.4), image_angle, image_blend, image_alpha*_parentobj._invalpha);
-			}
-			var sptodraw = sprite_index;
-			if(_parentobj._anim == "idle" && global._tutorial){
-				sptodraw = asset_get_index("spr_"+_parentobj._codename+"_idle_tutr");
 			}
 			
 			draw_sprite_ext(sptodraw, image_index, x+_parentobj._dispoffset[0], y+_parentobj._dispoffset[1]-_height, image_xscale, image_yscale, image_angle, image_blend, image_alpha*_parentobj._invalpha);

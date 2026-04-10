@@ -13,7 +13,6 @@
 	_grav_val = 0.5;
 	
 	_scale = 1;
-	_truescale = false;
 	
 	_sort = true;
 	_depthoffset = 48;
@@ -36,8 +35,23 @@
 	_alpha = false;
 	_alpha_spd = 0;
 	
+	_changescale = false;
+	_changescale_spd = 0;
+	
 	image_blend = _color;
 	_angle = 0;
+	
+	_tilepos = [0,0];
+	_lode_particle = false;
+	_lode_depth = 10;
+	_id = "particle"+string(irandom(99999));
+	_tilelayer = 1;
+	_lode_project = true;
+	_lode_deadtimer = 0;
+	
+	if(_lode_particle){
+		visible = false;
+	}
 	
 	_init = false;
 }

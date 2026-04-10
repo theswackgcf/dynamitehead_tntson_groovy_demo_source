@@ -11,4 +11,6 @@
 	
 	_broke = false;
 	_showbottom = true;
+	
+	_inview = false;
 }

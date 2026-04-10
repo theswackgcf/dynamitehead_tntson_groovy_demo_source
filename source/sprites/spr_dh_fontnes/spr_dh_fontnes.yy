@@ -2,7 +2,7 @@
   "$GMSprite":"v2",
   "%Name":"spr_dh_fontnes",
   "bboxMode":0,
-  "bbox_bottom":154,
+  "bbox_bottom":157,
   "bbox_left":4,
   "bbox_right":155,
   "bbox_top":4,

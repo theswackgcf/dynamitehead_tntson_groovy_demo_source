@@ -97,8 +97,8 @@
   "swatchColours":null,
   "swfPrecision":0.5,
   "textureGroupId":{
-    "name":"stage_generic",
-    "path":"texturegroups/stage_generic",
+    "name":"pause_sprites",
+    "path":"texturegroups/pause_sprites",
   },
   "type":0,
   "VTile":false,

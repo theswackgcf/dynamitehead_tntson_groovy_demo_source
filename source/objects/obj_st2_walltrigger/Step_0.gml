@@ -38,7 +38,7 @@
 									}
 								
 									//create solid object
-									_solid = instance_create_depth(x-128,y-128,depth,obj_solid);
+									_solid = instance_create_depth(x-128,y-128,depth,obj_wallsolid);
 									_solid.image_xscale = 4;
 									_solid.image_yscale = 2;
 								} else {

@@ -112,6 +112,14 @@
 			if(draw && sprite != -1){
 				draw_sprite_ext(sprite, curframe, _bossintro.x+offset[0], _bossintro.y+offset[1],_lankscale[0],_lankscale[1],0,image_blend,image_alpha);
 			}
+			
+			_bossheadpos = (_bossintro.x+offset[0])-global._cameraX;
+			
+			if(_bossheadpos <= (WIDTH*0.58)){
+				with(obj_vsscreen){
+					_bossoffset[0] = 650;
+				}
+			}
 		}
 	}
 	//dj set

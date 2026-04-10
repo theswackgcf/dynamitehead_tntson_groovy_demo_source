@@ -40,7 +40,7 @@
 	
 	_out = false;
 	
-	_gotodebugroom = false;
+	_loaded = false;
 	
 	function roomto(roomname){
 		if(!_silent){

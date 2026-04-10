@@ -23,6 +23,14 @@
 	}
 	
 	if(!global._pause){
+		if(place_meeting(x,y,obj_cash_set)){
+			var cash = instance_place(x,y,obj_cash_set);
+			if(instance_exists(cash)){
+				_amount = cash._amount;
+				instance_destroy(cash.id);
+			}
+		}
+		
 		switch(_act){
 			case 0:
 				//fall down

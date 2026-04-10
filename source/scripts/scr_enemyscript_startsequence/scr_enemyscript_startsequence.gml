@@ -176,6 +176,8 @@ function scr_enemyscript_startsequence(){
 					var minsize = 6;
 					if(diff_abs(_sequence_hop_obj.x, _sequence_hop_obj._jumptopos[0]) <= minsize && diff_abs(_sequence_hop_obj.y, _sequence_hop_obj._jumptopos[1]) <= minsize){
 						_nohopobj = true;
+						x = _sequence_hop_obj.x;
+						y = _sequence_hop_obj.y;
 						_displayobj.image_index = _sequence_hop_obj.image_index;
 						
 						if(ds_map_exists(global._sequenceLayers, _seqid) && layer_exists(global._sequenceLayers[? _seqid]) && layer_sequence_exists(global._sequenceLayers[? _seqid], _sequence)){

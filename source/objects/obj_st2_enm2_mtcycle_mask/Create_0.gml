@@ -18,6 +18,8 @@
 	_height = 0;
 	_dispoffset = [0,0];
 	
+	_depthoffset = 48;
+	
 	_heightdiff = [28, 210];
 	
 	_damage = ATK_KO;
@@ -71,9 +73,10 @@
 			inst._vspd = 16;
 			inst._falling = true;
 			inst._hp -= 6;
+			inst._althp = true;
 			inst._dmgfall = true
 			
-			with(obj_game){
+			with(obj_gui){
 				ui_fade("enemy", 1);
 			}
 		} else {
@@ -91,7 +94,7 @@
 		}
 	}
 	
-	function dead(){					
+	function dead(){
 		instance_destroy();
 	}
 	
@@ -114,6 +117,10 @@
 	_mt_spd = 0;
 	
 	_mt_exhausttime = 0;
+	
+	_mt_active_timer = 0;
+	_mt_alpha = 0;
+	_mt_alpha_to = 0;
 	
 	_colorsinit = false;
 	

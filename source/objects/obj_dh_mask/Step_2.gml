@@ -115,6 +115,7 @@
 						_attacktype = "";
 						_anim = "finalko";
 					} else {
+						_anim_prev = _anim;
 						_anim = "idle";
 					}
 				}

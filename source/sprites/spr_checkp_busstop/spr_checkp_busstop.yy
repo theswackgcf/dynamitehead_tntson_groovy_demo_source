@@ -2,7 +2,7 @@
   "$GMSprite":"v2",
   "%Name":"spr_checkp_busstop",
   "bboxMode":0,
-  "bbox_bottom":968,
+  "bbox_bottom":969,
   "bbox_left":24,
   "bbox_right":999,
   "bbox_top":0,
@@ -12,14 +12,14 @@
   "edgeFiltering":false,
   "For3D":false,
   "frames":[
-    {"$GMSpriteFrame":"v1","%Name":"ba4feb5c-1ae2-46af-b4c5-662b1407c72a","name":"ba4feb5c-1ae2-46af-b4c5-662b1407c72a","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"b9336105-f87f-40a1-b3cf-d8c4845920c5","name":"b9336105-f87f-40a1-b3cf-d8c4845920c5","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
   ],
   "gridX":0,
   "gridY":0,
   "height":1000,
   "HTile":false,
   "layers":[
-    {"$GMImageLayer":"","%Name":"5f60eede-d7bb-4994-9dc4-4005a5123c42","blendMode":0,"displayName":"default","isLocked":false,"name":"5f60eede-d7bb-4994-9dc4-4005a5123c42","opacity":100.0,"resourceType":"GMImageLayer","resourceVersion":"2.0","visible":true,},
+    {"$GMImageLayer":"","%Name":"fce1de1f-3b1a-4376-b18f-52365c8ef103","blendMode":0,"displayName":"default","isLocked":false,"name":"fce1de1f-3b1a-4376-b18f-52365c8ef103","opacity":100.0,"resourceType":"GMImageLayer","resourceVersion":"2.0","visible":true,},
   ],
   "name":"spr_checkp_busstop",
   "nineSlice":null,
@@ -71,8 +71,8 @@
     "tracks":[
       {"$GMSpriteFramesTrack":"","builtinName":0,"events":[],"inheritsTrackColour":true,"interpolation":1,"isCreationTrack":false,"keyframes":{"$KeyframeStore<SpriteFrameKeyframe>":"","Keyframes":[
             {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
-                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"ba4feb5c-1ae2-46af-b4c5-662b1407c72a","path":"sprites/spr_checkp_busstop/spr_checkp_busstop.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
-              },"Disabled":false,"id":"96c9fcef-e02a-44a3-a56e-a87002d5a49a","IsCreationKey":false,"Key":0.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
+                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"b9336105-f87f-40a1-b3cf-d8c4845920c5","path":"sprites/spr_checkp_busstop/spr_checkp_busstop.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
+              },"Disabled":false,"id":"0cbd0ade-5371-4259-b4a2-f6e641efecc5","IsCreationKey":false,"Key":0.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
           ],"resourceType":"KeyframeStore<SpriteFrameKeyframe>","resourceVersion":"2.0",},"modifiers":[],"name":"frames","resourceType":"GMSpriteFramesTrack","resourceVersion":"2.0","spriteId":null,"trackColour":0,"tracks":[],"traits":0,},
     ],
     "visibleRange":null,

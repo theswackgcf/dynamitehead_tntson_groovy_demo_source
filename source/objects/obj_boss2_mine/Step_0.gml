@@ -64,7 +64,7 @@
 						pj._visible = false;
 						pj._temp = true;
 						pj._deathtimer = 8;
-						pj._scale2 = [2.5, 2,8];
+						pj._scale2 = [2.5, 2];
 						pj._damage = ATK_KO;
 					
 						var p = instance_create_depth(x-32,y,depth-4,obj_particle);

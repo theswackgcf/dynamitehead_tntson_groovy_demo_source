@@ -73,4 +73,17 @@
 	_skipall_xstart = -WIDTH;
 	_skipall_x = _skipall_xstart;
 	_skip = false;
+
+	_mus_pos = 0;
+	_mus_init = false;
+	_mus_stop = false;
+	
+	function play_music() {
+		with(obj_music){
+			mus_play(mus_briefing);
+			mus_pitch(0.65);
+			audio_sound_set_track_position(global._cursong, other._mus_pos);
+			global.music_bus.effects[0] = _ef_muffled;
+		}
+	}
 }

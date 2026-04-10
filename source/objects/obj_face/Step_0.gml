@@ -19,5 +19,5 @@
 	}
 	
 	//face lerp
-	_facescale = lerp(_facescale, clamp(obj_game._loseOpt, 0.9, 1.38), 0.035);
+	_facescale = lerp(_facescale, clamp(obj_lost._loseOpt, 0.9, 1.38), 0.035);
 }

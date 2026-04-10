@@ -61,9 +61,12 @@
 		[
 			["Back","game_back"],
 			["Mouse in Menu","mouse"],
+			["Surface Lighting","surfl"],
+			["Background Shaders","bgsky"],
 			["Knockdown effect","kd"],
 			["Show Tips","tips"],
 			["Freeze Frame Intensity","freeze",150],
+			["Flying Robot","bird"],
 			["Reset All","game_reset"],
 		],
 		[
@@ -79,7 +82,7 @@
 			["TNT Juice","inp",50,"tnt"],
 			["Grabbing","inp",50,"grab"],
 			["Crouch","inp",50,"crouch"],
-			["Slide","inp",50,"slide"],
+			["Dive","inp",50,"dive"],
 			["Shield","inp",50,"shield"],
 			["Pose","inp",50,"taunt"],
 			["Back/Pause","inp",50,"pause"],
@@ -100,7 +103,7 @@
 	if(global._buildver == HTML){
 		array_delete(_btns[1], 1, 3);
 		array_delete(_btns[2], 5, 1);
-		array_delete(_btns[3], 1, 1);
+		array_delete(_btns[3], 1, 2);
 		array_delete(_btns[4], 1, 1);
 		array_delete(_btns[4], 21, 2);
 	}
@@ -135,9 +138,12 @@
 		[
 			"",
 			"Enables/Disables the use of mouse input in the menus.",
+			"Toggles stage lighting effects. Improves performance when off.",
+			"When off, effects like wavy skies will be disabled.",
 			"Enables/Disables the red visual effect upon knockdown/enemy KOs.",
 			"This option does not affect tips that show up during tutorial.",
 			"Adjusts how long the freeze effect lasts.",
+			"Figure this one out on your own.",
 			"",
 		],
 		[
@@ -172,12 +178,12 @@
 	if(global._buildver == HTML){
 		array_delete(_btndesc[1], 1, 3);
 		array_delete(_btndesc[2], 5, 1);
-		array_delete(_btndesc[3], 1, 1);
+		array_delete(_btndesc[3], 1, 2);
 		array_delete(_btndesc[4], 1, 1);
 		array_delete(_btndesc[4], 21, 2);
 	}
 	
-	_scrollopt = [0, 2, 2, 1, 3];
+	_scrollopt = [0, 2, 2, 2, 3];
 	
 	_curbutton = noone;
 	
@@ -780,6 +786,48 @@
 						
 							scr_savevalue(global._menumouse,"Mouse in Menu",_inifile,"Game",true,true);
 						break;
+						case "surfl":
+							sfx_stop_array(_menuobj._sndarray);
+							sfx_play_choose(_menuobj._sndarray);
+							
+							if(!global._surflighting){
+								global._surflighting = true;
+							} else {
+								global._surflighting = false;
+							}
+							
+							with(obj_menu_enabled){
+								instance_destroy();
+							}
+							var enab = instance_create_depth(0, 0, 0, obj_menu_enabled);
+							enab._xpos = _curbutton._xpos + 385;
+							enab._ypos = _curbutton._ypos - 64;
+							enab._startx = _curbutton._xpos + 385;
+							enab._state = global._menumouse;
+						
+							scr_savevalue(global._surflighting,"Surface Lighting",_inifile,"Game",true,true);
+						break;
+						case "bgsky":
+							sfx_stop_array(_menuobj._sndarray);
+							sfx_play_choose(_menuobj._sndarray);
+							
+							if(!global._skyshader){
+								global._skyshader = true;
+							} else {
+								global._skyshader = false;
+							}
+							
+							with(obj_menu_enabled){
+								instance_destroy();
+							}
+							var enab = instance_create_depth(0, 0, 0, obj_menu_enabled);
+							enab._xpos = _curbutton._xpos + 385;
+							enab._ypos = _curbutton._ypos - 64;
+							enab._startx = _curbutton._xpos + 385;
+							enab._state = global._menumouse;
+						
+							scr_savevalue(global._skyshader,"Background Shaders",_inifile,"Game",true,true);
+						break;
 						case "kd":
 							sfx_stop_array(_menuobj._sndarray);
 							sfx_play_choose(_menuobj._sndarray);
@@ -837,11 +885,34 @@
 								scr_savevalue(global._freezeval, dispstr, _inifile, "Game", true, true);
 							}
 						break;
+						case "bird":
+							sfx_stop_array(_menuobj._sndarray);
+							sfx_play_choose(_menuobj._sndarray);
+							
+							if(!global._birdmode){
+								global._birdmode = true;
+							} else {
+								global._birdmode = false;
+							}
+							
+							with(obj_menu_enabled){
+								instance_destroy();
+							}
+							var enab = instance_create_depth(0, 0, 0, obj_menu_enabled);
+							enab._xpos = _curbutton._xpos + 295;
+							enab._ypos = _curbutton._ypos - 64;
+							enab._startx = _curbutton._xpos + 295;
+							enab._state = global._birdmode;
+						
+							scr_savevalue(global._birdmode,"Flying Robot",_inifile,"Game",true,true);
+						break;
 						case "game_reset":
 							global._menumouse = global._defvalues[? "Mouse in Menu"];
+							global._surflighting = global._defvalues[? "Surface Lighting"];
 							global._kdeffect = global._defvalues[? "Knockdown effect"];
 							global._showtips = global._defvalues[? "Show Tips"];
 							global._freezeval = global._defvalues[? "Freeze Frame Intensity"];
+							global._birdmode = global._defvalues[? "Flying Robot"];
 						
 							global._storeSliders[? "Freeze Frame Intensity"] = global._defvalues[? "Freeze Frame Intensity"];
 						
@@ -849,9 +920,11 @@
 							sfx_play_choose(_menuobj._sndarray);
 						
 							scr_savevalue(global._menumouse,"Mouse in Menu",_inifile,"Game",true,false);
+							scr_savevalue(global._surflighting,"Surface Lighting",_inifile,"Game",false,false);
 							scr_savevalue(global._kdeffect,"Knockdown effect",_inifile,"Game",false,false);
 							scr_savevalue(global._showtips,"Show Tips",_inifile,"Game",false,false);
-							scr_savevalue(global._freezeval,"Freeze Frame Intensity",_inifile,"Game",false,true);
+							scr_savevalue(global._freezeval,"Freeze Frame Intensity",_inifile,"Game",false,false);
+							scr_savevalue(global._birdmode,"Flying Robot",_inifile,"Game",false,true);
 						break;
 					}
 				}
@@ -946,12 +1019,4 @@
 			break;
 		}
 	}
-	
-	_dosurfacestuff = true;
-	
-	_gui_size = [WIDTH,HEIGHT];
-	_gui_surface = surface_create(_gui_size[0],_gui_size[1]);
-	
-	_resizegui_size = [1,1];
-	_resizegui_surface = surface_create(_resizegui_size[0],_resizegui_size[1]);
 }

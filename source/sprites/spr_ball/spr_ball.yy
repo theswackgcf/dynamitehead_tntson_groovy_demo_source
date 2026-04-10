@@ -25,8 +25,8 @@
   "nineSlice":null,
   "origin":4,
   "parent":{
-    "name":"misc",
-    "path":"folders/Sprites/misc.yy",
+    "name":"peggle",
+    "path":"folders/Sprites/mini-games/peggle.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",
@@ -83,8 +83,8 @@
   "swatchColours":null,
   "swfPrecision":0.5,
   "textureGroupId":{
-    "name":"Default",
-    "path":"texturegroups/Default",
+    "name":"minigame1_sprites",
+    "path":"texturegroups/minigame1_sprites",
   },
   "type":0,
   "VTile":false,

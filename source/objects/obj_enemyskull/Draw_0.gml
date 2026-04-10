@@ -40,7 +40,7 @@
 			draw_sprite_ext(sprite_index, image_index, x+_dispoffset[0], (y-_height)+_dispoffset[1], image_xscale, image_yscale, image_angle, _colorblend, image_alpha);
 		}
 
-		if(array_contains(global._skullrecolor, _codename) && _difftype){
+		if(array_contains(global._skullrecolor, _codename) && (_difftype || (!_difftype && global._lightsout))){
 			//draw recolored version
 			var _shdr = asset_get_index("shd_replace_col");
 			if(global._buildver == HTML){

@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"minigame_lose_step",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"minigame_lose_step",
+  "parent":{
+    "name":"minigames",
+    "path":"folders/Scripts/minigames.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

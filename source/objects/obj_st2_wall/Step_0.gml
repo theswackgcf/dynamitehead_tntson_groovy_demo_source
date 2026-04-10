@@ -12,7 +12,7 @@
 				_wall_alp = _alphas[0];
 			} else {
 				//create solid object
-				_solid = instance_create_depth(x-128,y-128,depth,obj_solid);
+				_solid = instance_create_depth(x-128,y-128,depth,obj_wallsolid);
 				_solid.image_xscale = 4;
 				_solid.image_yscale = 2;
 				
@@ -82,8 +82,8 @@
 							
 								//particles
 								for(var i = 0; i < 2; i++){
-									var offset = [-235, 140];
-									var p = instance_create_depth(x+offset[i], y-12, depth, obj_particle);
+									var offset = [-170, 80];
+									var p = instance_create_depth(x+offset[i], y+6, depth, obj_particle);
 									p._move = true;
 									if(i == 0){
 										p._type = "run4";

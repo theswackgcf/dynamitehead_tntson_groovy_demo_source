@@ -21,11 +21,11 @@
 	_timer = 0;
 	
 	if(global._playerDir == "l"){
-		image_xscale = -0.7;
+		image_xscale = -1;
 	} else {
-		image_xscale = 0.7;
+		image_xscale = 1;
 	}
-	image_yscale = 0.7;
+	image_yscale = 1;
 	_snd = [false,false];
 	
 	_rep = "";

@@ -17,8 +17,8 @@
   ],
   "name":"r_gameintro",
   "parent":{
-    "name":"game_other",
-    "path":"folders/Rooms/game_other.yy",
+    "name":"Rooms",
+    "path":"folders/Rooms.yy",
   },
   "parentRoom":null,
   "physicsSettings":{

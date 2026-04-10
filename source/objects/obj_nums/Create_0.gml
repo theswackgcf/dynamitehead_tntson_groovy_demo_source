@@ -12,6 +12,7 @@
 	_charw = 58;
 	
 	_num = 0;
+	_nocked = false;
 	
 	_grav = 0.45;
 	

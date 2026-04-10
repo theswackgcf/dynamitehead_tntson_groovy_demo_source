@@ -177,7 +177,7 @@ function scr_player_animation(){
 			if(_displayobj.image_index >=_displayobj.image_number-1){
 				if(_itemanim <> 2){
 					if(_itemanim == 0 && !_moneypickup){
-						var p = instance_create_depth(_iteminst.x, _iteminst.y, depth, obj_particle);
+						var p = instance_create_depth(_iteminst.x, _iteminst.y-72, depth, obj_particle);
 						p._color = _iteminst._color;
 						p._type = "item";
 									
@@ -218,6 +218,8 @@ function scr_player_animation(){
 						_taunt_type = "tauntmoney";
 						_moneypickup = false;
 						_moneypickup_inst._picked = true;
+						
+						_nodive_timer = 90;
 						
 						_state = "nomove";
 					} else {
@@ -272,11 +274,7 @@ function scr_player_animation(){
 					_curdir = DIR_L;
 				}
 				_anim_prev = _anim;
-				_anim = "slide";
-				if(_runroll_slide){
-					_anim_prev = _anim;
-					_anim = "runhit";
-				}
+				_anim = "runhit";
 			}
 			_hitobj._curscale = 1;
 		}
@@ -286,6 +284,10 @@ function scr_player_animation(){
 			if(_runroll_dive){
 				_anim_prev = _anim;
 				_anim = "dive";
+				if(_shield){
+					_anim_prev = _anim;
+					_anim = "block_air";
+				}
 			}
 		}
 	}
@@ -300,6 +302,9 @@ function scr_player_animation(){
 	if(_jumpback && !_attack){
 		_anim_prev = _anim;
 		_anim = "standup";
+	}
+	if(_afterslam){
+		_anim = "afterslam";
 	}
 	if(_state == "tnt"){
 		_anim_prev = _anim;

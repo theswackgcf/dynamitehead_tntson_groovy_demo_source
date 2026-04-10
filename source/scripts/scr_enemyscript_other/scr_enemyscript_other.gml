@@ -25,6 +25,53 @@ function scr_enemyscript_other(){
 		}
 	}
 	
+	if(_immunetimer > 0){
+		_immunetimer --;
+	}
+	
+	//combo hit
+	if(_combohit_timer > 0){
+		_combohit_timer --;
+	} else {
+		_combohit = 1;
+	}
+	
+	//move in only one direction for a period of time
+	if(_onlydir_timer > 0){
+		_onlydir_timer --;
+	} else {
+		_onlydir = [false,false];
+	}
+	
+	if(_behaviortype == "hopping" || _falling){
+		_onlydir_timer = 0;
+	}
+	
+	if(_onlydir[0]){
+		var point = _startpos[1];
+		if(_curstate == STATE_FOLLOW){
+			var dh = instance_nearest(x,y,obj_dh_mask);
+			if(instance_exists(dh)){
+				point = dh.y;
+			}
+		}
+		_pathpoint[1] = point;
+		_walkto[1] = point;
+		_walktopos[1] = point;
+	}
+	if(_onlydir[1]){
+		var point = _startpos[0];
+		if(_curstate == STATE_FOLLOW){
+			var dh = instance_nearest(x,y,obj_dh_mask);
+			if(instance_exists(dh)){
+				point = dh.x;
+			}
+		}
+		_pathpoint[0] = point;
+		_walkto[0] = point;
+		_walktopos[0] = point;
+	}
+	
 	//fall from above
 	if(_startTimer <= 0 && _fallabove){
 		clearpath();
@@ -87,7 +134,10 @@ function scr_enemyscript_other(){
 		
 		_fallfloat = false;
 	}
-	if(!_fallfloat){ _parachute = false; }
+	if(!_fallfloat){ 
+		_parachute = false; 
+		_shadowoffset[0] = 0;
+	}
 	
 	//floor sounds
 	if(place_meeting(x,y,obj_floor)){
@@ -99,10 +149,12 @@ function scr_enemyscript_other(){
 		_floortype = _deffloortype;
 	}
 	
-	if(_interest > 0){
-		_interest --;
-	} else if(_interest < 0){
-		_interest = 0;
+	if(_sequence_finished){
+		if(_interest > 0){
+			_interest --;
+		} else if(_interest < 0){
+			_interest = 0;
+		}
 	}
 			
 	if(_state_cooldown > 0){
@@ -142,6 +194,39 @@ function scr_enemyscript_other(){
 		_dodgetimer = 0;
 		if(_curstate == STATE_OTHER){
 			_curstate = STATE_IDLE;
+		}
+	}
+	
+	if(_dodge_trait[0]){
+		with(_hitobj){
+			if(place_meeting(x,y,obj_punchhitbox)){
+				var hbox = instance_place(x,y,obj_punchhitbox);
+				if(instance_exists(hbox)){
+					if(hbox._ptype == "pl" && hbox._type == "crouch"){
+						other._atkallowed = [ATK_NORM,ATK_KO];
+						other._dodgezones = other._dodgezones_start;
+						other._block_endzones = other._block_endzones_start;
+						other._dodge_trait[1] = 0;
+						other._immunetimer = 0;
+						other._stunlock_dodge = false;
+						other._curstate = STATE_IDLE;
+						other._height = other._groundlevel;
+						add_trait([TRAIT_HURT,TRAIT_DODGE,TRAIT_FALLSTUN],other);
+					}
+				}
+			}
+		}
+		
+		_afterim_active = 3;
+		_dodge_trait[1] --;
+		remove_trait([TRAIT_HURT,TRAIT_FALLSTUN,TRAIT_DODGE]);
+		
+		_curspd = [0,0];
+		clearpath();
+		
+		if(_dodge_trait[1] <= 0){
+			add_trait([TRAIT_HURT,TRAIT_DODGE,TRAIT_FALLSTUN]);
+			_dodge_trait[0] = false;
 		}
 	}
 	
@@ -244,6 +329,9 @@ function scr_enemyscript_other(){
 	if(_spottimer <= 0){
 		_spotwalk = false;
 	}
+	if(_fastwalk > 0){
+		_fastwalk --;
+	}
 	
 	if(_blocktimer > 0){
 		_attack = false;
@@ -267,8 +355,16 @@ function scr_enemyscript_other(){
 		}
 	}
 	
+	if(_blockko_timer > 0){
+		_blockko_timer --;
+	}
+	
 	if(_crouchkicktime > 0){
 		_crouchkicktime --;
+	}
+	
+	if(_grabattempt > 0){
+		_grabattempt --;
 	}
 	
 	if(_freeze <= 0){
@@ -415,25 +511,28 @@ function scr_enemyscript_other(){
 	}
 	
 	//after images
-	if(_hurttimer <= 0 && !_falling && !_fall_ko && !_standup && !_grabbed && _anim != "walk"){
-		if(_afterim_active > 0){
-			_afterim_active --;
+	if(_hurttimer <= 0 && !_falling && !_fall_ko && !_standup && !_grabbed){
+		var animstop = ["idle","dodge","walk"];
+		if(!array_contains(animstop,_anim)){
+			if(_afterim_active > 0){
+				_afterim_active --;
 		
-			_afterim_timer ++;
-			if(_afterim_timer >= 12){
-				var im = instance_create_depth(x, y+_height+_hop_arc, depth+32, obj_enm_afterIM);
-				im.sprite_index = _displayobj.sprite_index;
-				im.image_index = _displayobj.image_index;
-				im.image_xscale = _displayobj.image_xscale;
-				im.image_yscale = _displayobj.image_yscale;
-				im.image_blend = c_purple;
-				im._alpha = 0.7;
-				im._decaytime = 0.02;
+				_afterim_timer ++;
+				if(_afterim_timer >= 12){
+					var im = instance_create_depth(x, y+_height+_hop_arc, depth+32, obj_enm_afterIM);
+					im.sprite_index = _displayobj.sprite_index;
+					im.image_index = _displayobj.image_index;
+					im.image_xscale = _displayobj.image_xscale;
+					im.image_yscale = _displayobj.image_yscale;
+					im.image_blend = c_purple;
+					im._alpha = 0.7;
+					im._decaytime = 0.02;
 									
-				_afterim_timer = 0;
+					_afterim_timer = 0;
+				}
+			} else {
+				_afterim_timer = 999;
 			}
-		} else {
-			_afterim_timer = 999;
 		}
 	}
 				

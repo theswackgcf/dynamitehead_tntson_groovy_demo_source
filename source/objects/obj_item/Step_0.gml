@@ -43,6 +43,16 @@
 		image_speed = 1;
 		_timer ++;
 		
+		if(_falloff){
+			_yspd += 0.9;
+			_height -= _yspd;
+			if(_height <= _groundlevel){
+				_height = _groundlevel;
+				_yspd = 0;
+				_falloff = false;
+			}
+		}
+		
 		//arc code
 		if(_hopping){
 			_hop_time = clamp(_hop_time + _hop_spd, 0, 1);

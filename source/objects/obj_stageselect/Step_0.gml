@@ -15,6 +15,10 @@
 	_on = false;
 	
 	if(_displayselect){
+		if(!global._menumouse){
+			global._forcecustorstop = 2;
+		}
+		
 		if(!_input_active){
 			_input_timer ++;
 			if(_input_timer >= 60){
@@ -83,6 +87,8 @@
 				global._backtomenu = false;
 				with(obj_screen_tr){
 					scr_setgamevals();
+					
+					global._menuminigame = false;
 					
 					_show = true;
 					_type = "out";

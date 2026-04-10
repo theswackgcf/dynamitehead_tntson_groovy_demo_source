@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"scr_lode_enm_pathfind_init",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"scr_lode_enm_pathfind_init",
+  "parent":{
+    "name":"lode",
+    "path":"folders/Scripts/minigames/lode.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

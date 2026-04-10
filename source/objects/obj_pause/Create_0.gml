@@ -1,5 +1,17 @@
 {
+	#macro PAUSE_RESUME 0
+	#macro PAUSE_SURF 1
+	#macro PAUSE_RSTART 2
+	#macro PAUSE_OPT 3
+	#macro PAUSE_QUIT 4
+	
+	depth = -10999;
+	
+	global._pause_prevent_restart = false;
+	
 	_allsounds = ds_map_create();
+	
+	_init_timer = 0;
 	
 	_prevOpt = 0;
 	_curOpt = 0;
@@ -8,14 +20,28 @@
 	_curOpt2 = 0;
 	
 	_confirmtitle = "";
+	_confirmbtn = "";
+	
+	_pausetitles = {
+		resume: "resume",
+		restart_surf: "back to last surf",
+		restart: "start over",
+		settings: "settings",
+		menu: "back to menu",
+		skip: "skip all",
+		restart_whack: "restart minigame",
+		restart_lode: "restart level",
+	};
 	
 	_pauseOpts = [
-		["resume",""],
-		["back to last surf", ""],
-		["start over",""],
-		["settings",""],
-		["back to menu",""],
+		[_pausetitles.resume,"id_resume",0,PAUSE_RESUME],
+		[_pausetitles.restart_surf, "id_restart_surf",1,PAUSE_SURF],
+		[_pausetitles.restart,"id_restart",2,PAUSE_RSTART],
+		[_pausetitles.settings,"id_settings",3,PAUSE_OPT],
+		[_pausetitles.menu,"id_menu",4,PAUSE_QUIT],
 	];
+	
+	_state_init = false;
 	
 	_curbutton = noone;
 	_enter = false;
@@ -28,39 +54,7 @@
 	_muspos = 0;
 	
 	_yposoffset = 0;
-	for(var i = 0; i < array_length(_pauseOpts); i++){
-		_btn = instance_create_depth(0, 0, 0, obj_optbtn);
-		_btn._pausebtn = true;
-		_btn._xpos = floor(WIDTH/2)-WIDTH;
-		_btn._ypos = 290 + _yposoffset;
-		_btn._starty = _btn._ypos;
-		_btn._maintextscale = 1.25;
-		_yposoffset += 72;
-		_btn._text = _pauseOpts[i][0];
-		_btn._id = _pauseOpts[i][1];
-		_btn._opt = i;
-		_btn._optionsobj = self;
-		_btn._state = "main";
-		_btn._layer = 0;
-	}
 	
-	for(var i = 0; i < 2; i++){
-		_btn = instance_create_depth(0, 0, 0, obj_optbtn);
-		_btn._pausebtn = true;
-		if(i == 0){
-			_btn._xpos = floor(WIDTH/2)-128;
-			_btn._text = "YES";
-		} else {
-			_btn._xpos = floor(WIDTH/2)+128;
-			_btn._text = "NO";
-		}
-		_btn._ypos = floor(HEIGHT/2);
-		_btn._starty = _btn._ypos;
-		_btn._id = "confirm";
-		_btn._opt = i;
-		_btn._optionsobj = self;
-		_btn._state = "confirm";
-	}
 	
 	_optionsobj = instance_create_depth(0, 0, 0, obj_options);
 	_optionsobj._pause = true;
@@ -84,9 +78,15 @@
 	
 	_backcooldown = 0;
 	
+	_curmonyx = 0;
+	_totalmonyx = 0;
+	
+	_canpause = true;
+	
 	function checkmenus() {
+		var enter = true;
 		if(_state == "main"){
-			switch(_curOpt){
+			switch(_pauseOpts[_curOpt][2]){
 				case 0:
 					_tntmenustate = "return";
 				break;
@@ -94,7 +94,17 @@
 					_tntmenustate = "restart_check";
 				break;
 				case 2:
-					_tntmenustate = "restart_stage";
+					if(global._state == "minigame" && global._minigame == "lode" && global._pause_prevent_restart){
+						enter = false;
+						
+						with(obj_camera){
+							_ampX = 10;
+							_ampY = 10;
+						}
+						sfx_play_choose([snd_punchfail1,snd_punchfail2,snd_punchfail3]);
+					} else {
+						_tntmenustate = "restart_stage";
+					}
 				break;
 				case 3:
 					_tntmenustate = "options";
@@ -102,10 +112,14 @@
 				case 4:
 					_tntmenustate = "end";
 				break;
+				
+				case 5:
+					_tntmenustate = "skip_all";
+				break;
 			}
 		} else if(_state == "confirm"){
 			if(_curOpt2 == 0){
-				switch(_curOpt){
+				switch(_pauseOpts[_curOpt][2]){
 					case 1:
 						_tntmenustate = "confirm_check";
 					break;
@@ -120,16 +134,10 @@
 				_tntmenustate = "confirm_no";
 			}
 		}
-		_enter = true;
-		global._tntmenuAct = 1;
-		sfx_play(snd_tnt_pull);
+		if(enter){
+			_enter = true;
+			global._tntmenuAct = 1;
+			sfx_play(snd_tnt_pull);
+		}
 	}
-	
-	_dosurfacestuff = true;
-	
-	_gui_size = [WIDTH,HEIGHT];
-	_gui_surface = surface_create(_gui_size[0],_gui_size[1]);
-	
-	_resizegui_size = [1,1];
-	_resizegui_surface = surface_create(_resizegui_size[0],_resizegui_size[1]);
 }

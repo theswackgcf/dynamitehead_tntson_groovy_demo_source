@@ -10,7 +10,7 @@
   "compression":0,
   "compressionQuality":4,
   "conversionMode":0,
-  "duration":2.1868026,
+  "duration":1.6562585,
   "exportDir":"",
   "name":"snd_lanky_hurry",
   "parent":{

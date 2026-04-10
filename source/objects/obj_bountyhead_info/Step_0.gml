@@ -1,5 +1,5 @@
 {
-	if(_infoshow){
+	if(!global._pause && _infoshow){
 		if(!_infohide){
 			_infotimer ++;
 			
@@ -11,6 +11,12 @@
 			} else if(_infotimer >= 25 && _infotimer < 35){
 				_infoscale = 1.5;
 			} else {
+				if(!_snd){
+					sfx_play(snd_bountyhead_info,0.45);
+				
+					_snd = true;
+				}
+				
 				_infoscale = 1;
 			}
 			

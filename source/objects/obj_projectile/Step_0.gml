@@ -28,11 +28,23 @@
 				_setspawndir = true;
 			}
 			
-			image_xscale = (global._scale*_scale2[0])*_curdir;
-			image_yscale = (global._scale*_scale2[1]);
+			image_xscale = _scale2[0]*_curdir;
+			image_yscale = _scale2[1];
 			
 			image_speed = 1;
 			x += _xspd*_curdir;
+			
+			if(_delay > 0){
+				_delayed = true;
+				
+				_delay --;
+				_active = false;
+			} else {
+				if(_delayed){
+					_active = true;
+					_delayed = false;
+				}
+			}
 			
 			if(_active){
 				//getting hit
@@ -85,23 +97,64 @@
 												spawnenemy(true);
 												_enemyspawned = true;
 												_active = false;
+												
+												var p = instance_create_depth(x-96,y-96,depth,obj_particle);
+												p._type = "fx6";
+													
+												sfx_play_choose(global._kdsounds);
+												
+												with(obj_camera){
+													_ampY = 24;
+												}
+												
+												global._pad_vibrate = 12;
 											} else {
 												if(!_fridge){
 													sprite_index = _noenmindex;
 													spawnenemy(true);
 													_enemyspawned = true;
 													_active = false;
-												} else {
-													with(obj_tipbox){
-														if(_prompt == "tutr_jump"){
-															_active = false;
-														}
-													}
 													
 													var p = instance_create_depth(x-96,y-96,depth,obj_particle);
-													p._type = "vanish";
-													sfx_play_proximity(snd_ghost);
-													instance_destroy();
+													p._type = "fx6";
+													
+													sfx_play_choose(global._kdsounds);
+													
+													with(obj_camera){
+														_ampY = 24;
+													}
+													
+													global._pad_vibrate = 12;
+												} else {
+													if(_active){
+														with(obj_tipbox){
+															if(_prompt == "tutr_jump"){
+																_active = false;
+															}
+														}
+														with(obj_camera){
+															_ampY = 24;
+														}
+														
+														atk_parent._state = "jump";
+														atk_parent._runroll_dive = false;
+														atk_parent._runroll = false;
+														atk_parent._jump_enmhit = true;
+													
+														var p = instance_create_depth(x-96,y-96,depth,obj_particle);
+														p._type = "vanish";
+														sfx_play_proximity(snd_ghost);
+														sfx_play_proximity(snd_finalko);
+													
+														global._pad_vibrate = 12;
+													
+														var mt = instance_create_depth(x,y,depth,obj_fridge_mtcycle);
+														mt._curdir = _curdir;
+														mt._mt_spd = _mt_spd;
+														mt.image_angle = image_angle;
+													
+														instance_destroy();
+													}
 												}
 											}
 										}

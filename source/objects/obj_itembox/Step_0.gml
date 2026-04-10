@@ -61,6 +61,9 @@
 			_vtimer ++;
 			if(_vtimer >= 1){
 				visible = true;
+				if(global._finalhit > 0 && !global._finalhit_phase){
+					visible = false;
+				}
 			}
 		
 			image_speed = 1;
@@ -104,7 +107,7 @@
 			switch(_trigger){
 				case 1:
 					if(!_parentobj._boxonly){
-						var p = instance_create_depth(_parentpos[0]-64, _parentpos[1]-46, 0, obj_particle);
+						var p = instance_create_depth(_parentpos[0], _parentpos[1], 0, obj_particle);
 						p._type = "vanish";
 					}
 			

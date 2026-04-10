@@ -1,6 +1,8 @@
 {
 	_allsounds = ds_map_create();
 	
+	_init = false;
+	
 	_time = 0;
 	_fade = 0;
 	_fadeTo = 0;
@@ -15,4 +17,7 @@
 	_surface = surface_create(_surfdim[0], _surfdim[1]);
 	
 	_instmap = ds_map_create();
+	
+	_layerfx_val = 0.38;
+	_store_layerfx = 0;
 }

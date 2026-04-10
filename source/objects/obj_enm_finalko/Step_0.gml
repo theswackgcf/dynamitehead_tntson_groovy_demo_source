@@ -3,6 +3,14 @@
 	if(!global._pause){
 		image_speed = 1;
 		
+		if(global._tutorial){
+			with(obj_tipbox){
+				if(_prompt == "tutr_combo3"){
+					instance_destroy();
+				}
+			}
+		}
+		
 		if(!_dovoice){
 			if(_playvoice != -1){
 				voice_play_overlap_proximity(_playvoice);
@@ -26,9 +34,9 @@
 		image_yscale = _scale;
 		x += _spd[0]*_speedup;
 		y += _spd[1]*_speedup;
-		_scale += 0.022*_speedup;
+		_scale += 0.036*_speedup;
 		_spd[1] += 0.52*_speedup;
-		if(_scale >= 0.9){
+		if(_scale >= 1.48){
 			_alpha -= 0.04;
 		}
 				

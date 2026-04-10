@@ -35,14 +35,11 @@
 			if(visible && !_trigger && place_meeting(x,y,obj_punchhitbox)){
 				var p = instance_place(x,y,obj_punchhitbox);
 				if(instance_exists(p)){
-					var parent = p._parentobj;
-					if(instance_exists(parent)){
-						if(p._active && parent._attacktype == "crouch"){
-							global._deletedStuff[? self.id] = self.id;
+					if(p._type == "crouch"){
+						global._deletedStuff[? self.id] = self.id;
 								
-							_trigger = true;
-							_parentobj._trigger = true;
-						}
+						_trigger = true;
+						_parentobj._trigger = true;
 					}
 				}
 			}

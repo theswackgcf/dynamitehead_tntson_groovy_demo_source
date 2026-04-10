@@ -81,7 +81,7 @@
 						
 						if(y <= -800){
 							global._deletedStuff[? self.id] = self.id;
-							with(obj_game){
+							with(obj_gui){
 								_uitextshow = true;
 								_uitext = "WAiT FOr IT";
 							}

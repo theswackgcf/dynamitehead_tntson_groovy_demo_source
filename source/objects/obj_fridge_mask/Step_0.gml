@@ -7,10 +7,12 @@
 	
 	scr_sequence_pause();
 	
-	scr_enemyscript_inactive();
-	
-	if(!global._pause && !_inactive){
+	if(!global._pause){
 		if(!_init){
+			_startTimer = 2;
+			if(_fr_type == "fridge_crouch"){
+				_startTimer = 0;
+			}
 			scr_enemyscript_init("step");
 		} else {
 			if(!_fr_settype){
@@ -64,7 +66,7 @@
 							_hp = _maxhp;
 						}
 						if(_fr_type == "fridge_slam"){
-							_maxhp = 6;
+							_maxhp = 10;
 							if(!_fr_sethp){
 								_hp = _maxhp;
 								_fr_sethp = true;
@@ -123,6 +125,7 @@
 										}
 										sfx_play_choose_proximity([snd_thud,snd_thud2,snd_thud3,snd_thud4]);
 										_fall_ko = true;
+										_nocked ++;
 									}
 								}
 							break;
@@ -158,6 +161,9 @@
 								if(!_fr_kicked){
 									_fallxspd = 0;
 									_fallyspd = 0;
+									if(_height <= _groundlevel+h+240){
+										_fr_upperready = true;
+									}
 									if(_height <= _groundlevel+h){
 										if(!_fr_jump){
 											_height = _groundlevel+h+4;
@@ -166,7 +172,6 @@
 										} else {
 											_height = _groundlevel+h;
 											_vspd = 0;
-											_fr_upperready = true;
 										}
 									}
 								}
@@ -202,6 +207,33 @@
 								_kotimer = 999;
 							break;
 							case "fridge_spin":
+								if(_fr_dodgecd > 0){
+									_fr_dodgecd --;
+								}
+								if(_fr_dodgecd <= 0 && place_meeting(x,y,obj_dh_mask)){
+									var dhshield = instance_place(x,y,obj_dh_mask);
+									if(instance_exists(dhshield) && dhshield._shield){
+										dhshield._freeze = global._freezeFrames.mid_freeze;
+										_freeze = global._freezeFrames.mid_freeze;
+										
+										var p = instance_create_depth(x-64,y-64,depth,obj_particle);
+										p._type = "fx6";
+										
+										global._pad_vibrate = 4;
+										
+										with(obj_camera){
+											_ampX = 12;
+										}
+										
+										sfx_play_choose_proximity([snd_punchfail1,snd_punchfail2,snd_punchfail3]);
+										sfx_pitch(snd_punchfail1,1+(_wallbonks*0.1));
+										sfx_pitch(snd_punchfail2,1+(_wallbonks*0.1));
+										sfx_pitch(snd_punchfail3,1+(_wallbonks*0.1));
+									
+										_fr_dodgecd = 16-(_wallbonks*2);
+									}
+								}
+							
 								if(_fr_tipobj == noone){
 									with(obj_tipbox){
 										if(_prompt == "tutr_shield"){
@@ -276,6 +308,14 @@
 									}
 								}
 								
+								if(_grabbed){
+									with(obj_fridge_mask){
+										if(_fr_type != "fridge_slam"){
+											killself();
+										}
+									}
+								}
+								
 								if(_fr_tipobj != noone && instance_exists(_fr_tipobj)){
 									if(!_grabbed){
 										_fr_tipobj._prompt = "tutr_slam1";
@@ -289,6 +329,7 @@
 								
 								with(obj_dh_mask){
 									_slamcount = 0;
+									_slambonks = 0;
 								}
 								
 								if(!_grabbed){
@@ -450,7 +491,7 @@
 									_fr_combocount = 0;
 								}
 								if(_dh_atk > 0 && _dh_atk_inst != noone){
-									if(instance_exists(_dh_atk_inst) && _dh_atk_inst._slide){
+									if(instance_exists(_dh_atk_inst) && _dh_atk_inst._attack && _dh_atk_inst._attacktype == "crouch"){
 										if(_fr_combocount == 0){
 											_fr_combocount = 1;
 										}
@@ -562,11 +603,13 @@
 												_displayobj.image_index = 0;
 											}
 											_spin = true;
+											_spinhits = 0;
+											
 											_freedir = DIR_L;
 											_fallyspd = 0;
 										} else {
 											_freespd = true;
-											_fallxspd = (20+(_wallbonks*2))*_freedir;
+											_fallxspd = (20+(_wallbonks*9))*_freedir;
 											_fallyspd = 0;
 										
 											//wall bonk
@@ -717,7 +760,7 @@
 							case "fridge_roll":
 								if(place_meeting(x-32,y,obj_dh_mask)){
 									var dh = instance_place(x-32,y,obj_dh_mask);
-									if(instance_exists(dh) && dh._runroll){
+									if(instance_exists(dh) && dh._runroll && !dh._runroll_dive){
 										if(place_meeting_array(x,y,_collide_solid)){
 											var sol = place_meeting_array(x,y,_collide_solid, true, true);
 											if(instance_exists(sol) && sol._delete){
@@ -729,7 +772,13 @@
 								
 								if(place_meeting(x,y,obj_dh_mask)){
 									var dh = instance_place(x,y,obj_dh_mask);
-									if(instance_exists(dh) && dh._runroll){
+									if(instance_exists(dh) && dh._runroll && !dh._runroll_dive){
+										with(obj_fridge_mask){
+											if(_fr_type == "fridge_upper" || _fr_type == "fridge_upper_win"){
+												killself();
+											}
+										}
+										
 										with(obj_camera){
 											_ampX = 22;
 										}

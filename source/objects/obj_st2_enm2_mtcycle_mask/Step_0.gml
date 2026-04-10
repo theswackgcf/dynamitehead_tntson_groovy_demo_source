@@ -27,10 +27,15 @@
 		}
 	
 		if(!global._pause){
+			if(_mt_act > 0){
+				_mt_active_timer ++;
+			}
+			
 			if(global._dialogue && _fridge){
 				visible = false;
 				_freeze = 2;
 			}
+			
 			if(_freeze <= 0){
 				_scale2[0] = lerp(_scale2[0],_mt_scaleto[0],0.18);
 				_scale2[1] = lerp(_scale2[1],_mt_scaleto[1],0.18);
@@ -127,7 +132,6 @@
 								p._angle = 0;
 								p._curdir = _curdir;
 								p._scale = random_range(1.2,1.62);
-								p._truescale = true;
 								p._forcedepth = depth+8;
 								p._adddepth = 0;
 							
@@ -188,7 +192,6 @@
 					
 							var p = instance_create_depth(x+(-320*_curdir), global._cameraY+floor(HEIGHT/2)+64, depth+8, obj_particle);
 							p._type = "explosion_screenside";
-							p._truescale = true;
 							p._curdir = _curdir;
 							p._scale = 1.3;
 							p._adddepth = 1500;
@@ -212,6 +215,24 @@
 							_mt_angle = 0;
 							_mt_angleback = false;
 						}
+					}
+				}
+				
+				if(_fridge){
+					var maxnum = 60;
+					if(_mt_active_timer < maxnum){
+						_mt_alpha_to = 0.4;
+					} else {
+						_mt_alpha_to = 1;
+					}
+					
+					_mt_alpha = lerp(_mt_alpha, _mt_alpha_to, 0.12);
+					image_alpha = _mt_alpha;
+					
+					if(_mt_active_timer >= maxnum){
+						_active = true;
+					} else {
+						_active = false;
 					}
 				}
 			}

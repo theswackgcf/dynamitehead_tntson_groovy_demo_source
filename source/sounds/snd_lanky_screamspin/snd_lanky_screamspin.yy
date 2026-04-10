@@ -10,7 +10,7 @@
   "compression":0,
   "compressionQuality":4,
   "conversionMode":0,
-  "duration":8.354173,
+  "duration":8.357165,
   "exportDir":"",
   "name":"snd_lanky_screamspin",
   "parent":{
