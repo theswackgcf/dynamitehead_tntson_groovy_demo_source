@@ -15,6 +15,9 @@
 	#macro LODE_STATE_DIG 3
 	#macro LODE_STATE_CLIMB 4
 	
+	_input_digleft = "";
+	_input_digright = "";
+	
 	_freeze = 0;
 	
 	_init_timer = 0;

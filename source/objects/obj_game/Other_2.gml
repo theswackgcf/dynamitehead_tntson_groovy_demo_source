@@ -334,6 +334,7 @@
 	global._minigame_monyx = 0;
 	global._minigame_diff = 0;
 	global._minigame = "";
+	global._cur_variation = -1;
 	
 	global._saveminigame = [0,0];
 	

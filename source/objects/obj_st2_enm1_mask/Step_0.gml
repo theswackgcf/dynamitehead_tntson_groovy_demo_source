@@ -293,7 +293,7 @@
 											atk._bothdir = true;
 											atk._damage = ATK_KO;
 											atk._type = "crouch_enm_hench";
-											atk._delay = 4;
+											atk._frame = 4;
 							
 											_hn_crouchhit = true;
 										}

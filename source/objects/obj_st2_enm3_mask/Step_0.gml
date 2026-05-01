@@ -404,6 +404,12 @@
 										}
 									}
 									
+									if(_attack || _gl_spinact > 0){
+										_attack = false;
+										_gl_spinact = 0;
+										forceattack = true;
+									}
+									
 									if(forceattack || (_gl_atk_cd <= 0 && _behaviortype == "move" && _stuntimer <= 0 && _successparry <= 0 && !_falling && !_fall_ko && !_standup)){
 										_gl_storepos = [x,y];
 										_gl_atkstate = GL_ATK_ALT1;

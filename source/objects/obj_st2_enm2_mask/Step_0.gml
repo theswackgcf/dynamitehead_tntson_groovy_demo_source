@@ -1205,6 +1205,16 @@
 						}
 					}
 					
+					if(_enmtype == 1){
+						if(_yolob_milkstun || _successparry > 0){
+							_milkthrow = false;
+							_atkallowed = [ATK_NORM,ATK_KO];
+							_block_endzones = _block_endzones_start;
+							_dodgezones = _dodgezones_start;
+							add_trait([TRAIT_HURT,TRAIT_GRAB,TRAIT_MASHED]);
+						}
+					}
+					
 					//animation not affected by freeze
 					if(!_death){
 						if(_falling && !_grabout){

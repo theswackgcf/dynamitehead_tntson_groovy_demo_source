@@ -784,9 +784,6 @@
 				//load layout
 				if(global._lode_playmode){
 					if(_stagesobj != noone && instance_exists(_stagesobj)){
-						if(global._lode_stage == 0){
-							scr_lode_game_init();
-						}
 						if(global._lode_loopback){
 							global._lode_curloop ++;
 							global._lode_stage = 1;
