@@ -20,7 +20,7 @@
 	global._debug = false;
 	global._buildver = WINDOWS;
 	global._gxLoading = false;
-	global._version = "MONYX FEVER v1.0";
+	global._version = "MONYX FEVER v1.01";
 	
 	global._debugroom = false;
 	global._debughidepause = false;

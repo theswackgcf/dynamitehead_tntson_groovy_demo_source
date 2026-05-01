@@ -575,7 +575,7 @@ function scr_enemyscript_behavior(type){
 								atk._timer = 120;
 							} else if(has_trait(TRAIT_LOWKICK)){
 								atk._type = "lowkick_enm";
-								atk._frame = 2;
+								atk._frame = 3;
 								atk._timer = 5;
 							}
 							atk._delay = 3;

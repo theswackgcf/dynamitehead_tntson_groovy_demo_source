@@ -334,6 +334,7 @@
 	global._lode_playmode = true;
 	global._lode_testmode = false;
 	global._lode_testmode_load = false;
+	global._cur_variation = -1;
 	
 	//font
 	global._font = "";

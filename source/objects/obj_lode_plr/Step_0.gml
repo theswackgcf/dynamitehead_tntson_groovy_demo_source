@@ -10,6 +10,14 @@
 		
 		image_xscale = max(0.5,(totalw-(global._lode_spd*1.2))/totalw);
 		
+		if(global._inptype == 0){
+			_input_digleft = "jump";
+			_input_digright = "punch";
+		} else if(global._inptype == 1){
+			_input_digleft = "shield";
+			_input_digright = "taunt";
+		}
+		
 		if(!global._lode_editor && !_win && _backoff <= 0 && !_tnt_activation){
 			if(_freeze <= 0){
 				if(_backoff_init){
@@ -259,17 +267,17 @@
 							}
 				
 							//digging
-							if(_groundtimer > 0 && _jump_power <= 0 && (keyhold("jump") || keyhold("punch"))){
-								if(keyhold("jump")){
+							if(_groundtimer > 0 && _jump_power <= 0 && (keyhold(_input_digleft) || keyhold(_input_digright))){
+								if(keyhold(_input_digleft)){
 									_digdir = DIR_L;
-								} else if(keyhold("punch")){
+								} else if(keyhold(_input_digright)){
 									_digdir = DIR_R;
 								}
 								if(_digbox_cur != noone && instance_exists(_digbox_cur)){
 									_digbox_cur._visibtimer = 2;
 								}
 							}
-							if(_groundtimer > 0 && _jump_power <= 0 && ((_digdir == DIR_R && keyrelease("punch")) || (_digdir == DIR_L && keyrelease("jump")))){
+							if(_groundtimer > 0 && _jump_power <= 0 && ((_digdir == DIR_R && keyrelease(_input_digright)) || (_digdir == DIR_L && keyrelease(_input_digleft)))){
 								do_dig();
 							}
 						break;
@@ -317,17 +325,17 @@
 							}
 				
 							//digging
-							if(keyhold("jump") || keyhold("punch")){
-								if(keyhold("jump")){
+							if(keyhold(_input_digleft) || keyhold(_input_digright)){
+								if(keyhold(_input_digleft)){
 									_digdir = DIR_L;
-								} else if(keyhold("punch")){
+								} else if(keyhold(_input_digright)){
 									_digdir = DIR_R;
 								}
 								if(_digbox_cur != noone && instance_exists(_digbox_cur)){
 									_digbox_cur._visibtimer = 2;
 								}
 							}
-							if((_digdir == DIR_R && keyrelease("punch")) || (_digdir == DIR_L && keyrelease("jump"))){
+							if((_digdir == DIR_R && keyrelease(_input_digright)) || (_digdir == DIR_L && keyrelease(_input_digleft))){
 								do_dig();
 							}
 						break;
@@ -342,17 +350,17 @@
 							}
 				
 							//digging
-							if(keyhold("jump") || keyhold("punch")){
-								if(keyhold("jump")){
+							if(keyhold(_input_digleft) || keyhold(_input_digright)){
+								if(keyhold(_input_digleft)){
 									_digdir = DIR_L;
-								} else if(keyhold("punch")){
+								} else if(keyhold(_input_digright)){
 									_digdir = DIR_R;
 								}
 								if(_digbox_cur != noone && instance_exists(_digbox_cur)){
 									_digbox_cur._visibtimer = 2;
 								}
 							}
-							if((_digdir == DIR_R && keyrelease("punch")) || (_digdir == DIR_L && keyrelease("jump"))){
+							if((_digdir == DIR_R && keyrelease(_input_digright)) || (_digdir == DIR_L && keyrelease(_input_digleft))){
 								do_dig();
 							}
 						break;

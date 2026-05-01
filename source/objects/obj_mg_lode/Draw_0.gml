@@ -660,7 +660,7 @@
 
 				if(_howto_page > 0){
 					draw_sprite_ext(spr_lode_howto_side,0,_howto_bbox[0]-18,_howto_pos[1],-1,1,0,c_white,1);
-					scr_nesfont_shadow(_howto_bbox[0],_howto_bbox[3]+4,string_upper(key_to_string(global._input[global._inptype][? "left"]))+": Previous page", false, c_white, global._lode_textshadow_color);
+					scr_nesfont_shadow(_howto_bbox[0],_howto_bbox[3]+4,string_upper(key_to_string(global._input[global._inptype][? "menu_left"]))+": Previous page", false, c_white, global._lode_textshadow_color);
 				}
 				if(_howto_page < array_length(_howto_text)-1){
 					scr_textrender_valign("bottom");
@@ -668,11 +668,11 @@
 					scr_textrender_valign("top");
 					
 					scr_textrender_halign("right");
-					scr_nesfont_shadow(_howto_bbox[2],_howto_bbox[3]+4,string_upper(key_to_string(global._input[global._inptype][? "right"]))+": Next page", false, c_white, global._lode_textshadow_color);
+					scr_nesfont_shadow(_howto_bbox[2],_howto_bbox[3]+4,string_upper(key_to_string(global._input[global._inptype][? "menu_right"]))+": Next page", false, c_white, global._lode_textshadow_color);
 					scr_textrender_halign("left");
 				} else {
 					scr_textrender_halign("right");
-					scr_nesfont_shadow(_howto_bbox[2],_howto_bbox[3]+4,string_upper(key_to_string(global._input[global._inptype][? "right"]))+": Close", false, c_white, global._lode_textshadow_color);
+					scr_nesfont_shadow(_howto_bbox[2],_howto_bbox[3]+4,string_upper(key_to_string(global._input[global._inptype][? "menu_right"]))+": Close", false, c_white, global._lode_textshadow_color);
 					scr_textrender_halign("left");
 				}
 				
